@@ -10,19 +10,25 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-     <Stack.Navigator>
+    <NavigationContainer
+
+    >
+      <Stack.Navigator
+        screenOptions={{
+          statusBarColor: "#000"
+        }}
+      >
         <Stack.Screen name="landing" component={LandingPage} options={{
-          headerShown : false
+          headerShown: false
         }} />
-         <Stack.Screen name="signup" component={SignUpScreen} options={{
-          headerShown : false
+        <Stack.Screen name="signup" component={SignUpScreen} options={{
+          headerShown: false
         }} />
-         <Stack.Screen name="signin" component={SigninScreen} options={{
-          headerShown : false
+        <Stack.Screen name="signin" component={SigninScreen} options={{
+          headerShown: false
         }} />
         <Stack.Screen name="otp" component={OtpScreen} options={{
-          headerShown : false
+          headerShown: false
         }} />
       </Stack.Navigator>
     </NavigationContainer>
