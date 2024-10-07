@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   bgImg: {
     position: 'absolute',
-    top: 0,
+    top: 100,
     right: 100,
   },
 });
