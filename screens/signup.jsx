@@ -17,5 +17,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 16,
   },
-  image: {},
+  image: {
+    width: 200,
+    height: 200,
+  },
 });
