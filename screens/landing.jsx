@@ -24,6 +24,6 @@ const styles = StyleSheet.create({
   bgImg: {
     position: 'absolute',
     top: 0,
-    right: 0,
+    right: 100,
   },
 });
