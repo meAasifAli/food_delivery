@@ -5,7 +5,7 @@ const { width, height } = Dimensions.get("window")
 
 const InputField = ({ label, placeholder, secure, type }) => {
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.inputContainer}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.inputContainer} keyboardVerticalOffset={200}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View>
                     <Text style={styles.label}>
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     label: {
-        marginLeft: 10,
+        marginLeft: 20,
         color: "#fff",
         fontFamily: "OpenSans-Regular",
         fontWeight: "300",
