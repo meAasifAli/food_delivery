@@ -18,7 +18,7 @@ const LandingPage = () => {
           Order, Eat, Repeat!</Text>
       </View>
       <View style={styles.bottomContainer}>
-        <Button title={"Get Started"} />
+        <Button onHandlePress={() => navigation.navigate("signup")} title={"Get Started"} />
       </View>
     </View>
   );
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   primaryHeading: {
     color: "#FA4A0C",
-    fontFamily: "Open-Sans",
+    fontFamily: "OpenSans-Regular",
     fontWeight: "700",
     fontSize: 48,
     lineHeight: 65,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   secondaryHeading: {
     color: "#00030F",
-    fontFamily: "Open-Sans",
+    fontFamily: "OpenSans-Regular",
     fontWeight: "400",
     fontSize: 16,
     lineHeight: 25,

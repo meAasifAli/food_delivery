@@ -1,45 +1,78 @@
 import {
   StyleSheet,
-  Text,
   View,
-  Image,
   Dimensions,
-  TextInput,
+  Image,
+  Text,
 } from 'react-native';
 import React from 'react';
-const {width, height} = Dimensions.get('window');
+import InputField from '../components/InputField';
+import Button from '../components/Button';
+import Typography from '../components/Typography';
+import CustomLink from '../components/CustomLink';
+const { width, height } = Dimensions.get('window');
 
 const SignUpScreen = () => {
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/images/bg.png')} style={styles.image} />
-      <View style={styles.bodycontainer}>
-        <Text style={styles.sigup}>Sign Up</Text>
-        <View style={styles.inputcontainer}>
-          <Text style={styles.inputtext}>Name</Text>
-          <TextInput
-            placeholder="Enter your name"
-            placeholderTextColor={'#FFFFFF'}
-            style={styles.inputbox}
-          />
+      <View style={styles.imgWrapper}>
+        <Image style={styles.img} source={require("../assets/images/bg.png")} />
+      </View>
+      <View
+        style={styles.formContainer}
+      >
+        <Text
+          style={styles.formHeading}
+        >Sign Up</Text>
+        <InputField label={"Name"} placeholder={"Enter Your Name"} />
+        <InputField label={"Email"} placeholder={"Enter Your Email"} />
+        <InputField type={"numeric"} label={"Mobile Number"} placeholder={"Enter Your Mobile Number"} />
+        <Button title={"Signup"} />
+        <View style={styles.optionContainer}>
+          <View>
+            <Typography
+              title={"or Continue with"}
+              size={16}
+              lh={21.79}
+              ls={0.05}
+              fw={400}
+              ff={"OpenSans-Regular"}
+              color={"#fff"}
+            />
+          </View>
+          <View style={styles.googleWrapper}>
+            <Image source={require("../assets/images/google.png")} />
+            <Typography
+              title={"Google"}
+              size={16}
+              lh={18.05}
+              ls={0.05}
+              fw={700}
+              ff={"OpenSans-Regular"}
+              color={"#fff"}
+            />
+          </View>
         </View>
-        <View style={styles.inputcontainer}>
-          <Text style={styles.inputtext}>Email</Text>
-          <TextInput
-            placeholder="Enter your Email"
-            placeholderTextColor={'#FFFFFF'}
-            style={styles.inputbox}
+        <View style={styles.navWrapper}>
+          <Typography
+            title={"Already have an account?"}
+            size={16}
+            lh={21.79}
+            ls={0.05}
+            fw={400}
+            ff={"OpenSans-Regular"}
+            color={"#fff"}
           />
-        </View>
-        <View style={styles.inputcontainer}>
-          <Text style={styles.inputtext}>Mobile</Text>
-          <TextInput
-            placeholder="Enter your name"
-            placeholderTextColor={'#FFFFFF'}
-            style={styles.inputbox}
-          />
+          <CustomLink title={"Login"} href={"signin"} size={16}
+            lh={21.79}
+
+            ls={0.05}
+            fw={700}
+            ff={"OpenSans-Regular"}
+            color={"#FA4A0C"} />
         </View>
       </View>
+
     </View>
   );
 };
@@ -49,47 +82,62 @@ export default SignUpScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
+    position: "relative"
   },
-  image: {
-    width: width * 0.4,
-    height: height * 0.22,
-    resizeMode: 'contain',
-    position: 'absolute',
+  imgWrapper: {
+    position: "absolute",
+    top: -40,
     right: 0,
+
   },
-  bodycontainer: {
-    height: height * 0.7,
-    width: width,
-    backgroundColor: 'black',
-    position: 'absolute',
-    bottom: 0,
+  img: {
+    height: height * (282 / height),
+    width: width * (235 / width),
+    resizeMode: "contain"
+  },
+  formContainer: {
+    backgroundColor: "#202020",
+    height: height * (628 / height),
+    width: width * 1,
+    marginTop: height * (224 / height),
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
-  },
-  sigup: {
-    color: 'white',
-    fontSize: 40,
-    fontFamily: 'OpenSans-Bold',
-    textAlign: 'center',
-  },
-  inputcontainer: {
-    width: '100%',
-    height: 90,
+    padding: 10
 
-    borderColor: 'white',
-    padding: 10,
   },
-  inputtext: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: '300',
+  formHeading: {
+    color: "#fff",
+    fontFamily: "OpenSans-Regular",
+    fontWeight: "700",
+    fontSize: 40,
+    lineHeight: 54.47,
+    letterSpacing: 0.05,
+    textAlign: "center",
+    marginVertical: 15
   },
-  inputbox: {
-    borderWidth: 1,
-    borderColor: '#FFFFFF',
-    borderRadius: 10,
-    color: '#FFFFFF',
-    paddingLeft: 20,
+  optionContainer: {
+    display: "flex",
+    justifyContent: "space-around",
+    flexDirection: "row",
+    alignItems: "center",
+    maxWidth: width * (350 / width),
+    marginVertical: 20,
+    // marginHorizontal: "auto"
   },
+  googleWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    justifyContent: "flex-start"
+  },
+  navWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10
+  }
+
 });
