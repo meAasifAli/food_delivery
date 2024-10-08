@@ -1,12 +1,12 @@
 
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
 import Button from '../components/Button';
-
-
+import { useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get("window")
 
 
 const LandingPage = () => {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <View style={styles.bgImg}>
@@ -17,39 +17,8 @@ const LandingPage = () => {
         <Text style={styles.secondaryHeading}>Satisfy your cravings with just a tap
           Order, Eat, Repeat!</Text>
       </View>
-      <View style={{
-        position: "absolute",
-        bottom: 0,
-        backgroundColor: "#202020",
-        height: height * (192 / height),
-        width: width * (393 / width),
-        borderTopRightRadius: 50,
-        borderTopLeftRadius: 50,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#FA4A0C",
-            height: height * (64 / height),
-            width: width * (280 / width),
-            borderRadius: 10,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <Text style={{
-            color: "#fff",
-            fontFamily: "Open-Sans",
-            fontWeight: "400",
-            fontSize: 32,
-            lineHeight: 43,
-            letterSpacing: 0.43,
-            textAlign: "center"
-          }}>Get Started</Text>
-        </TouchableOpacity>
+      <View style={styles.bottomContainer}>
+        <Button title={"Get Started"} />
       </View>
     </View>
   );
@@ -94,6 +63,18 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     textAlign: "center",
     maxWidth: width * (290 / width)
+  },
+  bottomContainer: {
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: "#202020",
+    height: height * (192 / height),
+    width: width * 1,
+    borderTopRightRadius: 50,
+    borderTopLeftRadius: 50,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   }
 
 });
