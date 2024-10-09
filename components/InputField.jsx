@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "flex-start",
         gap: 2,
-        marginBottom: 10
+        marginBottom: 15
     },
     label: {
-        marginLeft: 20,
+        marginLeft: 15,
         color: "#fff",
         fontFamily: "OpenSans-Regular",
         fontWeight: "300",

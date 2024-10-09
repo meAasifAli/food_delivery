@@ -26,10 +26,12 @@ const SignUpScreen = () => {
           <InputField label={"Name"} placeholder={"Enter Your Name"} />
           <InputField label={"Email"} placeholder={"Enter Your Email"} />
           <InputField type={"numeric"} label={"Mobile Number"} placeholder={"Enter Your Mobile Number"} />
-          <Button title={"Signup"} />
+
+          <Button heightVal={64} widthVal={280} title={"Signup"} />
+
 
           <View style={styles.optionContainer}>
-            <View>
+            <View >
               <Typography
                 title={"or Continue with"}
                 size={16}
@@ -103,10 +105,8 @@ const styles = StyleSheet.create({
   formWrapper: {
     flex: 1,
     backgroundColor: '#202020',
-    // position: 'absolute',
-    // bottom: 0,
     width: width * 1,
-    height: height * 0.628,
+    height: height * 0.60,
     marginTop: height * 0.3,
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
     backgroundColor: '#202020',
+    overflow: "scroll"
   },
   formHeading: {
     flex: 1,
@@ -127,7 +128,8 @@ const styles = StyleSheet.create({
     lineHeight: 54.47,
     letterSpacing: 0.05,
     textAlign: 'center',
-    marginTop: 10
+    marginTop: 10,
+
   },
   optionContainer: {
     display: 'flex',
@@ -147,8 +149,9 @@ const styles = StyleSheet.create({
   navWrapper: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 10,
+    marginLeft: 30
   },
 });
