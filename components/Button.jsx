@@ -3,11 +3,14 @@ import React from 'react'
 
 const { width, height } = Dimensions.get('window')
 
-const Button = ({ title, onHandlePress }) => {
+const Button = ({ title, onHandlePress, heightVal, widthVal }) => {
     return (
         <TouchableOpacity
             onPress={onHandlePress}
-            style={styles.container}>
+            style={[styles.container, {
+                height: heightVal,
+                width: widthVal
+            }]}>
             <Text style={styles.text}>{title}</Text>
         </TouchableOpacity>
     )
@@ -18,8 +21,6 @@ export default Button
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#FA4A0C",
-        height: height * (64 / height),
-        width: width * (280 / width),
         borderRadius: 10,
         display: "flex",
         justifyContent: "center",
