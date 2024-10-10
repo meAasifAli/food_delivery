@@ -1,9 +1,9 @@
-import { Image, ScrollView, StyleSheet, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { categories } from '../../../static/data'
 import Typography from '../../Typography'
 
-const Categories = () => {
+const Categories = ({ navigation }) => {
     return (
         <ScrollView
             style={styles.scrollContainer}
@@ -12,7 +12,9 @@ const Categories = () => {
         >
             {
                 categories.length > 0 && categories.map((item, id) => (
-                    <View key={id}
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Category', { categoryId: item?.id })}
+                        key={id}
                         style={[styles.categoryWrapper, {
                             marginRight: categories.length - 1 !== item?.id ? 20 : 10
                         }]}
@@ -26,7 +28,7 @@ const Categories = () => {
                             lh={21.62}
                             ls={0.05}
                         />
-                    </View>
+                    </TouchableOpacity>
                 ))
             }
         </ScrollView>
@@ -38,15 +40,14 @@ export default Categories
 const styles = StyleSheet.create({
     scrollContainer: {
         marginTop: 20,
+        paddingBottom: 20,
         marginHorizontal: 10
     },
     categoryWrapper: {
         display: "flex",
         flexDirection: "column",
-        gap: 10,
+        gap: 5,
         alignItems: "center",
-
-
     },
     categoryImg: {
         height: 92,

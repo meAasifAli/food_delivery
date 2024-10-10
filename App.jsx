@@ -19,7 +19,7 @@ const Tab = createBottomTabNavigator();
 
 
 const App = () => {
-  isAuthenticated = false;
+  isAuthenticated = !false;
   return isAuthenticated ? (
     <NavigationContainer>
       <Tab.Navigator
@@ -32,7 +32,6 @@ const App = () => {
             paddingTop: 10,
             height: 80,
             paddingBottom: 10,
-
           },
           tabBarLabelStyle: {
             fontFamily: "OpenSans-Regular",

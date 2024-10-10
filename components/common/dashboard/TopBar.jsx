@@ -1,10 +1,10 @@
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, View } from 'react-native'
 import React from 'react'
 import Typography from '../../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import SearchInput from '../../SearchInput'
 
-const { height } = Dimensions.get("window")
+
 const TopBar = () => {
     return (
         <View
@@ -75,11 +75,10 @@ export default TopBar
 
 const styles = StyleSheet.create({
     topBar: {
-        height: height * 0.25,
         backgroundColor: "#202020",
         borderBottomStartRadius: 50,
         borderBottomEndRadius: 50,
-        paddingVertical: 15,
+        paddingVertical: 30,
         paddingHorizontal: 24
     },
     topBarHeading: {
@@ -92,7 +91,8 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         gap: 20,
-        alignItems: "center"
+        alignItems: "center",
+        flexWrap: "wrap"
     },
     profileAvatar: {
         height: 50,
@@ -103,6 +103,6 @@ const styles = StyleSheet.create({
         resizeMode: "cover"
     },
     contentWrapper: {
-        marginTop: 10
+        marginTop: 30
     },
 })
