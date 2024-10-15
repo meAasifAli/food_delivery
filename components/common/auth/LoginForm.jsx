@@ -56,7 +56,7 @@ const LoginForm = ({ navigation }) => {
             </View>
 
             <InputField type={"numeric"} label={"Mobile Number"} placeholder={"Enter Your Mobile Number"} />
-            <Button heightVal={64} widthVal={280} onHandlePress={() => navigation.navigate("otp")} title={"Signin"} />
+            <Button bgColor={"#FA4A0C"} color={"#fff"} size={32} heightVal={64} widthVal={280} onHandlePress={() => navigation.navigate("otp")} title={"Signin"} />
             <View style={styles.optionContainer}>
                 <View>
                     <Typography

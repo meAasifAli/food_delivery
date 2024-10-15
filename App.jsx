@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,79 +13,85 @@ import { View } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fontisto from 'react-native-vector-icons/Fontisto'
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+
+const { height } = Dimensions.get("window")
 
 
 const App = () => {
   isAuthenticated = !false;
   return isAuthenticated ? (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName='Dining'
-        screenOptions={{
-          tabBarActiveTintColor: '#FA4A0C',
-          tabBarInactiveTintColor: '#202020',
-          headerShown: false,
-          tabBarStyle: {
-            paddingTop: 10,
-            height: 80,
-            paddingBottom: 10,
-          },
-          tabBarLabelStyle: {
-            fontFamily: "OpenSans-Regular",
-            fontWeight: "600"
-          },
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName='Dining'
+          screenOptions={{
+            tabBarActiveTintColor: '#FA4A0C',
+            tabBarInactiveTintColor: '#202020',
+            headerShown: false,
+            tabBarStyle: {
+              paddingTop: 10,
+              height: height * 0.12,
+              paddingBottom: 10,
+            },
+            tabBarLabelStyle: {
+              fontFamily: "OpenSans-Regular",
+              fontWeight: "600"
+            },
 
-        }}
-      >
-        <Tab.Screen name='Dining' component={Dining} options={{
-          title: "Dining",
-          headerShown: false,
-          tabBarIcon: ({ color, size, focused }) => (
-            <View
-              style={[styles.activeTab,
-              {
-                backgroundColor: focused ? '#E8DEF8' : '#fff',
-              }
-              ]}
-            >
-              <MaterialIcon name='local-dining' size={size} color={color} />
-            </View>
-          )
-        }} />
-        <Tab.Screen name='Cart' component={Cart} options={{
-          title: "Cart",
-          headerShown: false,
-          tabBarIcon: ({ color, size, focused }) => (
-            <View
-              style={[styles.activeTab,
-              {
-                backgroundColor: focused ? '#E8DEF8' : '#fff',
-              }
-              ]}
-            >
-              <AntDesign name='shoppingcart' size={size} color={color} />
-            </View>
-          )
-        }} />
-        <Tab.Screen name='Reorder' component={Reorder} options={{
-          title: "Reorder",
-          tabBarIcon: ({ color, size, focused }) => (
-            <View
-              style={[styles.activeTab,
-              {
-                backgroundColor: focused ? '#E8DEF8' : '#fff',
-              }
-              ]}
-            >
-              <Fontisto name='spinner-rotate-forward' size={size} color={color} />
-            </View>
-          )
-        }} />
-      </Tab.Navigator>
-    </NavigationContainer>
+          }}
+        >
+          <Tab.Screen name='Dining' component={Dining} options={{
+            title: "Dining",
+            headerShown: false,
+            tabBarIcon: ({ color, size, focused }) => (
+              <View
+                style={[styles.activeTab,
+                {
+                  backgroundColor: focused ? '#E8DEF8' : '#fff',
+                }
+                ]}
+              >
+                <MaterialIcon name='local-dining' size={size} color={color} />
+              </View>
+            )
+          }} />
+          <Tab.Screen name='Cart' component={Cart} options={{
+            title: "Cart",
+            headerShown: false,
+            tabBarIcon: ({ color, size, focused }) => (
+              <View
+                style={[styles.activeTab,
+                {
+                  backgroundColor: focused ? '#E8DEF8' : '#fff',
+                }
+                ]}
+              >
+                <AntDesign name='shoppingcart' size={size} color={color} />
+              </View>
+            )
+          }} />
+          <Tab.Screen name='Reorder' component={Reorder} options={{
+            title: "Reorder",
+            tabBarIcon: ({ color, size, focused }) => (
+              <View
+                style={[styles.activeTab,
+                {
+                  backgroundColor: focused ? '#E8DEF8' : '#fff',
+                }
+                ]}
+              >
+                <Fontisto name='spinner-rotate-forward' size={size} color={color} />
+              </View>
+            )
+          }} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
 
   ) : (
     <NavigationContainer>

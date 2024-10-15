@@ -18,7 +18,7 @@ const LandingPage = () => {
           Order, Eat, Repeat!</Text>
       </View>
       <View style={styles.bottomContainer}>
-        <Button heightVal={64} widthVal={280} onHandlePress={() => navigation.navigate("signup")} title={"Get Started"} />
+        <Button bgColor={"#FA4A0C"} color={"#fff"} size={32} heightVal={64} widthVal={280} onHandlePress={() => navigation.navigate("signup")} title={"Get Started"} />
       </View>
     </View>
   );

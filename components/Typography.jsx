@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Typography = ({ title, size, color, lh, ls, fw, ff, maxW, ta, mv, mh, lines }) => {
+const Typography = ({ title, size, color, lh, ls, fw, ff, maxW, ta, mv, mh, lines, flex }) => {
     return (
         <Text
             numberOfLines={lines}
@@ -16,7 +16,7 @@ const Typography = ({ title, size, color, lh, ls, fw, ff, maxW, ta, mv, mh, line
                 textAlign: ta,
                 marginVertical: mv,
                 marginHorizontal: mh,
-
+                flex: flex
 
             }}>{title}</Text>
     )
