@@ -1,17 +1,22 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-const { width, height } = Dimensions.get('window')
 
-const Button = ({ title, onHandlePress, heightVal, widthVal }) => {
+
+const Button = ({ title, onHandlePress, heightVal, widthVal, size, bgColor, color }) => {
     return (
         <TouchableOpacity
             onPress={onHandlePress}
             style={[styles.container, {
                 height: heightVal,
-                width: widthVal
+                width: widthVal,
+                backgroundColor: bgColor
             }]}>
-            <Text style={styles.text}>{title}</Text>
+            <Text style={[styles.text, {
+                fontSize: size,
+                color: color
+
+            }]}>{title}</Text>
         </TouchableOpacity>
     )
 }

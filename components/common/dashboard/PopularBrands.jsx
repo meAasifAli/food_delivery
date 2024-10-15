@@ -4,6 +4,7 @@ import React from 'react'
 import Typography from '../../../components/Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { restaurants } from '../../../static/data'
+import RestaurantCard from '../../shared/RestaurantCard'
 
 const { height, width } = Dimensions.get("window")
 const PopularBrands = ({ navigation }) => {
@@ -31,25 +32,7 @@ const PopularBrands = ({ navigation }) => {
                     data={restaurants}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
-                        <View style={styles.restaurantsContainer}>
-                            <Image source={item?.img} style={styles.restaurantImg} />
-                            <View style={styles.restaurantContentWrapper}>
-                                <Typography title={item?.name} color={"#fff"} ff={"OpenSans_regular"} size={20} lh={27.02} ls={0.05} fw={400} ta={"center"} />
-                                <View style={styles.divider}></View>
-                                <View style={styles.ratingWrapper}>
-                                    <View style={styles.ratingLeftWrapper}>
-                                        <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={20} lh={27.02} ls={0.05} fw={400} ta={"center"} />
-                                        <Entypo name='star-outlined' size={16} color={"#fff"} />
-                                    </View>
-                                    <View>
-                                        <Typography title={item?.deliveryTime} color={"#fff"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
-                                    </View>
-                                </View>
-                                <View style={styles.desWrapper}>
-                                    <Typography lines={1} title={item?.des} color={"#fff"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} ta={"center"} />
-                                </View>
-                            </View>
-                        </View>
+                        <RestaurantCard item={item} navigation={navigation} isPopular={true} />
                     )}
 
                 />

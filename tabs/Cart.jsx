@@ -1,14 +1,20 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import CartScreen from '../screens/CartScreen'
+// import { useSelector } from 'react-redux'
 
-const Cart = () => {
+const cartStack = createNativeStackNavigator()
+
+const CartTab = () => {
+    // const { cart } = useSelector((state) => state?.cart)
+
     return (
-        <View>
-            <Text>Cart</Text>
-        </View>
+        <cartStack.Navigator>
+            <cartStack.Screen name="Cart" component={CartScreen} options={{ headerShown: false }} />
+        </cartStack.Navigator>
     )
 }
 
-export default Cart
+export default CartTab
 
 const styles = StyleSheet.create({})

@@ -79,7 +79,7 @@ const OtpForm = () => {
 
                 />
             </View>
-            <Button widthVal={280} heightVal={64} onHandlePress={() => { }} title={"Continue"} />
+            <Button bgColor={"#FA4A0C"} color={"#fff"} size={32} widthVal={280} heightVal={64} onHandlePress={() => { }} title={"Continue"} />
         </ScrollView>
     )
 }
