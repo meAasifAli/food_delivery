@@ -18,14 +18,10 @@ import { store } from './store/store';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
 const { height } = Dimensions.get("window")
 
-
 const App = () => {
-
-
-  isAuthenticated = false;
+  isAuthenticated = !false;
   return isAuthenticated ? (
     <Provider store={store}>
       <NavigationContainer>

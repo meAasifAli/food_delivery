@@ -1,4 +1,4 @@
-import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { restaurantMenus, restaurants } from '../static/data';
 import IonIcons from 'react-native-vector-icons/Ionicons'
@@ -10,8 +10,8 @@ import SearchMenu from '../components/SearchMenu';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import RestaurantMenu from '../components/modals/RestaurantMenu';
 import FoodSizeMenu from '../components/modals/FoodSizeMenu';
-import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 
@@ -72,34 +72,33 @@ export default Restaurant
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
     },
     HeadingWrapper: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        padding: 10
+        padding: wp(3)
     },
     headingRightContainer: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 20
+        gap: wp(4)
     },
     restaurantWrapper: {
-        padding: 10,
-        width: width * 0.95,
-        height: "auto",
+        padding: wp(2),
+        width: wp(95),
+        height: hp(30),
         marginHorizontal: "auto",
         backgroundColor: "#202020",
-        marginTop: 15,
-        borderRadius: 20,
+        marginTop: hp(3),
+        borderRadius: wp(5),
         display: "flex",
         flexDirection: "column",
-        gap: 5,
+        gap: wp(2),
         justifyContent: "center",
         alignItems: "center",
-        paddingHorizontal: 10
+        paddingHorizontal: wp(3)
     },
     ratingWrapper: {
         display: "flex",
@@ -146,12 +145,12 @@ const styles = StyleSheet.create({
     menuItemWrapper: {
         borderColor: "#D6D6D6",
         borderWidth: 1,
-        padding: 10,
+        padding: wp(2),
         flex: 1,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 5
+        borderRadius: wp(1)
     },
     itemsContainer: {
         padding: 10,
@@ -188,18 +187,18 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        paddingHorizontal: 10,
-        paddingVertical: 10,
-        gap: 30
+        paddingLeft: wp(0.5),
+        gap: wp(6),
+        marginTop: hp(2)
     },
     ratingLeftWrapper: {
         backgroundColor: "#60B246",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 5,
-        padding: 2,
-        borderRadius: 5
+        gap: wp(1),
+        padding: wp(1),
+        borderRadius: wp(1)
     },
     rightWrapper: {
         position: "relative",
@@ -227,7 +226,7 @@ function RestaurantDetails({ item }) {
         <View style={styles.restaurantWrapper}>
             <Typography title={item?.name} color={"#fff"} size={32} lh={43} ls={0.07} fw={600} ff={"OpenSans-Regular"} />
             <Typography title={item?.des} lines={1} color={"#fff"} size={14} lh={18} ls={0.07} fw={300} ff={"OpenSans-Regular"} />
-            <Typography title={"-------------------------------------"} lines={1} color={"#fff"} size={14} lh={18} ls={0.07} fw={300} ff={"OpenSans-Regular"} />
+            <View style={{ borderStyle: "dashed", borderColor: "#fff", borderWidth: 0.50, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0, width: wp(100), marginTop: hp(2) }}></View>
             <View style={styles.ratingWrapper}>
                 <View style={styles.ratingLeftWrapper}>
                     <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={13} lh={27.02} ls={0.05} fw={400} ta={"center"} />
@@ -294,27 +293,29 @@ function MenuItem({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, 
             {/* left */}
             <View style={styles.leftWrapper}>
                 <View style={styles.leftHeadingWrapper}>
-                    <Typography title={"Chicken Zinger Meal Box"} size={16} color={"#000"} ls={0.05} lh={19} fw={600} maxW={125} />
-                    <Image style={{ resizeMode: "contain", height: 10, width: 10, marginLeft: 10 }} source={require("../assets/images/arrowUpBox.png")} />
+                    <Typography title={"Chicken Zinger Meal Box"} size={wp(3.5)} color={"#000"} ls={0.05} lh={19} fw={600} maxW={wp(25)} />
+                    <Image resizeMode='contain' width={20} height={20} source={require("../assets/images/arrowUpBox.png")} />
                 </View>
                 <View style={styles.ratingWrapper}>
                     <View style={styles.ratingLeftWrapper}>
-                        <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={20} lh={27.02} ls={0.05} fw={400} ta={"center"} />
-                        <Entypo name='star-outlined' size={16} color={"#fff"} />
+                        <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={wp(3.5)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
+                        <Entypo name='star-outlined' size={12} color={"#fff"} />
                     </View>
                     <View>
                         <Typography title={"(24)"} color={"#20202080"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
                     </View>
                 </View>
                 <View>
-                    <Typography title={"1 Zinger Burger + 2 Wings + 1 Fries + 400ml Pepsi"} color={"#000"} ff={"OpenSans_regular"} size={12} lh={16} ls={0.07} fw={300} maxW={172} />
+                    <Typography title={"1 Zinger Burger + 2 Wings + 1 Fries + 400ml Pepsi"} color={"#000"} ff={"OpenSans_regular"} size={12} lh={16} ls={0.07} fw={300} maxW={wp(40)} />
                 </View>
             </View>
             {/* right */}
             <View style={styles.rightWrapper}>
-                <Image style={{ width: width * 0.40, height: height * 0.30, resizeMode: "contain" }} source={require("../assets/images/menuImg.png")} />
-                <View style={{ position: "absolute", bottom: 5, right: "12%" }}>
-                    <Button onHandlePress={toggleFirstDrawer} color={"#FA4A0C"} bgColor={"#fff"} size={16} title={"Add"} widthVal={width * 0.30} heightVal={height * 0.07} />
+                <Image style={{ width: wp(40), height: hp(35), resizeMode: "contain" }} source={require("../assets/images/menuImg.png")} />
+                <View style={{ position: "absolute", bottom: hp(4), right: wp(4.5) }}>
+                    <TouchableOpacity onPress={toggleFirstDrawer} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(30), alignItems: "center" }}>
+                        <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Add </Text>
+                    </TouchableOpacity>
                 </View>
                 {/* Restaurant Menu  modal */}
                 <RestaurantMenu item={item} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} toggleFirstDrawer={toggleFirstDrawer} />

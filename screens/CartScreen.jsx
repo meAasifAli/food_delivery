@@ -2,6 +2,7 @@ import { Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOp
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import Typography from '../components/Typography'
 import { useNavigation } from '@react-navigation/native'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 const { height, width } = Dimensions.get("window")
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     similarItemsWrapper: { width: width * 0.6, height: height * 0.13, borderColor: "#D6D6D680", borderWidth: 1, borderRadius: 10, marginTop: 10, marginRight: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" },
     similarItemsLeftWrapper: { display: "flex", flexDirection: "row", gap: 10, alignItems: "center", marginLeft: 20 },
     noteBoxWrapper: { marginBottom: 20, width: width * 0.95, marginHorizontal: "auto", borderWidth: 1, borderRadius: 10, borderColor: "#D6D6D6", padding: 10 },
-    billingWraper: { width: width * 0.95, height: height * 0.32, marginHorizontal: "auto", borderColor: "#D6D6D6", marginTop: 30, borderWidth: 1, padding: 20, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 20 },
+    billingWraper: { width: wp(95), height: hp(33), marginHorizontal: "auto", borderColor: "#D6D6D6", marginTop: 30, borderWidth: 1, padding: 20, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 20 },
     billItem: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }
 })
 
@@ -277,7 +278,7 @@ function CouponButons() {
 
 function Billing() {
     return (
-        <View style={{ marginTop: 20, marginBottom: 30 }}>
+        <View style={{ marginTop: hp(3), marginBottom: hp(4) }}>
             <View>
                 <Typography title={"Billing Details"} ff={"OpenSans-Regular"} lh={32} size={24} fw={400} color={"#000"} />
             </View>
@@ -298,8 +299,8 @@ function Billing() {
                     <Typography title={"GST & Restaurant Charges"} ff={"OpenSans-Regular"} lh={21} size={16} fw={400} color={"#000"} />
                     <Typography title={"RS 24.99"} ff={"OpenSans-Regular"} lh={21} size={16} fw={400} color={"#000"} />
                 </View>
-                <Typography title={"---------------------------------------------------------------------------------------"} />
-                <View style={[styles.billItem, { marginTop: 10 }]}>
+                <View style={{ borderStyle: "dashed", borderColor: "#000", borderWidth: 0.50, flex: 1, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0 }}></View>
+                <View style={[styles.billItem, { marginTop: hp(2) }]}>
                     <Typography title={"To Pay"} ff={"OpenSans-Bold"} lh={21} size={16} fw={600} color={"#000"} />
                     <Typography title={"RS 572.99"} ff={"OpenSans-Bold"} lh={21} size={16} fw={600} color={"#000"} />
                 </View>
@@ -327,22 +328,21 @@ function GpayBox() {
                     <IonIcons name='chevron-forward' size={20} color={"#FA4A0C"} />
                 </Pressable>
             </View>
-            <View>
-                <Typography color={"#D6D6D6"} title={"-----------------------------------------------------------------------------------"} />
-            </View>
+            <View style={{ borderStyle: "dashed", borderColor: "#000", borderWidth: 0.50, flex: 1, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0 }}></View>
             <Pressable style={{
                 backgroundColor: "#FA4A0C",
-                marginTop: 20,
-                height: height * 0.08,
-                borderRadius: 50,
+                marginTop: hp(3),
+                height: hp(9.5),
+                borderRadius: wp(10),
                 display: "flex",
                 flexDirection: "row",
-                alignItems: "center"
+                alignItems: "center",
+
             }}>
-                <View style={{ height: 50, marginTop: 2, borderRadius: 50, backgroundColor: "white", width: width * 0.15, marginLeft: 20, display: "flex", justifyContent: "center", alignItems: "center", gap: 0 }}>
+                <View style={{ height: hp(8), marginTop: 2, borderRadius: 50, backgroundColor: "white", width: wp(17), marginLeft: wp(3), display: "flex", justifyContent: "center", alignItems: "center", gap: 0 }}>
                     <IonIcons name='chevron-forward' size={25} color={"#FA4A0C"} />
                 </View>
-                <View style={{ marginLeft: 30 }}>
+                <View style={{ marginLeft: wp(3) }}>
                     <Typography title={"Continue to pay | Rs 579"} ff={"OpenSans-Bold"} color={"#FFF"} size={16} lh={21} fw={600} />
                 </View>
             </Pressable>

@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import TopBar from '../components/common/dashboard/TopBar'
 import Categories from '../components/common/dashboard/Categories'
 
@@ -13,18 +13,20 @@ import { useNavigation } from '@react-navigation/native'
 const DashboardScreen = () => {
     const navigation = useNavigation()
     return (
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+        <View showsVerticalScrollIndicator={false} style={styles.container}>
             {/* TopBar */}
             <TopBar />
-            {/* category slider */}
-            <Categories navigation={navigation} />
-            {/* Nearest Restaurants */}
-            <Nearest navigation={navigation} />
-            {/* Top Rated Restaurants */}
-            <TopRated navigation={navigation} />
-            {/* Popular Brands */}
-            <PopularBrands navigation={navigation} />
-        </ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                {/* category slider */}
+                <Categories navigation={navigation} />
+                {/* Nearest Restaurants */}
+                <Nearest navigation={navigation} />
+                {/* Top Rated Restaurants */}
+                <TopRated navigation={navigation} />
+                {/* Popular Brands */}
+                <PopularBrands navigation={navigation} />
+            </ScrollView>
+        </View>
     )
 }
 
@@ -34,7 +36,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
-        overflow: "scroll"
     },
 
 })

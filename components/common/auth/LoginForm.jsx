@@ -1,6 +1,5 @@
-import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Typography from '../../Typography'
-import Button from '../../Button'
 import CustomLink from '../../CustomLink'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
@@ -114,16 +113,10 @@ const Input = () => {
 const ButtonComponent = () => {
     const navigation = useNavigation()
     return (
-        <View style={{ marginTop: hp(2) }}>
-            <Button
-                bgColor={"#FA4A0C"}
-                color={"#fff"}
-                size={32}
-                heightVal={8}
-                widthVal={80}
-                onHandlePress={() => navigation.navigate("otp")}
-                title={"Sign In"}
-            />
+        <View style={{ marginTop: hp(2), marginHorizontal: "auto" }}>
+            <TouchableOpacity onPress={() => navigation.navigate("otp")} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center" }}>
+                <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Sign In</Text>
+            </TouchableOpacity>
         </View>
     )
 }
