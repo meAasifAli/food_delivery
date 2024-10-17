@@ -27,7 +27,7 @@ export default SearchInput
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+
         width: 299,
         height: 41,
         backgroundColor: "#fff",

@@ -1,8 +1,7 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Typography from '../../Typography'
 import { OtpInput } from 'react-native-otp-entry'
-import Button from '../../Button'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
@@ -43,8 +42,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 5,
-        paddingLeft: 12,
-        paddingVertical: 10
+        paddingLeft: wp(7),
+        paddingVertical: hp(2),
+        marginBottom: hp(1)
     }
 })
 
@@ -141,14 +141,8 @@ const Option = () => {
 
 const ButtonComponent = () => {
     return (
-        <Button
-            bgColor={"#FA4A0C"}
-            color={"#fff"}
-            size={32}
-            heightVal={8}
-            widthVal={80}
-            onHandlePress={() => { }}
-            title={"continue"}
-        />
+        <TouchableOpacity onPress={() => { }} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center", marginHorizontal: "auto" }}>
+            <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Continue</Text>
+        </TouchableOpacity>
     )
 }

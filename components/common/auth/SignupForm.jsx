@@ -1,4 +1,4 @@
-import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Button from '../../Button';
 import Typography from '../../Typography';
@@ -16,7 +16,6 @@ const SignupForm = () => {
             <Input label={"Mobile Number"} placeholder={"Enter Your Mobile Number"} type={"number-pad"} />
             {/* Signup Button */}
             <ButtonComponent />
-
             {/* Google Signup Option */}
             <GoogleNav />
             {/* Navigation Links */}
@@ -29,7 +28,7 @@ export default SignupForm;
 
 const styles = StyleSheet.create({
     scrollContent: {
-        paddingVertical: hp(3), // Adds some padding to prevent overlap on scroll
+        paddingVertical: hp(1), // Adds some padding to prevent overlap on scroll
         paddingHorizontal: wp(5), // Horizontal padding for better layout
     },
     formHeading: {
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
         marginBottom: hp(1), // Space between heading and inputs
     },
     buttonContainer: {
-        marginTop: hp(1), // Adds margin between the last input and the button
+        marginTop: hp(2), // Adds margin between the last input and the button
         alignItems: 'center', // Centers the button horizontally
     },
     optionContainer: {
@@ -80,7 +79,7 @@ const Heading = () => {
             lh={hp(8)}
             ls={wp(0.05)}
             ta={"center"}
-            mv={hp(0.5)}
+
         />
     )
 }
@@ -99,15 +98,9 @@ const ButtonComponent = () => {
     const navigation = useNavigation()
     return (
         <View style={styles.buttonContainer}>
-            <Button
-                bgColor={"#FA4A0C"}
-                color={"#fff"}
-                size={32}
-                heightVal={8}
-                widthVal={80}
-                onHandlePress={() => navigation.navigate("signin")}
-                title={"Sign Up"}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate("signin")} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center" }}>
+                <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Sign up</Text>
+            </TouchableOpacity>
         </View>
     )
 }

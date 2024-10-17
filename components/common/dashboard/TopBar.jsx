@@ -1,10 +1,10 @@
-import { Image, ScrollView, StyleSheet, View } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 import React from 'react'
 import Typography from '../../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import SearchInput from '../../SearchInput'
 
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const TopBar = () => {
     return (
         <View
@@ -17,7 +17,7 @@ const TopBar = () => {
                     <View style={{
                         display: "flex",
                         flexDirection: "row",
-                        gap: 5,
+                        gap: wp(1),
                         alignItems: "flex-start"
                     }}>
                         <Typography
@@ -76,10 +76,10 @@ export default TopBar
 const styles = StyleSheet.create({
     topBar: {
         backgroundColor: "#202020",
-        borderBottomStartRadius: 50,
-        borderBottomEndRadius: 50,
-        paddingVertical: 30,
-        paddingHorizontal: 24
+        borderBottomStartRadius: wp(12),
+        borderBottomEndRadius: wp(12),
+        paddingVertical: hp(2),
+        paddingHorizontal: wp(5),
     },
     topBarHeading: {
         display: "flex",
@@ -90,19 +90,22 @@ const styles = StyleSheet.create({
     topBarHeadingLeft: {
         display: "flex",
         flexDirection: "row",
-        gap: 20,
+        gap: wp(5),
         alignItems: "center",
         flexWrap: "wrap"
     },
     profileAvatar: {
-        height: 50,
-        width: 50,
-        borderRadius: 30,
+        height: hp(7),
+        width: hp(7),
+        borderRadius: wp(10),
         borderColor: "#fff",
         borderWidth: 1,
         resizeMode: "cover"
     },
     contentWrapper: {
-        marginTop: 30
+        marginTop: hp(4),
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
     },
 })

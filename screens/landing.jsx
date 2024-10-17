@@ -1,5 +1,4 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import Button from '../components/Button';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -19,15 +18,9 @@ const LandingPage = () => {
         <Text style={styles.secondaryHeading}>Satisfy your cravings with just a tap. Order, Eat, Repeat!</Text>
       </View>
       <View style={styles.bottomContainer}>
-        <Button
-          bgColor={"#FA4A0C"}
-          color={"#fff"}
-          size={32}
-          heightVal={10}
-          widthVal={80}
-          onHandlePress={() => navigation.navigate("signup")}
-          title={"Get Started"}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("signup")} style={{ backgroundColor: "#FA4A0C", padding: wp(5), borderRadius: wp(3), width: wp(80), alignItems: "center" }}>
+          <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Get started</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
