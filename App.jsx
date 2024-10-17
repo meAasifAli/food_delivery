@@ -18,7 +18,7 @@ import { store } from './store/store';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const { height } = Dimensions.get("window")
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const App = () => {
   isAuthenticated = !false;
@@ -32,14 +32,13 @@ const App = () => {
             tabBarInactiveTintColor: '#202020',
             headerShown: false,
             tabBarStyle: {
-              height: height * 0.12,
-              paddingBottom: 10,
-
+              height: hp(12),
+              paddingBottom: hp(2),
             },
             tabBarLabelStyle: {
               fontFamily: "OpenSans-Regular",
               fontWeight: "600",
-              fontSize: 12
+              fontSize: wp(3.5)
             },
             tabBarLabelPosition: "below-icon",
             tabBarHideOnKeyboard: true,
