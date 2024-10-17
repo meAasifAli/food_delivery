@@ -1,13 +1,14 @@
 import { Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import Typography from '../components/Typography'
+import { useNavigation } from '@react-navigation/native'
 
 
 const { height, width } = Dimensions.get("window")
 
 const CartScreen = () => {
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             {/* header */}
             <Header />
             {/* Cart Items */}
@@ -99,9 +100,12 @@ const styles = StyleSheet.create({
 })
 
 function Header() {
+    const navigation = useNavigation()
     return (
         <View style={styles.headingWrapper}>
-            <IonIcons name='arrow-back' size={24} color={"#202020"} />
+            <Pressable onPress={() => navigation.goBack()}>
+                <IonIcons name='arrow-back' size={24} color={"#202020"} />
+            </Pressable>
             <Typography title={"Cart"} ta={"center"} ff={"OpenSans_Regular"} size={24} lh={32} fw={400} color={"#000000"} flex={1} />
         </View>
     )
@@ -305,6 +309,7 @@ function Billing() {
 }
 
 function GpayBox() {
+    const navigation = useNavigation()
     return (
         <View style={{ marginBottom: 20, padding: 20, marginTop: 20, width: width * 0.95, height: height * 0.25, borderRadius: 10, backgroundColor: "#FFFFFF", shadowColor: "#fff", marginHorizontal: "auto" }}>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
@@ -317,10 +322,10 @@ function GpayBox() {
                         <Typography title={"Google Pay"} ff={"OpenSans-Bold"} color={"#202020"} size={14} lh={21} fw={600} />
                     </View>
                 </View>
-                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
+                <Pressable onPress={() => navigation.navigate("PaymentOptions")} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
                     <Typography title={"Change"} ff={"OpenSans-Regular"} color={"#FA4A0C"} size={14} lh={19} fw={400} />
                     <IonIcons name='chevron-forward' size={20} color={"#FA4A0C"} />
-                </View>
+                </Pressable>
             </View>
             <View>
                 <Typography color={"#D6D6D6"} title={"-----------------------------------------------------------------------------------"} />

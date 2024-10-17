@@ -1,115 +1,168 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import InputField from '../../InputField'
-import Button from '../../Button'
-import Typography from '../../Typography'
-import CustomLink from '../../CustomLink'
-const { width } = Dimensions.get("window")
+import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import React from 'react';
+import Button from '../../Button';
+import Typography from '../../Typography';
+import CustomLink from '../../CustomLink';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
 const SignupForm = () => {
     return (
-        <ScrollView style={styles.content}>
-            <Text style={styles.formHeading}>Sign Up</Text>
-            <InputField label={"Name"} placeholder={"Enter Your Name"} />
-            <InputField label={"Email"} placeholder={"Enter Your Email"} />
-            <InputField type={"numeric"} label={"Mobile Number"} placeholder={"Enter Your Mobile Number"} />
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+            <Heading />
+            {/* Input Fields */}
+            <Input label={"Name"} placeholder={"Enter Your Name"} type={"default"} />
+            <Input label={"Email"} placeholder={"Enter Your Email"} type={"email-address"} />
+            <Input label={"Mobile Number"} placeholder={"Enter Your Mobile Number"} type={"number-pad"} />
+            {/* Signup Button */}
+            <ButtonComponent />
 
-            <Button bgColor={"#FA4A0C"} color={"#fff"} size={32} heightVal={64} widthVal={280} title={"Signup"} />
-
-
-            <View style={styles.optionContainer}>
-                <View >
-                    <Typography
-                        title={"or Continue with"}
-                        size={16}
-                        lh={21.79}
-                        ls={0.05}
-                        fw={400}
-                        ff={"OpenSans-Regular"}
-                        color={"#fff"}
-                    />
-                </View>
-                <View style={styles.googleWrapper}>
-                    <Image source={require("../../../assets/images/google.png")} />
-                    <Typography
-                        title={"Google"}
-                        size={16}
-                        lh={18.05}
-                        ls={0.05}
-                        fw={700}
-                        ff={"OpenSans-Regular"}
-                        color={"#fff"}
-                    />
-                </View>
-            </View>
-
-            <View style={styles.navWrapper}>
-                <Typography
-                    title={"Already have an account?"}
-                    size={16}
-                    lh={21.79}
-                    ls={0.05}
-                    fw={400}
-                    ff={"OpenSans-Regular"}
-                    color={"#fff"}
-                />
-                <CustomLink
-                    title={"Login"}
-                    href={"signin"}
-                    size={16}
-                    lh={21.79}
-                    ls={0.05}
-                    fw={700}
-                    ff={"OpenSans-Regular"}
-                    color={"#FA4A0C"}
-                />
-            </View>
+            {/* Google Signup Option */}
+            <GoogleNav />
+            {/* Navigation Links */}
+            <BottomNav />
         </ScrollView>
-    )
-}
+    );
+};
 
-export default SignupForm
+export default SignupForm;
 
 const styles = StyleSheet.create({
-    content: {
-        borderTopRightRadius: 50,
-        borderTopLeftRadius: 50,
-        backgroundColor: '#202020',
-        overflow: "scroll"
+    scrollContent: {
+        paddingVertical: hp(3), // Adds some padding to prevent overlap on scroll
+        paddingHorizontal: wp(5), // Horizontal padding for better layout
     },
     formHeading: {
-        flex: 1,
         color: '#fff',
         fontFamily: 'OpenSans-Regular',
         fontWeight: '700',
-        fontSize: 40,
-        lineHeight: 54.47,
-        letterSpacing: 0.05,
+        fontSize: wp(10), // Responsive font size
+        lineHeight: hp(7), // Responsive line height
         textAlign: 'center',
-        marginTop: 10,
-
+        marginBottom: hp(1), // Space between heading and inputs
+    },
+    buttonContainer: {
+        marginTop: hp(1), // Adds margin between the last input and the button
+        alignItems: 'center', // Centers the button horizontally
     },
     optionContainer: {
-        display: 'flex',
-        justifyContent: 'space-around',
         flexDirection: 'row',
-        alignItems: 'center',
-        maxWidth: width * (350 / width),
-        marginVertical: 20,
+        justifyContent: 'space-between', // Centers the google option container
+        marginTop: hp(2), // Responsive margin,
+        alignItems: "center",
+        marginHorizontal: wp(6)
     },
     googleWrapper: {
-        display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10,
+        gap: wp(2), // Responsive gap
         justifyContent: 'flex-start',
+    },
+    googleIcon: {
+        width: wp(6), // Responsive image size
+        height: hp(3),
     },
     navWrapper: {
-        display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        gap: 10,
-        marginLeft: 30
+        justifyContent: 'center', // Centering the navigation wrapper
+        marginTop: hp(3),
     },
-})
+});
+
+const Heading = () => {
+    return (
+        <Typography
+            title={"Sign Up"}
+            color="#fff"
+            ff="OpenSans-Bold"
+            fw={600}
+            size={wp(10)}
+            lh={hp(8)}
+            ls={wp(0.05)}
+            ta={"center"}
+            mv={hp(0.5)}
+        />
+    )
+}
+
+
+const Input = ({ label, placeholder, type }) => {
+    return (
+        <KeyboardAvoidingView style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: hp(0.5) }}>
+            <Text style={{ color: "#fff", marginLeft: wp(0), fontFamily: "OpenSans-Regular", fontWeight: "300" }}>{label}</Text>
+            <TextInput keyboardType={type} placeholderTextColor={"white"} placeholder={placeholder} style={{ padding: wp(2), borderColor: "#fff", borderWidth: wp(0.5), width: wp(90), borderRadius: wp(3), marginVertical: wp(2), color: "#fff", marginHorizontal: "auto" }} />
+        </KeyboardAvoidingView>
+    )
+}
+
+const ButtonComponent = () => {
+    const navigation = useNavigation()
+    return (
+        <View style={styles.buttonContainer}>
+            <Button
+                bgColor={"#FA4A0C"}
+                color={"#fff"}
+                size={32}
+                heightVal={8}
+                widthVal={80}
+                onHandlePress={() => navigation.navigate("signin")}
+                title={"Sign Up"}
+            />
+        </View>
+    )
+}
+
+const GoogleNav = () => {
+    return (
+        <View style={styles.optionContainer}>
+            <Typography
+                title={"or Continue with"}
+                size={wp('4%')}
+                lh={hp('2.5%')}
+                ls={0.05}
+                fw={400}
+                ff={"OpenSans-Regular"}
+                color={"#fff"}
+            />
+            <View style={styles.googleWrapper}>
+                <Image source={require("../../../assets/images/google.png")} style={styles.googleIcon} />
+                <Typography
+                    title={"Google"}
+                    size={wp('4%')}
+                    lh={hp('2.5%')}
+                    ls={0.05}
+                    fw={700}
+                    ff={"OpenSans-Regular"}
+                    color={"#fff"}
+                />
+            </View>
+        </View>
+
+    )
+}
+
+const BottomNav = () => {
+    return (
+        <View style={styles.navWrapper}>
+            <Typography
+                title={"Already have an account?  "}
+                size={wp('4%')}
+                lh={hp('2.5%')}
+                ls={0.05}
+                fw={400}
+                ff={"OpenSans-Regular"}
+                color={"#fff"}
+            />
+            <CustomLink
+                title={"Login"}
+                href={"signin"}
+                size={wp('4%')}
+                lh={hp('2.5%')}
+                ls={0.05}
+                fw={700}
+                ff={"OpenSans-Regular"}
+                color={"#FA4A0C"}
+            />
+        </View>
+    )
+}

@@ -14,6 +14,7 @@ import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 
 
+
 const { width, height } = Dimensions.get("window")
 
 const Restaurant = ({ route }) => {
@@ -29,6 +30,7 @@ const Restaurant = ({ route }) => {
     }
 
     const toggleSecondDrawer = () => {
+        setOpenFirstDrawer(false)
         setOpenSecondDrawer(!openSecondDrawer)
     }
 
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
     restaurantWrapper: {
         padding: 10,
         width: width * 0.95,
-        height: height * 0.25,
+        height: "auto",
         marginHorizontal: "auto",
         backgroundColor: "#202020",
         marginTop: 15,
@@ -153,7 +155,6 @@ const styles = StyleSheet.create({
     },
     itemsContainer: {
         padding: 10,
-
     },
     itemHeadingWrapper: {
         display: "flex",
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     menuContainer: {
-        height: height * 0.30,
+        // height: height * 0.30,
         width: width * 0.9,
         marginHorizontal: "auto",
         borderBottomColor: "#D6D6D6",
@@ -229,8 +230,8 @@ function RestaurantDetails({ item }) {
             <Typography title={"-------------------------------------"} lines={1} color={"#fff"} size={14} lh={18} ls={0.07} fw={300} ff={"OpenSans-Regular"} />
             <View style={styles.ratingWrapper}>
                 <View style={styles.ratingLeftWrapper}>
-                    <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={20} lh={27.02} ls={0.05} fw={400} ta={"center"} />
-                    <Entypo name='star-outlined' size={16} color={"#fff"} />
+                    <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={13} lh={27.02} ls={0.05} fw={400} ta={"center"} />
+                    <Entypo name='star-outlined' size={12} color={"#fff"} />
                 </View>
                 <View>
                     <Typography title={"1k+ ratings"} color={"#fff"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
@@ -312,8 +313,8 @@ function MenuItem({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, 
             {/* right */}
             <View style={styles.rightWrapper}>
                 <Image style={{ width: width * 0.40, height: height * 0.30, resizeMode: "contain" }} source={require("../assets/images/menuImg.png")} />
-                <View style={{ position: "absolute", bottom: 10, right: "12%" }}>
-                    <Button onHandlePress={toggleFirstDrawer} color={"#FA4A0C"} bgColor={"#fff"} size={16} title={"Add"} widthVal={width * 0.30} />
+                <View style={{ position: "absolute", bottom: 5, right: "12%" }}>
+                    <Button onHandlePress={toggleFirstDrawer} color={"#FA4A0C"} bgColor={"#fff"} size={16} title={"Add"} widthVal={width * 0.30} heightVal={height * 0.07} />
                 </View>
                 {/* Restaurant Menu  modal */}
                 <RestaurantMenu item={item} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} toggleFirstDrawer={toggleFirstDrawer} />

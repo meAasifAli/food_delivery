@@ -3,6 +3,9 @@ import React from 'react'
 import Typography from '../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+
 
 const { height, width } = Dimensions.get("window")
 
@@ -15,8 +18,8 @@ const RestaurantCard = ({ navigation, item, isPopular }) => {
                 <View style={styles.divider}></View>
                 <View style={styles.ratingWrapper}>
                     <View style={styles.ratingLeftWrapper}>
-                        <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={20} lh={27.02} ls={0.05} fw={400} ta={"center"} />
-                        <Entypo name='star-outlined' size={16} color={"#fff"} />
+                        <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={13} lh={27.02} ls={0.05} fw={400} ta={"center"} />
+                        <Entypo name='star-outlined' size={12} color={"#fff"} />
                     </View>
                     <View>
                         <Typography title={item?.deliveryTime} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
@@ -35,7 +38,7 @@ export default RestaurantCard
 
 const styles = StyleSheet.create({
     restaurantsContainer: {
-        height: height * 0.27,
+        height: hp("30%"),
         width: width * 0.65,
         borderColor: "#D6D6D6",
         borderWidth: 1,

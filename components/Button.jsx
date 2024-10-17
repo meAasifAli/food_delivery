@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, } from 'react-native'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 
@@ -8,8 +8,8 @@ const Button = ({ title, onHandlePress, heightVal, widthVal, size, bgColor, colo
         <TouchableOpacity
             onPress={onHandlePress}
             style={[styles.container, {
-                height: heightVal,
-                width: widthVal,
+                height: hp(heightVal),
+                width: wp(widthVal),
                 backgroundColor: bgColor
             }]}>
             <Text style={[styles.text, {

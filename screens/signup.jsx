@@ -1,23 +1,22 @@
 import {
   StyleSheet,
   View,
-  Dimensions,
   Image,
 } from 'react-native';
 import SignupForm from '../components/common/auth/SignupForm';
-
-const { width, height } = Dimensions.get('window');
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const SignUpScreen = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.imgWrapper}>
         <Image style={styles.img} source={require("../assets/images/bg.png")} />
       </View>
       <View style={styles.formWrapper}>
         <SignupForm />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -31,25 +30,22 @@ const styles = StyleSheet.create({
   },
   imgWrapper: {
     position: 'absolute',
-    top: -40,
+    top: hp('-6%'), // Adjusted based on screen height
     right: 0,
-    zIndex: -10
+    zIndex: -10,
   },
   img: {
-    height: height * (282 / height),
-    width: width * (235 / width),
+    height: hp('30%'), // Responsive height
+    width: wp('45%'),  // Responsive width
     resizeMode: 'contain',
   },
   formWrapper: {
     flex: 1,
     backgroundColor: '#202020',
-    width: width * 1,
-    height: height * 0.60,
-    marginTop: height * 0.3,
-    borderTopRightRadius: 50,
-    borderTopLeftRadius: 50,
-    zIndex: 50
+    width: wp(100),  // Full screen width
+    marginTop: hp(25), // Responsive margin based on screen height
+    borderTopRightRadius: wp(12), // Responsive corner radius
+    borderTopLeftRadius: wp(12),
+    height: hp(60)
   },
-
-
 });

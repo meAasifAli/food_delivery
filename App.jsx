@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LandingPage from './screens/landing';
@@ -7,7 +7,7 @@ import SignUpScreen from './screens/signup';
 import SigninScreen from './screens/signin';
 import OtpScreen from './screens/otp';
 import Dining from './tabs/Dining';
-import Cart from './tabs/Cart';
+import Cart from './tabs/CartTab';
 import Reorder from './tabs/Reorder';
 import { View } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -23,7 +23,9 @@ const { height } = Dimensions.get("window")
 
 
 const App = () => {
-  isAuthenticated = !false;
+
+
+  isAuthenticated = false;
   return isAuthenticated ? (
     <Provider store={store}>
       <NavigationContainer>
@@ -34,15 +36,20 @@ const App = () => {
             tabBarInactiveTintColor: '#202020',
             headerShown: false,
             tabBarStyle: {
-              paddingTop: 10,
               height: height * 0.12,
               paddingBottom: 10,
+
             },
             tabBarLabelStyle: {
               fontFamily: "OpenSans-Regular",
-              fontWeight: "600"
+              fontWeight: "600",
+              fontSize: 12
             },
-
+            tabBarLabelPosition: "below-icon",
+            tabBarHideOnKeyboard: true,
+            tabBarVisibilityAnimationConfig: {
+              show: true
+            }
           }}
         >
           <Tab.Screen name='Dining' component={Dining} options={{
