@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     },
     headingContainer: {
         backgroundColor: "#202020",
-        height: height * 0.25,
+        // height: height * 0.25,
         borderBottomStartRadius: 50,
         borderBottomEndRadius: 50,
         paddingHorizontal: 20,

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Image, Dimensions, Pressable } from 'react-native'
 import Modal from 'react-native-modal'
 import Typography from '../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -17,7 +17,7 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
     const handleAdd = () => {
         dispatch(addToCart({ id: 1, name: "Zinger Burger", price: 200, image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" }))
         toggleSecondDrawer()
-        navigation.navigate("Cart")
+        navigation.navigate("Cart", { screen: "CartScreen" })
     }
 
 
@@ -26,10 +26,14 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
             isVisible={isSecondDrawerVisible}
             onBackdropPress={toggleSecondDrawer}
             swipeDirection="down"
-            onSwipeComplete={toggleSecondDrawer}
+            // onSwipeComplete={toggleSecondDrawer}
             style={styles.modal2}
             backdropColor='transparent'
             backdropOpacity={0.50}
+            animationIn={"slideInUp"}
+            animationInTiming={1000}
+            animationOut={"slideOutDown"}
+            animationOutTiming={1000}
         >
             <View style={styles.drawer2}>
                 <View style={styles.modal2HeadingWrapper}>
@@ -124,7 +128,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#000',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        height: height * 0.80,
+        // height: height * 0.80,
         width: width * 1,
         padding: 20
     },
@@ -138,12 +142,13 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        height: height * 0.25,
+        // height: height * 0.25,
         width: width * 0.9,
         borderColor: "#D6D6D680",
         borderWidth: 1,
         borderRadius: 25,
-        marginTop: 20
+        marginTop: 20,
+        padding: 20
     },
     sizeItem: {
         display: "flex",
@@ -151,7 +156,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         gap: 20,
-        padding: 20
+        marginBottom: 10
+
     },
     sizeItemLeftWrapper: {
         display: "flex",
@@ -163,12 +169,13 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        height: height * 0.15,
+        // height: height * 0.15,
         width: width * 0.9,
         borderColor: "#D6D6D680",
         borderWidth: 1,
         borderRadius: 25,
-        marginTop: 20
+        marginTop: 20,
+        padding: 20
     },
     actionWrapper: {
         display: "flex",

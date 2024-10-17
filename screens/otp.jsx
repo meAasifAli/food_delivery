@@ -3,19 +3,17 @@ import {
   View,
   Dimensions,
   Image,
-  ScrollView,
 } from 'react-native';
 import React from 'react';
-import Button from '../components/Button';
-import Typography from '../components/Typography';
+
 import { useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
-import { OtpInput } from "react-native-otp-entry";
+
 import OtpForm from '../components/common/auth/OtpForm';
 
 
 const OtpScreen = () => {
-  const naviagtion = useNavigation()
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <View style={styles.imgWrapper}>
@@ -52,7 +50,7 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     backgroundColor: "#202020",
-    height: height * (628 / height),
+    // height: height * (628 / height),
     width: width * 1,
     marginTop: height * (224 / height),
     borderTopRightRadius: 50,

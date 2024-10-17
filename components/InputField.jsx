@@ -1,13 +1,13 @@
 import { Dimensions, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
-import React from 'react'
 
-const { width, height } = Dimensions.get("window")
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 
 const InputField = ({ label, placeholder, secure, type }) => {
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.inputContainer} keyboardVerticalOffset={200}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={200}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View>
+                <View style={styles.inputContainer}>
                     <Text style={styles.label}>
                         {label}
                     </Text>
@@ -28,29 +28,30 @@ export default InputField
 
 const styles = StyleSheet.create({
     inputContainer: {
+        flex: 1,
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
         gap: 2,
-        marginBottom: 15
+        marginBottom: hp(2),
     },
     label: {
-        marginLeft: 15,
+        marginLeft: wp(1),
         color: "#fff",
         fontFamily: "OpenSans-Regular",
         fontWeight: "300",
-        fontSize: 20,
-        lineHeight: 27.24,
-        letterSpacing: 0.05
+        fontSize: hp(1.8),
+        lineHeight: hp(2.5),
+        letterSpacing: wp(0.05)
     },
     input: {
-        height: height * (50 / height),
-        width: width * (350 / width),
+        height: hp(7),
+        width: wp(90),
         margin: "auto",
-        borderWidth: 2,
+        borderWidth: wp(0.15),
         borderColor: "#fff",
-        borderRadius: 10,
-        paddingLeft: 10,
+        borderRadius: wp(2),
+        paddingLeft: wp(2),
         color: "#fff"
     }
 })

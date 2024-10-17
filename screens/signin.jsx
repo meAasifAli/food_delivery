@@ -8,7 +8,8 @@ import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import LoginForm from '../components/common/auth/LoginForm';
-const { width, height } = Dimensions.get('window');
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 
 const SigninScreen = () => {
   const navigation = useNavigation()
@@ -35,27 +36,24 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   imgWrapper: {
-    position: "absolute",
-    top: -40,
+    position: 'absolute',
+    top: hp('-6%'), // Adjusted based on screen height
     right: 0,
-
+    zIndex: -10,
   },
   img: {
-    height: height * (282 / height),
-    width: width * (235 / width),
-    resizeMode: "contain"
+    height: hp('30%'), // Responsive height
+    width: wp('45%'),  // Responsive width
+    resizeMode: 'contain',
   },
   formContainer: {
     flex: 1,
-    backgroundColor: "#202020",
-    height: height * (628 / height),
-    width: width * 1,
-    marginTop: height * (224 / height),
-    borderTopRightRadius: 50,
-    borderTopLeftRadius: 50,
-    padding: 10,
-
-
+    backgroundColor: '#202020',
+    width: wp(100),  // Full screen width
+    marginTop: hp(25), // Responsive margin based on screen height
+    borderTopRightRadius: wp(12), // Responsive corner radius
+    borderTopLeftRadius: wp(12),
+    height: hp(60)
   },
 
 
