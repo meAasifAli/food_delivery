@@ -6,7 +6,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fa from 'react-native-vector-icons/FontAwesome'
 import MC from 'react-native-vector-icons/MaterialCommunityIcons'
-import { TouchableOpacityBase } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const { width } = Dimensions.get("window")
@@ -20,8 +19,7 @@ const PaymentOptions = () => {
             <DeliveryTracking />
 
             {/* Divider */}
-            <View style={{ margin: 20 }}>
-                <Typography color={"#6D6D6D"} title={"-----------------------------------------------------------------------------------"} />
+            <View style={{ flex: 1, borderStyle: "dashed", borderColor: "#6D6D6D80", borderBottomWidth: wp(0.2), paddingVertical: hp(2) }}>
             </View>
             {/* preffered Payment */}
             <PrefferedPayment />
@@ -102,8 +100,9 @@ function DeliveryTracking() {
 }
 
 function PrefferedPayment() {
+    const navigation = useNavigation()
     return (
-        <View style={{ marginLeft: 20 }}>
+        <View style={{ marginLeft: wp(5), marginTop: hp(2) }}>
             <View>
                 <Typography title={"Preffered Payment"} ff={"OpenSans-Bold"} fw={400} size={16} ls={0.05} color={"#000"} lh={21} />
             </View>
@@ -121,7 +120,7 @@ function PrefferedPayment() {
                     </View>
                 </View>
                 <View style={{ marginTop: hp(3) }}>
-                    <TouchableOpacity style={{ backgroundColor: "#FA4A0C", padding: wp(3.5), borderRadius: wp(3), width: wp(75), alignItems: "center", marginHorizontal: "auto" }}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Cart", { screen: "Tracking" })} style={{ backgroundColor: "#FA4A0C", padding: wp(3.5), borderRadius: wp(3), width: wp(75), alignItems: "center", marginHorizontal: "auto" }}>
                         <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>continue</Text>
                     </TouchableOpacity>
                 </View>
@@ -176,6 +175,7 @@ function CreditAndDebitCards() {
 }
 
 function MoreOptions() {
+    const navigation = useNavigation()
     return (
         <View style={{ marginLeft: 20, marginTop: 20 }}>
             <View>
@@ -198,7 +198,7 @@ function MoreOptions() {
                 </View>
                 <View style={{ borderStyle: "dashed", borderColor: "#000", borderWidth: 0.50, flex: 1, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0 }}></View>
                 <View style={{ padding: 20, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Cart", { screen: "NetBanking" })} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
                         <View style={{ borderColor: "#D6D6D6", borderWidth: 0.5, borderRadius: 10, padding: 10 }}>
                             <Fa name='bank' color={"#000"} size={20} />
                         </View>
@@ -206,7 +206,7 @@ function MoreOptions() {
                             <Typography title={"Net Banking"} ff={"OpenSans-Bold"} fw={400} size={hp(1.8)} ls={0.05} color={"#FA4A0C"} lh={hp(3)} />
                             <Typography title={"Select from List of Banks"} ff={"OpenSans-Bold"} fw={400} size={8} ls={0.05} color={"#6D6D6D"} lh={11} />
                         </View>
-                    </View>
+                    </TouchableOpacity>
                     <View>
                         <Fa name='angle-right' size={30} color={"#6D6D6D"} />
                     </View>
