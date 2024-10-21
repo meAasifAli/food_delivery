@@ -41,21 +41,22 @@ export default CartScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        padding: wp(2),
 
     },
     headingWrapper: { display: "flex", alignItems: "center", flexDirection: "row" },
     ItemContainer: {
-        height: height * 0.30,
-        width: width * 0.95,
+        flex: 1,
+        height: hp(30),
+        width: wp(95),
         marginHorizontal: "auto",
         borderColor: "#D6D6D6",
         borderWidth: 1,
-        borderRadius: 10,
-        marginTop: 20,
+        borderRadius: wp(2),
+        marginTop: hp(2),
         display: "flex",
         flexDirection: "column",
-        gap: 10,
+        gap: hp(1),
 
     },
     ItemWrapper: {
@@ -63,41 +64,41 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 10
+        padding: wp(2)
     },
     ItemLeftWrapper: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start",
-        gap: 10
+        gap: wp(3)
     },
     ItemRightWrapper: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 10
+        gap: wp(3)
     },
     ItemRightLeftWrapper: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: 5,
+        gap: wp(1),
         borderColor: "#D6D6D6",
         borderWidth: 1,
-        height: 25,
-        width: width * 0.20,
-        borderRadius: 5,
+        height: hp(4),
+        width: wp(20),
+        borderRadius: wp(1),
     },
-    actionTextPlus: { fontSize: 15, lineHeight: 16, fontWeight: " 400", color: "#FA4A0C", marginLeft: 10 },
-    actionTextMinus: { fontSize: 15, lineHeight: 16, fontWeight: " 400", color: "#FA4A0C", marginRight: 10 },
-    similarItemsContainer: { marginTop: 20, borderColor: "#D6D6D6", borderWidth: 1, borderRadius: 10, height: height * 0.20, padding: 10 },
-    similarItemsWrapper: { width: width * 0.6, height: height * 0.13, borderColor: "#D6D6D680", borderWidth: 1, borderRadius: 10, marginTop: 10, marginRight: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" },
-    similarItemsLeftWrapper: { display: "flex", flexDirection: "row", gap: 10, alignItems: "center", marginLeft: 20 },
-    noteBoxWrapper: { marginBottom: 20, width: width * 0.95, marginHorizontal: "auto", borderWidth: 1, borderRadius: 10, borderColor: "#D6D6D6", padding: 10 },
-    billingWraper: { width: wp(95), height: hp(33), marginHorizontal: "auto", borderColor: "#D6D6D6", marginTop: 30, borderWidth: 1, padding: 20, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 20 },
-    billItem: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }
+    actionTextPlus: { fontSize: wp(3), lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginLeft: wp(3) },
+    actionTextMinus: { fontSize: wp(3), lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginRight: wp(3) },
+    similarItemsContainer: { marginTop: hp(3), borderColor: "#D6D6D6", borderWidth: 1, borderRadius: 10, height: hp(20), padding: wp(2) },
+    similarItemsWrapper: { width: wp(60), height: hp(13), borderColor: "#D6D6D680", borderWidth: 1, borderRadius: 10, marginTop: 10, marginRight: wp(4), display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" },
+    similarItemsLeftWrapper: { display: "flex", flexDirection: "row", gap: wp(3), alignItems: "center", marginLeft: wp(5) },
+    noteBoxWrapper: { marginBottom: hp(4), width: wp(95), marginHorizontal: "auto", borderWidth: 1, borderRadius: wp(2), borderColor: "#D6D6D6", padding: wp(2) },
+    billingWraper: { width: wp(95), height: hp(33), marginHorizontal: "auto", borderColor: "#D6D6D6", marginTop: hp(4), borderWidth: 1, padding: wp(6), borderRadius: wp(2), paddingHorizontal: wp(2), paddingVertical: hp(4) },
+    billItem: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: hp(2) }
 })
 
 function Header() {
@@ -329,16 +330,18 @@ function GpayBox() {
                 </Pressable>
             </View>
             <View style={{ borderStyle: "dashed", borderColor: "#000", borderWidth: 0.50, flex: 1, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0 }}></View>
-            <Pressable style={{
-                backgroundColor: "#FA4A0C",
-                marginTop: hp(3),
-                height: hp(9.5),
-                borderRadius: wp(10),
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
+            <Pressable
+                onPress={() => navigation.navigate("Cart", { screen: "Tracking" })}
+                style={{
+                    backgroundColor: "#FA4A0C",
+                    marginTop: hp(3),
+                    height: hp(9.5),
+                    borderRadius: wp(10),
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
 
-            }}>
+                }}>
                 <View style={{ height: hp(8), marginTop: 2, borderRadius: 50, backgroundColor: "white", width: wp(17), marginLeft: wp(3), display: "flex", justifyContent: "center", alignItems: "center", gap: 0 }}>
                     <IonIcons name='chevron-forward' size={25} color={"#FA4A0C"} />
                 </View>

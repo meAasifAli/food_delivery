@@ -1,11 +1,13 @@
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Typography from '../../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import SearchInput from '../../SearchInput'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native'
 const TopBar = () => {
+    const navigation = useNavigation()
     return (
         <View
             style={styles.topBar}
@@ -33,11 +35,11 @@ const TopBar = () => {
                         <Entypo name='chevron-small-down' size={16} color={"#fff"} />
                     </View>
                 </View>
-                <View>
+                <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
                     <Image
                         source={require("../../../assets/images/profile.png")}
                         style={styles.profileAvatar} />
-                </View>
+                </TouchableOpacity>
             </View>
             {/* Text */}
             <View
