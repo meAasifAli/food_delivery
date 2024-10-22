@@ -3,8 +3,8 @@ import IonIcons from 'react-native-vector-icons/Ionicons'
 import Typography from '../components/Typography'
 import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
-
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import Octicons from 'react-native-vector-icons/Octicons'
 const { height, width } = Dimensions.get("window")
 
 const CartScreen = () => {
@@ -120,7 +120,9 @@ function CartItems() {
             {/* item1  */}
             <View style={styles.ItemWrapper}>
                 <View style={styles.ItemLeftWrapper}>
-                    <Image source={require("../assets/images/arrowUpBox.png")} style={{ height: 20, width: 20, resizeMode: "cover" }} />
+                    <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
+                        <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
+                    </View>
                     <Typography title={"Popcorn Chicken Pizza"} ff={"OpenSans_Regular"} size={12} lh={16} fw={300} color={"#000000"} />
                 </View>
                 <View style={styles.ItemRightWrapper}>
@@ -143,7 +145,9 @@ function CartItems() {
             {/* item 2 */}
             <View style={styles.ItemWrapper}>
                 <View style={styles.ItemLeftWrapper}>
-                    <Image source={require("../assets/images/arrowUpBox.png")} style={{ height: 20, width: 20, resizeMode: "cover" }} />
+                    <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
+                        <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
+                    </View>
                     <Typography title={"Popcorn Chicken Pizza"} ff={"OpenSans_Regular"} size={12} lh={16} fw={300} color={"#000000"} />
                 </View>
                 <View style={styles.ItemRightWrapper}>
@@ -166,7 +170,9 @@ function CartItems() {
             {/* item 3  */}
             <View style={styles.ItemWrapper}>
                 <View style={styles.ItemLeftWrapper}>
-                    <Image source={require("../assets/images/arrowUpBox.png")} style={{ height: 20, width: 20, resizeMode: "cover" }} />
+                    <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
+                        <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
+                    </View>
                     <Typography title={"Popcorn Chicken Pizza"} ff={"OpenSans_Regular"} size={12} lh={16} fw={300} color={"#000000"} />
                 </View>
                 <View style={styles.ItemRightWrapper}>
@@ -190,7 +196,9 @@ function CartItems() {
             {/* item4 */}
             <View style={styles.ItemWrapper}>
                 <View style={styles.ItemLeftWrapper}>
-                    <Image source={require("../assets/images/arrowUpBox.png")} style={{ height: 20, width: 20, resizeMode: "cover" }} />
+                    <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
+                        <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
+                    </View>
                     <Typography title={"Popcorn Chicken Pizza"} ff={"OpenSans_Regular"} size={12} lh={16} fw={300} color={"#000000"} />
                 </View>
                 <View style={styles.ItemRightWrapper}>
@@ -224,7 +232,9 @@ function SimilarItems() {
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 <View style={styles.similarItemsWrapper}>
                     <View style={styles.similarItemsLeftWrapper}>
-                        <Image style={{ height: 10, width: 10, resizeMode: "contain" }} source={require("../assets/images/dotBox.png")} />
+                        <View style={{ paddingHorizontal: hp(0.35), borderColor: "#60B246", borderWidth: wp(0.35) }}>
+                            <Octicons name='dot-fill' size={hp(1.5)} color={"#60B246"} />
+                        </View>
                         <View>
                             <Typography title={"Mango"} ff={"OpenSans_Regular"} lh={16} size={12} color={"#000"} fw={300} />
                             <Typography title={"Rs 299"} ff={"OpenSans_Regular"} lh={16} size={12} color={"#000"} fw={300} />
@@ -236,7 +246,9 @@ function SimilarItems() {
                 </View>
                 <View style={styles.similarItemsWrapper}>
                     <View style={styles.similarItemsLeftWrapper}>
-                        <Image style={{ height: 10, width: 10, resizeMode: "contain" }} source={require("../assets/images/dotBox.png")} />
+                        <View style={{ paddingHorizontal: hp(0.35), borderColor: "#60B246", borderWidth: wp(0.35) }}>
+                            <Octicons name='dot-fill' size={hp(1.5)} color={"#60B246"} />
+                        </View>
                         <View>
                             <Typography title={"Mango"} ff={"OpenSans_Regular"} lh={16} size={12} color={"#000"} fw={300} />
                             <Typography title={"Rs 299"} ff={"OpenSans_Regular"} lh={16} size={12} color={"#000"} fw={300} />
@@ -258,8 +270,8 @@ function Offers() {
                 <Typography title={"Offers for you"} ff={"OpenSans_Regular"} lh={32} size={24} fw={400} color={"#000"} />
             </View>
             <View style={{ width: width * 0.95, height: height * 0.15, marginHorizontal: "auto", borderTopEndRadius: 10, borderTopStartRadius: 10, borderStyle: "dashed", borderColor: "#D6D6D6", marginTop: 30, borderWidth: 1, padding: 20 }}>
-                <Typography title={"WELCOME100"} ff={"OpenSans_Bold"} lh={32} size={24} fw={400} color={"#000"} />
-                <Typography title={"Save Another 50"} ff={"OpenSans_Regular"} lh={32} size={16} fw={200} color={"#000"} />
+                <Typography title={"WELCOME100"} ff={"OpenSans_Bold"} lh={hp(3)} size={hp(3)} fw={400} color={"#000"} />
+                <Typography title={"Save Another 50"} ff={"OpenSans_Regular"} lh={hp(3)} size={hp(2.5)} fw={200} color={"#000"} />
             </View>
             <Pressable style={{ width: width * 0.95, height: height * 0.07, marginHorizontal: "auto", backgroundColor: "#FA4A0C", borderBottomEndRadius: 10, borderBottomStartRadius: 10, display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
                 <Typography title={"Apply"} ff={"OpenSans_Regular"} lh={32} size={20} color={"#fff"} fw={300} />
@@ -317,16 +329,16 @@ function GpayBox() {
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
                     <View>
-                        <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={require("../assets/images/gpay.png")} />
+                        <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={require("../assets/images/gpay.webp")} />
                     </View>
                     <View>
                         <Typography title={"Pay using"} ff={"OpenSans-Regular"} color={"#000"} size={14} lh={19} fw={400} />
                         <Typography title={"Google Pay"} ff={"OpenSans-Bold"} color={"#202020"} size={14} lh={21} fw={600} />
                     </View>
                 </View>
-                <Pressable onPress={() => navigation.navigate("PaymentOptions")} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
-                    <Typography title={"Change"} ff={"OpenSans-Regular"} color={"#FA4A0C"} size={14} lh={19} fw={400} />
-                    <IonIcons name='chevron-forward' size={20} color={"#FA4A0C"} />
+                <Pressable onPress={() => navigation.navigate("PaymentOptions")} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
+                    <Typography title={"Change"} ff={"OpenSans-Regular"} color={"#FA4A0C"} size={hp(2)} lh={hp(2.5)} fw={400} />
+                    <IonIcons name='chevron-forward' size={hp(2.5)} color={"#FA4A0C"} />
                 </Pressable>
             </View>
             <View style={{ borderStyle: "dashed", borderColor: "#000", borderWidth: 0.50, flex: 1, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0 }}></View>
@@ -334,16 +346,18 @@ function GpayBox() {
                 onPress={() => navigation.navigate("Cart", { screen: "Tracking" })}
                 style={{
                     backgroundColor: "#FA4A0C",
-                    marginTop: hp(3),
-                    height: hp(9.5),
+                    marginTop: hp(2.5),
+                    height: hp(7),
                     borderRadius: wp(10),
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
+                    paddingBottom: hp(0.3)
 
                 }}>
-                <View style={{ height: hp(8), marginTop: 2, borderRadius: 50, backgroundColor: "white", width: wp(17), marginLeft: wp(3), display: "flex", justifyContent: "center", alignItems: "center", gap: 0 }}>
-                    <IonIcons name='chevron-forward' size={25} color={"#FA4A0C"} />
+                <View style={{ height: hp(6), marginTop: 2, borderRadius: 50, backgroundColor: "white", width: wp(12), marginLeft: wp(3), display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
+                    <IonIcons name='chevron-forward' size={hp(2.5)} color={"#FA4A0C"} />
+                    <IonIcons name='chevron-forward' size={hp(3.5)} color={"#FA4A0C"} style={{ marginLeft: -hp(2) }} />
                 </View>
                 <View style={{ marginLeft: wp(3) }}>
                     <Typography title={"Continue to pay | Rs 579"} ff={"OpenSans-Bold"} color={"#FFF"} size={16} lh={21} fw={600} />
