@@ -23,7 +23,7 @@ const CartScreen = () => {
             {/* Bill */}
             <Billing />
             {/* precaution Text */}
-            <View style={{ marginBottom: 20 }}>
+            <View style={{ marginBottom: 20, width: "95%", marginHorizontal: "auto" }}>
                 <Typography title={"To prevent cancellations, please check your order and address information."} ff={"OpenSans-Medium"} color={"#000"} size={16} lh={21} fw={400} />
             </View>
             {/* Note Box */}
@@ -44,11 +44,11 @@ const styles = StyleSheet.create({
         padding: wp(2),
 
     },
-    headingWrapper: { display: "flex", alignItems: "center", flexDirection: "row" },
+    headingWrapper: { display: "flex", alignItems: "center", flexDirection: "row", width: "95%", marginHorizontal: "auto" },
     ItemContainer: {
         flex: 1,
         height: hp(30),
-        width: wp(95),
+        width: "95%",
         marginHorizontal: "auto",
         borderColor: "#D6D6D6",
         borderWidth: 1,
@@ -93,11 +93,11 @@ const styles = StyleSheet.create({
     },
     actionTextPlus: { fontSize: wp(3), lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginLeft: wp(3) },
     actionTextMinus: { fontSize: wp(3), lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginRight: wp(3) },
-    similarItemsContainer: { marginTop: hp(3), borderColor: "#D6D6D6", borderWidth: 1, borderRadius: 10, height: hp(20), padding: wp(2) },
-    similarItemsWrapper: { width: wp(60), height: hp(13), borderColor: "#D6D6D680", borderWidth: 1, borderRadius: 10, marginTop: 10, marginRight: wp(4), display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" },
+    similarItemsContainer: { width: "95%", marginHorizontal: "auto", marginTop: 30, borderColor: "#D6D6D6", borderWidth: 1, borderRadius: 10, padding: wp(2) },
+    similarItemsWrapper: { width: wp(60), borderColor: "#D6D6D680", borderWidth: 1, borderRadius: 10, marginTop: 15, marginRight: "1%", display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" },
     similarItemsLeftWrapper: { display: "flex", flexDirection: "row", gap: wp(3), alignItems: "center", marginLeft: wp(5) },
-    noteBoxWrapper: { marginBottom: hp(4), width: wp(95), marginHorizontal: "auto", borderWidth: 1, borderRadius: wp(2), borderColor: "#D6D6D6", padding: wp(2) },
-    billingWraper: { width: wp(95), height: hp(33), marginHorizontal: "auto", borderColor: "#D6D6D6", marginTop: hp(4), borderWidth: 1, padding: wp(6), borderRadius: wp(2), paddingHorizontal: wp(2), paddingVertical: hp(4) },
+    noteBoxWrapper: { marginBottom: hp(4), width: "95%", marginHorizontal: "auto", borderWidth: 1, borderRadius: wp(2), borderColor: "#D6D6D6", padding: wp(2) },
+    billingWraper: { width: "95%", height: hp(33), marginHorizontal: "auto", borderColor: "#D6D6D6", marginTop: hp(4), borderWidth: 1, padding: wp(6), borderRadius: wp(2), paddingHorizontal: wp(2), paddingVertical: hp(4) },
     billItem: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: hp(2) }
 })
 
@@ -241,7 +241,7 @@ function SimilarItems() {
                         </View>
                     </View>
                     <View>
-                        <Image style={{ height: height * 0.13, width: width * 0.25, resizeMode: "cover", borderTopRightRadius: 10, borderBottomRightRadius: 10 }} source={require("../assets/images/shake.png")} />
+                        <Image style={{ height: 80, width: 90, resizeMode: "contain", borderTopRightRadius: 10, borderBottomRightRadius: 10 }} source={require("../assets/images/shake.png")} />
                     </View>
                 </View>
                 <View style={styles.similarItemsWrapper}>
@@ -255,7 +255,7 @@ function SimilarItems() {
                         </View>
                     </View>
                     <View>
-                        <Image style={{ height: height * 0.13, width: width * 0.25, resizeMode: "cover", borderTopRightRadius: 10, borderBottomRightRadius: 10 }} source={require("../assets/images/shake.png")} />
+                        <Image style={{ height: 80, width: 90, resizeMode: "contain", borderTopRightRadius: 10, borderBottomRightRadius: 10 }} source={require("../assets/images/shake.png")} />
                     </View>
                 </View>
             </ScrollView >
@@ -266,14 +266,14 @@ function SimilarItems() {
 function Offers() {
     return (
         <View style={{ marginTop: 30 }}>
-            <View>
+            <View style={{ marginLeft: "2%" }}>
                 <Typography title={"Offers for you"} ff={"OpenSans_Regular"} lh={32} size={24} fw={400} color={"#000"} />
             </View>
-            <View style={{ width: width * 0.95, height: height * 0.15, marginHorizontal: "auto", borderTopEndRadius: 10, borderTopStartRadius: 10, borderStyle: "dashed", borderColor: "#D6D6D6", marginTop: 30, borderWidth: 1, padding: 20 }}>
-                <Typography title={"WELCOME100"} ff={"OpenSans_Bold"} lh={hp(3)} size={hp(3)} fw={400} color={"#000"} />
+            <View style={{ width: "95%", height: hp(15), marginHorizontal: "auto", borderTopEndRadius: 10, borderTopStartRadius: 10, borderStyle: "dashed", borderColor: "#D6D6D6", marginTop: 30, borderWidth: 1, padding: hp(4) }}>
+                <Typography title={"WELCOME100"} ff={"OpenSans_Bold"} lh={hp(3.5)} size={hp(3)} fw={400} color={"#000"} />
                 <Typography title={"Save Another 50"} ff={"OpenSans_Regular"} lh={hp(3)} size={hp(2.5)} fw={200} color={"#000"} />
             </View>
-            <Pressable style={{ width: width * 0.95, height: height * 0.07, marginHorizontal: "auto", backgroundColor: "#FA4A0C", borderBottomEndRadius: 10, borderBottomStartRadius: 10, display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
+            <Pressable style={{ width: "95%", height: hp(7), marginHorizontal: "auto", backgroundColor: "#FA4A0C", borderBottomEndRadius: 10, borderBottomStartRadius: 10, display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 20 }}>
                 <Typography title={"Apply"} ff={"OpenSans_Regular"} lh={32} size={20} color={"#fff"} fw={300} />
             </Pressable>
         </View>
@@ -283,7 +283,7 @@ function Offers() {
 
 function CouponButons() {
     return (
-        <TouchableOpacity style={{ backgroundColor: "#000", height: height * 0.08, width: width * 0.95, marginHorizontal: "auto", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: 10, marginBottom: 20 }}>
+        <TouchableOpacity style={{ backgroundColor: "#000", height: 60, width: "95%", marginHorizontal: "auto", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: 10, marginBottom: 20 }}>
             <Typography title="View All Coupons" color={"#fff"} ff={"OpenSans-Regular"} fw={400} size={20} lh={27} ls={0.05} />
         </TouchableOpacity>
     )
@@ -292,7 +292,7 @@ function CouponButons() {
 function Billing() {
     return (
         <View style={{ marginTop: hp(3), marginBottom: hp(4) }}>
-            <View>
+            <View style={{ marginLeft: "2%" }}>
                 <Typography title={"Billing Details"} ff={"OpenSans-Regular"} lh={32} size={24} fw={400} color={"#000"} />
             </View>
             <View style={styles.billingWraper}>
@@ -325,7 +325,7 @@ function Billing() {
 function GpayBox() {
     const navigation = useNavigation()
     return (
-        <View style={{ marginBottom: 20, padding: 20, marginTop: 20, width: width * 0.95, height: height * 0.25, borderRadius: 10, backgroundColor: "#FFFFFF", shadowColor: "#fff", marginHorizontal: "auto" }}>
+        <View style={{ marginBottom: 20, padding: 20, marginTop: 20, width: "95%", height: height * 0.25, borderRadius: 10, backgroundColor: "#FFFFFF", shadowColor: "#fff", marginHorizontal: "auto" }}>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
                     <View>

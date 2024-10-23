@@ -17,22 +17,22 @@ const AddUpi = () => {
             {/* Checkbox ant Text */}
             <CheckText toggleCheckBox={toggleCheckBox} setToggleCheckBox={setToggleCheckBox} />
             {/* btn */}
-            <TouchableOpacity style={{ backgroundColor: "#FA4A0C", height: height * 0.07, width: width * 0.60, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", marginTop: height * 0.10, marginHorizontal: "auto" }}>
+            <TouchableOpacity style={{ backgroundColor: "#FA4A0C", height: 50, width: "70%", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", marginTop: height * 0.10, marginHorizontal: "auto" }}>
                 <Typography ta={"center"} title={"Verify and Pay"} color={"#fff"} bg={"#FA4A0C"} size={14} lh={19} ff={"OpenSans-Regular"} style={{ padding: 10, borderRadius: 10, }} />
             </TouchableOpacity>
             {/* brands */}
             <View style={styles.brandsWrapper}>
                 <View>
-                    <Image width={50} height={100} objectFit="contain" source={require("../assets/images/gpay-gray.png")} />
+                    <Image style={{ width: 40, height: 40, objectFit: "contain" }} source={require("../assets/images/gpay.webp")} />
                 </View>
                 <View>
-                    <Image width={50} height={100} objectFit="contain" source={require("../assets/images/paytm.png")} />
+                    <Image style={{ width: 40, height: 40, objectFit: "contain" }} source={require("../assets/images/Paytm_logo.png")} />
                 </View>
                 <View>
-                    <Image width={50} height={100} objectFit="contain" source={require("../assets/images/phonepe.png")} />
+                    <Image style={{ width: 40, height: 40, objectFit: "contain" }} source={require("../assets/images/phonepe-logo.png")} />
                 </View>
                 <View>
-                    <Image width={50} height={100} objectFit="contain" source={require("../assets/images/pay.png")} />
+                    <Image style={{ width: 40, height: 40, objectFit: "cover" }} source={require("../assets/images/amazonPay.png")} />
                 </View>
             </View>
             <View style={{ flex: 1, justifyContent: "flex-end" }}>
@@ -42,12 +42,10 @@ const AddUpi = () => {
                 <View
                     style={styles.upiWrapper}
                 >
-                    <Typography ta={"center"} title={"UPI"} color={"#000"} fw={600} size={16} lh={19} ff={"OpenSans-Medium"} />
-                    <Image source={require("../assets/images/upi.png")} height={30} width={30} resizeMode='contain' />
+                    <Typography ta={"center"} title={"UPI"} color={"#000"} fw={600} size={16} lh={19} ff={"OpenSans-Bold"} />
+                    <Image source={require("../assets/images/upi.png")} style={{ width: 40, height: 40, objectFit: "cover" }} />
                 </View>
-                <View>
-                    <Typography ta={"center"} title={"UNIFIED PAYMENTS INTERFACE"} color={"#000"} fw={300} size={6} lh={19} ff={"OpenSans-Medium"} />
-                </View>
+
             </View>
         </View >
     )
@@ -66,7 +64,8 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         gap: 5,
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: "center"
     }
 })
 

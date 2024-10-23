@@ -32,8 +32,8 @@ export default SearchMenu
 
 const styles = StyleSheet.create({
     container: {
-        width: width * 0.70,
-        height: height * 0.06,
+        width: "70%",
+        height: 45,
         backgroundColor: "#fff",
         position: "relative",
         borderRadius: 10,

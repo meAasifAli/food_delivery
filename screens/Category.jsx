@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 5,
-        padding: wp(0.5),
+        paddingHorizontal: wp(1),
         borderRadius: 5
     },
     desWrapper: {

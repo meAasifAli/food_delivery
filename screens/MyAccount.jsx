@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, Switch } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Switch, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import Typography from '../components/Typography'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -8,14 +8,14 @@ import Modal from "react-native-modal"
 
 const MyAccount = () => {
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Header />
             <OrderMessages />
             <Reminders />
             <WhatsApp />
             <Sms />
             <AccountDeletion />
-        </View>
+        </ScrollView>
     )
 }
 

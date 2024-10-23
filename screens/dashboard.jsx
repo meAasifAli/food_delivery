@@ -6,12 +6,17 @@ import Nearest from '../components/common/dashboard/Nearest'
 import TopRated from '../components/common/dashboard/TopRated'
 import PopularBrands from '../components/common/dashboard/PopularBrands'
 import { useNavigation } from '@react-navigation/native'
+import { useContext } from 'react'
+import { LocationContext } from '../context/LocationContext'
 
 
 
 
 const DashboardScreen = () => {
     const navigation = useNavigation()
+    // const { location } = useContext(LocationContext)
+    // console.log(location);
+
     return (
         <View showsVerticalScrollIndicator={false} style={styles.container}>
             {/* TopBar */}

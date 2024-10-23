@@ -14,11 +14,11 @@ const RestaurantCard = ({ navigation, item, isPopular }) => {
         <TouchableOpacity onPress={() => navigation.navigate("Restaurant", { restaurantId: item?.id })} style={styles.restaurantsContainer}>
             <Image source={item?.img} style={styles.restaurantImg} />
             <View style={styles.restaurantContentWrapper}>
-                <Typography title={item?.name} color={isPopular ? "#fff" : "#000000"} ff={"OpenSans_regular"} size={20} lh={27.02} ls={0.05} fw={400} ta={"center"} />
+                <Typography title={item?.name} color={isPopular ? "#fff" : "#000000"} ff={"OpenSans_regular"} size={hp(2.7)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
                 <View style={styles.divider}></View>
                 <View style={styles.ratingWrapper}>
                     <View style={styles.ratingLeftWrapper}>
-                        <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={13} lh={27.02} ls={0.05} fw={400} ta={"center"} />
+                        <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={hp(1.7)} lh={hp(2.2)} ls={0.05} fw={400} ta={"center"} />
                         <Entypo name='star-outlined' size={12} color={"#fff"} />
                     </View>
                     <View>

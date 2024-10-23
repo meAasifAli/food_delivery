@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Typography from '../../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -16,7 +16,7 @@ const TopBar = () => {
             <View style={styles.topBarHeading}>
                 <View style={styles.topBarHeadingLeft}>
                     <Image resizeMode='contain' source={require("../../../assets/images/arrow.png")} />
-                    <View style={{
+                    <Pressable onPress={() => navigation.navigate("AddAddress")} style={{
                         display: "flex",
                         flexDirection: "row",
                         gap: wp(1),
@@ -33,7 +33,7 @@ const TopBar = () => {
                             maxW={131}
                         />
                         <Entypo name='chevron-small-down' size={16} color={"#fff"} />
-                    </View>
+                    </Pressable>
                 </View>
                 <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
                     <Image
@@ -67,7 +67,7 @@ const TopBar = () => {
                 />
             </View>
             {/* search input */}
-            <SearchInput />
+            <SearchInput placeholder={"Search for Biryani"} />
 
         </View>
     )
@@ -105,9 +105,10 @@ const styles = StyleSheet.create({
         resizeMode: "cover"
     },
     contentWrapper: {
-        marginTop: hp(4),
+        marginTop: hp(3),
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+
     },
 })
