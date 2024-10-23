@@ -5,6 +5,7 @@ import Typography from '../components/Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CheckBox from '@react-native-community/checkbox';
 import { useState } from 'react';
+
 const AddCard = () => {
     return (
         <View style={styles.container}>

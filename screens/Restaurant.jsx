@@ -12,7 +12,7 @@ import RestaurantMenu from '../components/modals/RestaurantMenu';
 import FoodSizeMenu from '../components/modals/FoodSizeMenu';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 
 const { width, height } = Dimensions.get("window")
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     },
     restaurantWrapper: {
         padding: wp(2),
-        width: wp(95),
-        height: hp(30),
+        width: "95%",
+        height: "17%",
         marginHorizontal: "auto",
         backgroundColor: "#202020",
         marginTop: hp(3),
@@ -152,18 +152,18 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: wp(1)
     },
-    itemsContainer: {
-        padding: 10,
-    },
+
     itemHeadingWrapper: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        width: "90%",
+        marginHorizontal: "auto"
     },
     menuContainer: {
         // height: height * 0.30,
-        width: width * 0.9,
+        width: "90%",
         marginHorizontal: "auto",
         borderBottomColor: "#D6D6D6",
         borderBottomWidth: 1,
@@ -180,7 +180,8 @@ const styles = StyleSheet.create({
     leftHeadingWrapper: {
         display: "flex",
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "flex-end",
+        width: wp(30)
 
     },
     ratingWrapper: {
@@ -202,7 +203,8 @@ const styles = StyleSheet.create({
     },
     rightWrapper: {
         position: "relative",
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
+        paddingVertical: hp(4)
     },
 })
 
@@ -293,8 +295,12 @@ function MenuItem({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, 
             {/* left */}
             <View style={styles.leftWrapper}>
                 <View style={styles.leftHeadingWrapper}>
-                    <Typography title={"Chicken Zinger Meal Box"} size={wp(3.5)} color={"#000"} ls={0.05} lh={19} fw={600} maxW={wp(25)} />
-                    <Image resizeMode='contain' width={20} height={20} source={require("../assets/images/arrowUpBox.png")} />
+                    <View>
+                        <Text style={{ fontFamily: "OpenSans-Bold", color: "black", fontWeight: "600", fontSize: hp(2) }}>Chicken Zinger Meal Box</Text>
+                    </View>
+                    <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
+                        <AntDesign name='caretup' size={hp(0.8)} color={"#FA4A0C"} />
+                    </View>
                 </View>
                 <View style={styles.ratingWrapper}>
                     <View style={styles.ratingLeftWrapper}>
@@ -311,9 +317,9 @@ function MenuItem({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, 
             </View>
             {/* right */}
             <View style={styles.rightWrapper}>
-                <Image style={{ width: wp(40), height: hp(35), resizeMode: "contain" }} source={require("../assets/images/menuImg.png")} />
-                <View style={{ position: "absolute", bottom: hp(4), right: wp(4.5) }}>
-                    <TouchableOpacity onPress={toggleFirstDrawer} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(30), alignItems: "center" }}>
+                <Image style={{ width: 150, height: 150, resizeMode: "contain" }} source={require("../assets/images/menuImg.png")} />
+                <View style={{ position: "absolute", bottom: 8, right: 15 }}>
+                    <TouchableOpacity onPress={toggleFirstDrawer} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: 120, alignItems: "center" }}>
                         <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Add </Text>
                     </TouchableOpacity>
                 </View>

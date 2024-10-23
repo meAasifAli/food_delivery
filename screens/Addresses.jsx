@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const Addresses = () => {
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Header />
             <View style={{ padding: wp(5) }}>
                 <Typography title={"Saved Addresses"} ff={"OpenSans-Regular"} color={"#000000"} fw={300} size={hp(2.3)} />
@@ -15,7 +15,7 @@ const Addresses = () => {
                 <AddressCard title={"Home"} Phone={"7889423564"} address={"Nowgam, Srinagar, J&K, 191113 "} img={require("../assets/images/home.png")} />
                 <AddressCard title={"Work"} Phone={"7889423564"} address={"Kursoo Rajbagh, Srinagar, J&K, 190008 "} img={require("../assets/images/building.png")} />
             </ScrollView>
-        </View>
+        </ScrollView>
     )
 }
 

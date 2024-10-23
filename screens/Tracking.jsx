@@ -1,15 +1,31 @@
 import { useNavigation } from '@react-navigation/native';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, PermissionsAndroid, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Typography from '../components/Typography';
 import IonIcons from 'react-native-vector-icons/Ionicons'
-import MapView from 'react-native-maps';
-import { useState } from 'react';
+import MapView, { Marker } from 'react-native-maps';
+import { useContext, useEffect, useState } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo'
 import Feather from 'react-native-vector-icons/Feather'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
+import Geolocation from '@react-native-community/geolocation';
+import { LocationContext } from '../context/LocationContext';
+
+
+
 const Tracking = () => {
+    const [longitude, setLongitude] = useState(0);
+    const [latitude, setLatitude] = useState(0);
+    useEffect(() => {
+        const getCoordinates = () => {
+            Geolocation.getCurrentPosition(info => {
+                setLongitude(info.coords.longitude);
+                setLatitude(info.coords.latitude);
+            });
+        }
+        getCoordinates()
+    }, [])
     const [status, setStatus] = useState("Confirmed")
     const orderCompleted = false;
     return (
@@ -17,7 +33,7 @@ const Tracking = () => {
             <Header />
             {
                 orderCompleted ? <Completed /> : <>
-                    <Map status={status} setStatus={setStatus} />
+                    <Map status={status} setStatus={setStatus} longitude={longitude} latitude={latitude} />
                     <OrderContent status={status} />
                 </>
             }
@@ -111,22 +127,35 @@ const Header = () => {
     )
 }
 
-const Map = ({ status, setStatus }) => {
-    const region = {
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-    }
+const Map = ({ status, setStatus, }) => {
+    // const { location } = useContext(LocationContext)
+
+
 
     return (
         <View>
             <MapView
+                showsMyLocationButton={true}
+                showsUserLocation={true}
                 provider={'google'}
-                initialRegion={region}
-                style={{ height: hp(40), position: "relative" }}
-            />
-            <View style={{ position: "absolute", bottom: hp(-2), backgroundColor: "#000", padding: wp(2), height: hp(10), width: wp(100), display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: wp(2) }}>
+                initialRegion={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+                style={{ height: hp(50), position: "relative" }}
+            >
+
+
+                <Marker coordinate={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                }} title="You are here" />
+
+            </MapView>
+
+            <View style={{ position: "absolute", bottom: hp(-2), backgroundColor: "#000", padding: wp(2), height: hp(6), width: wp(100), display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: wp(2) }}>
                 <Pressable onPress={() => setStatus("Confirmed")} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
                     <View style={{ width: wp(2), height: hp(1), backgroundColor: status === "Confirmed" ? "#FA4A0C" : "#fff", borderRadius: wp(5) }}></View>
                     <Typography title={"Confirmed"} ff={"OpenSans-Regular"} fw={400} size={16} lh={21} color={status === "Confirmed" ? "#FA4A0C" : "#fff"} />

@@ -3,16 +3,18 @@ import React from 'react'
 import Evil from 'react-native-vector-icons/EvilIcons'
 
 
-const SearchInput = () => {
+const SearchInput = ({ placeholder, val, onValueChange }) => {
     return (
         <View style={styles.container}>
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.inputWrapper}>
                 <TextInput
+                    value={val}
+                    onChangeText={onValueChange}
                     placeholderTextColor={"#FA4A0C"}
                     style={{
                         paddingLeft: 10
                     }}
-                    placeholder='Search for ‘Biryani’'
+                    placeholder={placeholder}
                 />
                 <View style={styles.iconWrapper}>
                     <Evil name='search' size={24} color={"#FA4A0C"} />
@@ -27,9 +29,8 @@ export default SearchInput
 
 const styles = StyleSheet.create({
     container: {
-
-        width: 299,
-        height: 41,
+        width: "95%",
+        height: 50,
         backgroundColor: "#fff",
         position: "relative",
         borderRadius: 10,
@@ -39,6 +40,6 @@ const styles = StyleSheet.create({
     iconWrapper: {
         position: "absolute",
         right: 10,
-        top: 10
+        top: 15
     }
 })

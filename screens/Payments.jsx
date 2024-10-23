@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import Typography from '../components/Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -6,11 +6,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const Payments = () => {
     return (
-        <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
             <Header />
             <SavedCards />
             <Wallets />
-        </View>
+        </ScrollView>
     )
 }
 

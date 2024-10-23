@@ -1,4 +1,4 @@
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../components/Typography';
@@ -14,41 +14,43 @@ const EditProfile = () => {
     return (
         <View style={styles.container}>
             <Header />
-            <View style={{ paddingVertical: hp(2) }}>
-                <FormInput
-                    inputName="name"
-                    label="NAME"
-                    btnText="EDIT"
-                    placeholder="Enter your name"
-                    formData={formData}
-                    setFormData={setFormData}
-                />
-                <FormInput
-                    inputName="phone"
-                    label="PHONE NUMBER"
-                    btnText="EDIT"
-                    placeholder="Enter your Phone Number"
-                    formData={formData}
-                    setFormData={setFormData}
-                />
-                <FormInput
-                    inputName="profile"
-                    label="PROFILE IMAGE"
-                    btnText="UPLOAD"
-                    placeholder="Upload Image"
-                    formData={formData}
-                    setFormData={setFormData}
-                />
-                <FormInput
-                    inputName="email"
-                    label="EMAIL ADDRESS"
-                    btnText="EDIT"
-                    placeholder="Enter your Email"
-                    formData={formData}
-                    setFormData={setFormData}
-                />
-            </View>
-            <ActionButtons />
+            <ScrollView>
+                <View style={{ paddingVertical: hp(2) }}>
+                    <FormInput
+                        inputName="name"
+                        label="NAME"
+                        btnText="EDIT"
+                        placeholder="Enter your name"
+                        formData={formData}
+                        setFormData={setFormData}
+                    />
+                    <FormInput
+                        inputName="phone"
+                        label="PHONE NUMBER"
+                        btnText="EDIT"
+                        placeholder="Enter your Phone Number"
+                        formData={formData}
+                        setFormData={setFormData}
+                    />
+                    <FormInput
+                        inputName="profile"
+                        label="PROFILE IMAGE"
+                        btnText="UPLOAD"
+                        placeholder="Upload Image"
+                        formData={formData}
+                        setFormData={setFormData}
+                    />
+                    <FormInput
+                        inputName="email"
+                        label="EMAIL ADDRESS"
+                        btnText="EDIT"
+                        placeholder="Enter your Email"
+                        formData={formData}
+                        setFormData={setFormData}
+                    />
+                </View>
+                <ActionButtons />
+            </ScrollView>
         </View>
     )
 }

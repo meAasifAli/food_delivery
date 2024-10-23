@@ -23,9 +23,11 @@ import Profile from './screens/Profile';
 import EditProfile from './screens/EditProfile';
 import MyAccount from './screens/MyAccount';
 import Addresses from './screens/Addresses';
-import Pyaments from './screens/Payments';
 import Payments from './screens/Payments';
 import Refunds from './screens/Refunds';
+import AddAddress from './screens/AddAddress';
+import Address from './screens/AddressScreen';
+import LocationContextProvider from './context/LocationContext';
 
 const TabNavigator = () => {
   return (
@@ -100,7 +102,7 @@ const TabNavigator = () => {
 }
 
 const AuthenticatedStack = () => (
-  <Stack.Navigator>
+  <Stack.Navigator initialRouteName='MainTabs'>
     <Stack.Screen name="MainTabs" component={TabNavigator} options={{ headerShown: false }} />
     <Stack.Screen name="Profile" component={Profile} options={{
       title: "Profile",
@@ -111,6 +113,8 @@ const AuthenticatedStack = () => (
     <Stack.Screen name='Addresses' component={Addresses} options={{ headerShown: false }} />
     <Stack.Screen name='Payments' component={Payments} options={{ headerShown: false }} />
     <Stack.Screen name='Refunds' component={Refunds} options={{ headerShown: false }} />
+    <Stack.Screen name='AddAddress' component={AddAddress} options={{ headerShown: false }} />
+    <Stack.Screen name='AddressScreen' component={Address} options={{ headerShown: false }} />
   </Stack.Navigator>
 );
 
@@ -118,12 +122,15 @@ const AuthenticatedStack = () => (
 const App = () => {
   isAuthenticated = !false;
   return isAuthenticated ? (
-    <Provider store={store}>
-      <NavigationContainer>
-        <AuthenticatedStack />
-      </NavigationContainer>
-    </Provider>
 
+    <NavigationContainer>
+
+      <Provider store={store}>
+        <AuthenticatedStack />
+      </Provider>
+
+
+    </NavigationContainer>
   ) : (
     <NavigationContainer>
       <Stack.Navigator

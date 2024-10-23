@@ -29,7 +29,7 @@ const Profile = () => {
         },
     ]
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Header />
             <SecondaryHeader />
             <View style={{ borderBottomWidth: wp(0.2), marginVertical: hp(1) }}></View>
@@ -44,7 +44,7 @@ const Profile = () => {
                 }
             </View>
             <OrderHistory />
-        </View>
+        </ScrollView>
     )
 }
 

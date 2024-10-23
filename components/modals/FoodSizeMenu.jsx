@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Dimensions, Pressable, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, Dimensions, Pressable, TouchableOpacity, ScrollView } from 'react-native'
 import Modal from 'react-native-modal'
 import Typography from '../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -25,7 +25,7 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
         <Modal
             isVisible={isSecondDrawerVisible}
             onBackdropPress={toggleSecondDrawer}
-            swipeDirection="down"
+            // swipeDirection="down"
             // onSwipeComplete={toggleSecondDrawer}
             style={styles.modal2}
             backdropColor='transparent'
@@ -36,16 +36,20 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
             animationOutTiming={1000}
         >
             <View style={styles.drawer2}>
-                <Header />
-                <View style={{ borderStyle: "dashed", borderColor: "#fff", borderWidth: 0.50, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0, paddingTop: hp(2) }}></View>
-                <View style={{ display: "flex", flexDirection: "column", gap: 5, justifyContent: "flex-start", paddingTop: hp(2) }}>
-                    <Typography title={"Size"} color={"#fff"} ff={"OpenSans_regular"} fw={600} lh={23} ls={0.05} size={16} />
-                    <Typography title={"Select any 1"} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
-                </View>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                >
+                    <Header toggleSecondDrawer={toggleSecondDrawer} />
+                    <View style={{ borderStyle: "dashed", borderColor: "#fff", borderWidth: 0.50, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0, paddingTop: hp(2) }}></View>
+                    <View style={{ display: "flex", flexDirection: "column", gap: 5, justifyContent: "flex-start", paddingTop: hp(2) }}>
+                        <Typography title={"Size"} color={"#fff"} ff={"OpenSans_regular"} fw={600} lh={23} ls={0.05} size={16} />
+                        <Typography title={"Select any 1"} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
+                    </View>
 
-                <SizeItems size={size} setSize={setSize} />
-                <ExtraItems />
-                <Actions />
+                    <SizeItems size={size} setSize={setSize} />
+                    <ExtraItems />
+                    <Actions />
+                </ScrollView>
             </View>
         </Modal>
     )
@@ -65,7 +69,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         height: hp(72),
-        width: wp(100),
+        width: "100%",
         padding: wp(4)
     },
     modal2HeadingWrapper: {
@@ -79,7 +83,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         // height: height * 0.25,
-        width: wp(90),
+        width: "100%",
+        marginHorizontal: "auto",
         borderColor: "#D6D6D680",
         borderWidth: 1,
         borderRadius: wp(5),
@@ -105,7 +110,8 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         height: hp(10),
-        width: wp(90),
+        width: "100%",
+        marginHorizontal: "auto",
         borderColor: "#D6D6D680",
         borderWidth: 1,
         borderRadius: wp(5),
@@ -131,11 +137,15 @@ const styles = StyleSheet.create({
     }
 })
 
-const Header = () => {
+const Header = ({ toggleSecondDrawer }) => {
     return (
         <View style={styles.modal2HeadingWrapper}>
-            <Typography title={"Chicken Zinger"} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
-            <Entypo name='circle-with-cross' size={20} color={"#fff"} />
+            <View>
+                <Typography title={"Chicken Zinger"} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
+            </View>
+            <TouchableOpacity onPress={() => toggleSecondDrawer()}>
+                <Entypo name='circle-with-cross' size={20} color={"#fff"} />
+            </TouchableOpacity>
         </View>
     )
 }
