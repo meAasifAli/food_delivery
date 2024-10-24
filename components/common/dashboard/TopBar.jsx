@@ -67,7 +67,9 @@ const TopBar = () => {
                 />
             </View>
             {/* search input */}
-            <SearchInput placeholder={"Search for Biryani"} />
+            <View style={{ marginBottom: 10 }}>
+                <SearchInput placeholder={"Search for Biryani"} />
+            </View>
 
         </View>
     )
