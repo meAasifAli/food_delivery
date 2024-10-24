@@ -15,6 +15,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -122,14 +123,10 @@ const AuthenticatedStack = () => (
 const App = () => {
   isAuthenticated = !false;
   return isAuthenticated ? (
-
     <NavigationContainer>
-
       <Provider store={store}>
         <AuthenticatedStack />
       </Provider>
-
-
     </NavigationContainer>
   ) : (
     <NavigationContainer>

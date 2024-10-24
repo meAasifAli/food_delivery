@@ -39,7 +39,7 @@ const Category = ({ route, navigation }) => {
                     }
                 </View>
                 <View style={styles.headerTextWrapper}>
-                    <Typography title={category?.des} color={"#fff"} ff={"OpenSans-Italic"} fw={300} size={12} lh={16} ls={0.07} ta={"center"} />
+                    <Typography title={category?.des} color={"#fff"} ff={"OpenSans-Italic"} fw={300} size={hp(1.65)} lh={hp(2)} ls={0.07} ta={"center"} />
                 </View>
             </View>
             <ScrollView
@@ -49,6 +49,7 @@ const Category = ({ route, navigation }) => {
                 <View style={styles.filterWrapper}>
                     <TouchableOpacity style={styles.filterBtn}>
                         <Typography
+                            ff={"OpenSans-Regular"}
                             title={"filter"}
                             color={"#202020"}
                         />
