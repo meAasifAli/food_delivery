@@ -1,26 +1,22 @@
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  Image,
-} from 'react-native';
+import {StyleSheet, View, Dimensions, Image} from 'react-native';
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import LoginForm from '../components/common/auth/LoginForm';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+const {width, height} = Dimensions.get('window');
 
 const SigninScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.imgWrapper}>
-        <Image style={styles.img} source={require("../assets/images/bg.png")} />
+        <Image style={styles.img} source={require('../assets/images/bg.png')} />
       </View>
-      <View
-        style={styles.formContainer}
-      >
+      <View style={styles.formContainer}>
         <LoginForm navigation={navigation} />
       </View>
     </View>
@@ -33,28 +29,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    position: "relative"
+    position: 'relative',
   },
   imgWrapper: {
     position: 'absolute',
-    top: hp('-6%'), // Adjusted based on screen height
+    top: 0,
     right: 0,
-    zIndex: -10,
+    overflow: 'hidden', // Ensure no overflow issues
+    zIndex: -1,
   },
   img: {
-    height: hp('30%'), // Responsive height
-    width: wp('45%'),  // Responsive width
+    width: wp(38), // Adjust width for fitting the right side properly
+    height: hp(21),
     resizeMode: 'contain',
   },
   formContainer: {
     flex: 1,
     backgroundColor: '#202020',
-    width: wp(100),  // Full screen width
+    width: width, // Full screen width
     marginTop: hp(25), // Responsive margin based on screen height
     borderTopRightRadius: wp(12), // Responsive corner radius
     borderTopLeftRadius: wp(12),
-    height: hp(60)
+    height: hp(60),
   },
-
-
 });
