@@ -6,8 +6,10 @@ import {
 import SignupForm from '../../components/common/auth/SignupForm';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useState } from 'react';
 
 const SignUpScreen = () => {
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imgWrapper}>

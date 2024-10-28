@@ -13,8 +13,8 @@ import { View } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fontisto from 'react-native-vector-icons/Fontisto'
-import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { Provider, useSelector } from 'react-redux';
+import { persistor, store } from './store/store';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,13 +28,14 @@ import Payments from './screens/user/Payments';
 import Refunds from './screens/user/Refunds';
 import AddAddress from './screens/user/AddAddress';
 import Address from './screens/user/AddressScreen';
-import LocationContextProvider from './context/LocationContext';
-import DeliveryLanding from './screens/delivery/DeliveryLanding';
-import DeliveryHomeScreen from './screens/delivery/DeliveryHomeScreen';
-import DeliveryMobile from './screens/delivery/DeliveryMobile';
-import VerifyMobile from './screens/delivery/VerifyMobile';
-import PartnerOnboarding from './screens/delivery/PartnerOnboarding';
-import PersonalInfo from './screens/delivery/PersonalInfo';
+import { PersistGate } from 'redux-persist/integration/react';
+// import LocationContextProvider from './context/LocationContext';
+// import DeliveryLanding from './screens/delivery/DeliveryLanding';
+// import DeliveryHomeScreen from './screens/delivery/DeliveryHomeScreen';
+// import DeliveryMobile from './screens/delivery/DeliveryMobile';
+// import VerifyMobile from './screens/delivery/VerifyMobile';
+// import PartnerOnboarding from './screens/delivery/PartnerOnboarding';
+// import PersonalInfo from './screens/delivery/PersonalInfo';
 
 const TabNavigator = () => {
   return (
@@ -165,40 +166,32 @@ const UserAuthStack = () => {
   )
 }
 
-const DeliveryAuthStack = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name='landing' component={DeliveryLanding} options={{ headerShown: false }} />
-      <Stack.Screen name='mobile' component={DeliveryMobile} options={{ headerShown: false }} />
-      <Stack.Screen name='verify' component={VerifyMobile} options={{ headerShown: false }} />
-      <Stack.Screen name='partner-onboarding' component={PartnerOnboarding} options={{ headerShown: false }} />
-      <Stack.Screen name='personal-info' component={PersonalInfo} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  )
-}
 
-const AuthenticatedDeliveryStack = () => {
+const MainNavigator = () => {
+  // Access the auth state within the provider context
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  console.log(user);
+
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen name='home' component={DeliveryHomeScreen} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  )
-}
+    <NavigationContainer>
+      {isAuthenticated ? <AuthenticatedUserStack /> : <UserAuthStack />}
+    </NavigationContainer>
+  );
+};
+
 
 
 const App = () => {
-  isAuthenticated = false;
-  const user = {
-    role: "delivery"
-  }
+
   return (
-    <NavigationContainer>
-      <Provider store={store}>
-        {
-          isAuthenticated ? (<AuthenticatedUserStack />) : (<UserAuthStack />)
-        }
-      </Provider>
-    </NavigationContainer>
+
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <MainNavigator />
+      </PersistGate>
+    </Provider>
+
   )
 
 };

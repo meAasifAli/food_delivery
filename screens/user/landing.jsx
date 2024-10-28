@@ -2,7 +2,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
+
 const LandingPage = () => {
+
+
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
