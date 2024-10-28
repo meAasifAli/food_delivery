@@ -1,24 +1,24 @@
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Typography from '../components/Typography'
-import { restaurants } from '../static/data'
+import Typography from '../../components/Typography'
+import { restaurants } from '../../static/data'
 import Entypo from 'react-native-vector-icons/Entypo'
 
 const { height, width } = Dimensions.get("window")
 
-const Nearest = () => {
+const PopularBrands = () => {
     return (
         <ScrollView style={styles.container}>
             <View>
-                <Typography title={"Nearest"} color={"#000000"} ff={"OpenSans_regular"} size={20} lh={27} ls={0.05} fw={600} />
+                <Typography title={"Popular Brands"} color={"#000000"} ff={"OpenSans_regular"} size={20} lh={27} ls={0.05} fw={600} />
             </View>
-            <View style={styles.nearestWrapper}>
+            <View style={styles.brandsWrapper}>
                 {
                     restaurants.map((item, id) => (
                         <View key={id} style={styles.restaurantsContainer}>
                             <Image source={item?.img} style={styles.restaurantImg} />
                             <View style={styles.restaurantContentWrapper}>
-                                <Typography title={item?.name} color={"#000000"} ff={"OpenSans_regular"} size={11} lh={15} ls={0.05} fw={400} ta={"center"} />
+                                <Typography title={item?.name} color={"#fff"} ff={"OpenSans_regular"} size={11} lh={15} ls={0.05} fw={400} ta={"center"} />
                                 <View style={styles.divider}></View>
                                 <View style={styles.ratingWrapper}>
                                     <View style={styles.ratingLeftWrapper}>
@@ -26,11 +26,11 @@ const Nearest = () => {
                                         <Entypo name='star-outlined' size={12} color={"#fff"} />
                                     </View>
                                     <View>
-                                        <Typography title={item?.deliveryTime} color={"#202020"} ff={"OpenSans_regular"} size={11} lh={12} ls={0.05} fw={300} />
+                                        <Typography title={item?.deliveryTime} color={"#fff"} ff={"OpenSans_regular"} size={11} lh={12} ls={0.05} fw={300} />
                                     </View>
                                 </View>
                                 <View style={styles.desWrapper}>
-                                    <Typography lines={1} title={item?.des} color={"#202020"} ff={"OpenSans_regular"} size={11} lh={21} ls={0.05} fw={300} ta={"center"} />
+                                    <Typography lines={1} title={item?.des} color={"#fff"} ff={"OpenSans_regular"} size={11} lh={21} ls={0.05} fw={300} ta={"center"} />
                                 </View>
                             </View>
                         </View>
@@ -41,23 +41,24 @@ const Nearest = () => {
     )
 }
 
-export default Nearest
+export default PopularBrands
 
 const styles = StyleSheet.create({
-    nearestWrapper: {
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-
-
-        // flexWrap: "wrap"
-    },
     container: {
         flex: 1,
         backgroundColor: "#fff",
         paddingHorizontal: 10,
         paddingTop: 10
+    },
+    brandsWrapper: {
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        backgroundColor: "#000",
+        marginTop: 20,
+        flex: 1,
+        borderRadius: 10
     },
     restaurantsContainer: {
         height: height * 0.24,

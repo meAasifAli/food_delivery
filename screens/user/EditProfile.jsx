@@ -1,7 +1,7 @@
 import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import Typography from '../components/Typography';
+import Typography from '../../components/Typography';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 const EditProfile = () => {

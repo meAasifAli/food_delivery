@@ -1,15 +1,15 @@
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { restaurantMenus, restaurants } from '../static/data';
+import { restaurantMenus, restaurants } from '../../static/data';
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Evil from 'react-native-vector-icons/EvilIcons'
-import Typography from '../components/Typography';
+import Typography from '../../components/Typography';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import SearchMenu from '../components/SearchMenu';
+import SearchMenu from '../../components/SearchMenu';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-import RestaurantMenu from '../components/modals/RestaurantMenu';
-import FoodSizeMenu from '../components/modals/FoodSizeMenu';
+import RestaurantMenu from '../../components/modals/RestaurantMenu';
+import FoodSizeMenu from '../../components/modals/FoodSizeMenu';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -317,7 +317,7 @@ function MenuItem({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, 
             </View>
             {/* right */}
             <View style={styles.rightWrapper}>
-                <Image style={{ width: 150, height: 150, resizeMode: "contain" }} source={require("../assets/images/menuImg.png")} />
+                <Image style={{ width: 150, height: 150, resizeMode: "contain" }} source={require("../../assets/images/menuImg.png")} />
                 <View style={{ position: "absolute", bottom: 8, right: 15 }}>
                     <TouchableOpacity onPress={toggleFirstDrawer} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: 120, alignItems: "center" }}>
                         <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Add </Text>

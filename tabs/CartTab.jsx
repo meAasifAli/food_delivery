@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import CartScreen from '../screens/CartScreen'
-import PaymentOptions from '../screens/PaymentOptions'
-import AddUpi from '../screens/AddUpi'
-import AddCard from '../screens/AddCard'
-import NetBanking from '../screens/NetBanking'
-import Tracking from '../screens/Tracking'
+import CartScreen from '../screens/user/CartScreen'
+import PaymentOptions from '../screens/user/PaymentOptions'
+import AddUpi from '../screens/user/AddUpi'
+import AddCard from '../screens/user/AddCard'
+import NetBanking from '../screens/user/NetBanking'
+import Tracking from '../screens/user/Tracking'
 // import { useSelector } from 'react-redux'
 
 const cartStack = createNativeStackNavigator()

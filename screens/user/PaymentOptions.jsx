@@ -1,6 +1,6 @@
 import { Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import IonIcons from 'react-native-vector-icons/Ionicons'
-import Typography from '../components/Typography'
+import Typography from '../../components/Typography'
 import { useNavigation } from '@react-navigation/native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -110,7 +110,7 @@ function PrefferedPayment() {
                 <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
                         <View>
-                            <Image style={{ width: 50, height: 50, objectFit: "contain" }} source={require("../assets/images/gpay.webp")} />
+                            <Image style={{ width: 50, height: 50, objectFit: "contain" }} source={require("../../assets/images/gpay.webp")} />
                         </View>
                         <View style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                             <Typography title={"Google Pay"} ff={"OpenSans-Medium"} fw={400} size={14} ls={0.05} color={"#000"} lh={19} />

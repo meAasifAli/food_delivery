@@ -1,7 +1,7 @@
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native'
-import Typography from '../components/Typography'
+import Typography from '../../components/Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CheckBox from '@react-native-community/checkbox';
 import { useState } from 'react';

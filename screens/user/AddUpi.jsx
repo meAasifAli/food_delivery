@@ -1,5 +1,5 @@
 import { Dimensions, Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Typography from '../components/Typography'
+import Typography from '../../components/Typography'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native'
 import CheckBox from '@react-native-community/checkbox';
@@ -23,16 +23,16 @@ const AddUpi = () => {
             {/* brands */}
             <View style={styles.brandsWrapper}>
                 <View>
-                    <Image style={{ width: 40, height: 40, objectFit: "contain" }} source={require("../assets/images/gpay.webp")} />
+                    <Image style={{ width: 40, height: 40, objectFit: "contain" }} source={require("../../assets/images/gpay.webp")} />
                 </View>
                 <View>
-                    <Image style={{ width: 40, height: 40, objectFit: "contain" }} source={require("../assets/images/Paytm_logo.png")} />
+                    <Image style={{ width: 40, height: 40, objectFit: "contain" }} source={require("../../assets/images/Paytm_logo.png")} />
                 </View>
                 <View>
-                    <Image style={{ width: 40, height: 40, objectFit: "contain" }} source={require("../assets/images/phonepe-logo.png")} />
+                    <Image style={{ width: 40, height: 40, objectFit: "contain" }} source={require("../../assets/images/phonepe-logo.png")} />
                 </View>
                 <View>
-                    <Image style={{ width: 40, height: 40, objectFit: "cover" }} source={require("../assets/images/amazonPay.png")} />
+                    <Image style={{ width: 40, height: 40, objectFit: "cover" }} source={require("../../assets/images/amazonPay.png")} />
                 </View>
             </View>
             <View style={{ flex: 1, justifyContent: "flex-end" }}>
@@ -43,7 +43,7 @@ const AddUpi = () => {
                     style={styles.upiWrapper}
                 >
                     <Typography ta={"center"} title={"UPI"} color={"#000"} fw={600} size={16} lh={19} ff={"OpenSans-Bold"} />
-                    <Image source={require("../assets/images/upi.png")} style={{ width: 40, height: 40, objectFit: "cover" }} />
+                    <Image source={require("../../assets/images/upi.png")} style={{ width: 40, height: 40, objectFit: "cover" }} />
                 </View>
 
             </View>

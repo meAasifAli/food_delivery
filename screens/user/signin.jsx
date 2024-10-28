@@ -7,7 +7,7 @@ import {
 import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import LoginForm from '../components/common/auth/LoginForm';
+import LoginForm from '../../components/common/auth/LoginForm';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
@@ -16,7 +16,7 @@ const SigninScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.imgWrapper}>
-        <Image style={styles.img} source={require("../assets/images/bg.png")} />
+        <Image style={styles.img} source={require("../../assets/images/bg.png")} />
       </View>
       <View
         style={styles.formContainer}

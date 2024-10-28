@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import IonIcons from 'react-native-vector-icons/Ionicons'
-import Typography from '../components/Typography';
+import Typography from '../../components/Typography';
 import EvilaIcons from 'react-native-vector-icons/EvilIcons'
 const NetBanking = () => {
     return (

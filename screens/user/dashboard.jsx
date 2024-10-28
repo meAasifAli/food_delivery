@@ -1,13 +1,13 @@
 import { ScrollView, StyleSheet, View } from 'react-native'
-import TopBar from '../components/common/dashboard/TopBar'
-import Categories from '../components/common/dashboard/Categories'
+import TopBar from '../../components/common/dashboard/TopBar'
+import Categories from '../../components/common/dashboard/Categories'
 
-import Nearest from '../components/common/dashboard/Nearest'
-import TopRated from '../components/common/dashboard/TopRated'
-import PopularBrands from '../components/common/dashboard/PopularBrands'
+import Nearest from '../../components/common/dashboard/Nearest'
+import TopRated from '../../components/common/dashboard/TopRated'
+import PopularBrands from '../../components/common/dashboard/PopularBrands'
 import { useNavigation } from '@react-navigation/native'
 import { useContext } from 'react'
-import { LocationContext } from '../context/LocationContext'
+import { LocationContext } from '../../context/LocationContext'
 
 
 

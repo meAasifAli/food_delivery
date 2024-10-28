@@ -9,7 +9,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
 
-import OtpForm from '../components/common/auth/OtpForm';
+import OtpForm from '../../components/common/auth/OtpForm';
 
 
 const OtpScreen = () => {
@@ -17,7 +17,7 @@ const OtpScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.imgWrapper}>
-        <Image style={styles.img} source={require("../assets/images/bg.png")} />
+        <Image style={styles.img} source={require("../../assets/images/bg.png")} />
       </View>
       <View
         style={styles.formContainer}

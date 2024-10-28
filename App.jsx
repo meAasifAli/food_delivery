@@ -2,10 +2,10 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import LandingPage from './screens/landing';
-import SignUpScreen from './screens/signup';
-import SigninScreen from './screens/signin';
-import OtpScreen from './screens/otp';
+import LandingPage from './screens/user/landing';
+import SignUpScreen from './screens/user/signup';
+import SigninScreen from './screens/user/signin';
+import OtpScreen from './screens/user/otp';
 import Dining from './tabs/Dining';
 import Cart from './tabs/CartTab';
 import Reorder from './tabs/Reorder';
@@ -20,15 +20,21 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Profile from './screens/Profile';
-import EditProfile from './screens/EditProfile';
-import MyAccount from './screens/MyAccount';
-import Addresses from './screens/Addresses';
-import Payments from './screens/Payments';
-import Refunds from './screens/Refunds';
-import AddAddress from './screens/AddAddress';
-import Address from './screens/AddressScreen';
+import Profile from './screens/user/Profile';
+import EditProfile from './screens/user/EditProfile';
+import MyAccount from './screens/user/MyAccount';
+import Addresses from './screens/user/Addresses';
+import Payments from './screens/user/Payments';
+import Refunds from './screens/user/Refunds';
+import AddAddress from './screens/user/AddAddress';
+import Address from './screens/user/AddressScreen';
 import LocationContextProvider from './context/LocationContext';
+import DeliveryLanding from './screens/delivery/DeliveryLanding';
+import DeliveryHomeScreen from './screens/delivery/DeliveryHomeScreen';
+import DeliveryMobile from './screens/delivery/DeliveryMobile';
+import VerifyMobile from './screens/delivery/VerifyMobile';
+import PartnerOnboarding from './screens/delivery/PartnerOnboarding';
+import PersonalInfo from './screens/delivery/PersonalInfo';
 
 const TabNavigator = () => {
   return (
@@ -102,7 +108,7 @@ const TabNavigator = () => {
   )
 }
 
-const AuthenticatedStack = () => (
+const AuthenticatedUserStack = () => (
   <Stack.Navigator initialRouteName='MainTabs'>
     <Stack.Screen name="MainTabs" component={TabNavigator} options={{ headerShown: false }} />
     <Stack.Screen name="Profile" component={Profile} options={{
@@ -119,54 +125,90 @@ const AuthenticatedStack = () => (
   </Stack.Navigator>
 );
 
+const UserAuthStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        statusBarColor: '#000',
+      }}>
+      <Stack.Screen
+        name="landing"
+        component={LandingPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="signup"
+        component={SignUpScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+
+      <Stack.Screen
+        name="signin"
+        component={SigninScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="otp"
+        component={OtpScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+const DeliveryAuthStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='landing' component={DeliveryLanding} options={{ headerShown: false }} />
+      <Stack.Screen name='mobile' component={DeliveryMobile} options={{ headerShown: false }} />
+      <Stack.Screen name='verify' component={VerifyMobile} options={{ headerShown: false }} />
+      <Stack.Screen name='partner-onboarding' component={PartnerOnboarding} options={{ headerShown: false }} />
+      <Stack.Screen name='personal-info' component={PersonalInfo} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  )
+}
+
+const AuthenticatedDeliveryStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='home' component={DeliveryHomeScreen} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  )
+}
+
 
 const App = () => {
-  isAuthenticated = !false;
-  return isAuthenticated ? (
+  isAuthenticated = false;
+  const user = {
+    role: "delivery"
+  }
+  return (
     <NavigationContainer>
       <Provider store={store}>
-        <AuthenticatedStack />
+        {isAuthenticated ? (
+          user.role === 'user' ? (
+            <AuthenticatedUserStack />
+          ) : (
+            <AuthenticatedDeliveryStack />
+          )
+        ) : user.role === 'user' ? (
+          <UserAuthStack />
+        ) : (
+          <DeliveryAuthStack />
+        )}
       </Provider>
     </NavigationContainer>
-  ) : (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          statusBarColor: '#000',
-        }}>
-        <Stack.Screen
-          name="landing"
-          component={LandingPage}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="signup"
-          component={SignUpScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
+  )
 
-
-        <Stack.Screen
-          name="signin"
-          component={SigninScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="otp"
-          component={OtpScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
 };
 
 export default App;
