@@ -1,19 +1,44 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Typography from '../../Typography'
 import { OtpInput } from 'react-native-otp-entry'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import axios from 'axios';
+import { setAuthenticated } from '../../../store/authSlice';
 
 const OtpForm = ({ isDelivery, navigation }) => {
+    const dispatch = useDispatch()
+    const [otp, setOtp] = useState("")
+    const [loading, setLoading] = useState(false)
+    const { user } = useSelector((state) => state?.auth)
+
+    const handleVerifyOtp = async () => {
+        try {
+            setLoading(true)
+            const res = await axios.post(`http://192.168.100.6:3000/api/user/userSignUp/${user?.phone_no}/${user?.username}/${user?.email}`, {
+                givenOTP: otp
+            })
+            if (res?.data) {
+                dispatch(setAuthenticated())
+            }
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+            Alert.alert(error?.message)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <ScrollView>
             <Heading />
             <SecondaryHeading />
-            <OtpInputs />
+            <OtpInputs setOtp={setOtp} />
             <Option />
-            <ButtonComponent isDelivery={isDelivery} navigation={navigation} />
+            <ButtonComponent loading={loading} handlePress={handleVerifyOtp} isDelivery={isDelivery} navigation={navigation} />
         </ScrollView>
     )
 }
@@ -102,14 +127,14 @@ const SecondaryHeading = () => {
     )
 }
 
-const OtpInputs = () => {
+const OtpInputs = ({ setOtp }) => {
     return (
         <View style={styles.otpWrapper}>
             <OtpInput
                 focusColor={"#fff"} theme={{
                     pinCodeContainerStyle: styles.otpPinCodeContainer,
                     pinCodeTextStyle: styles.pinCodeText
-                }} numberOfDigits={4} onTextChange={(text) => console.log(text)} />
+                }} numberOfDigits={4} onTextChange={(text) => setOtp(text)} />
         </View>
     )
 }
@@ -140,13 +165,13 @@ const Option = () => {
     )
 }
 
-const ButtonComponent = ({ isDelivery, navigation }) => {
+const ButtonComponent = ({ handlePress, loading }) => {
 
     return (
-        <TouchableOpacity onPress={() => {
-            isDelivery ? navigation.navigate("partner-onboarding") : navigation.navigate("MainTabs")
-        }} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center", marginHorizontal: "auto" }}>
-            <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Continue</Text>
+        <TouchableOpacity onPress={handlePress} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center", marginHorizontal: "auto" }}>
+            {
+                loading ? <ActivityIndicator color={"#fff"} size={"small"} /> : <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Continue</Text>
+            }
         </TouchableOpacity>
     )
 }

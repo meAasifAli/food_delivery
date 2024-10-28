@@ -1,10 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../components/Typography';
+import { useDispatch } from 'react-redux';
+import { setAuthenticated } from '../../store/authSlice';
 
 const Profile = () => {
+    const dispatch = useDispatch()
     const navigation = useNavigation()
     const Items = [
         {
@@ -28,9 +31,17 @@ const Profile = () => {
             href: "Refunds"
         },
     ]
+
+    const handleLogout = () => {
+        dispatch(setAuthenticated())
+    }
     return (
         <ScrollView style={styles.container}>
+
             <Header />
+            <Pressable onPress={handleLogout}>
+                <Text>Logout</Text>
+            </Pressable>
             <SecondaryHeader />
             <View style={{ borderBottomWidth: wp(0.2), marginVertical: hp(1) }}></View>
             <View>
