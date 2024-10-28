@@ -194,17 +194,9 @@ const App = () => {
   return (
     <NavigationContainer>
       <Provider store={store}>
-        {isAuthenticated ? (
-          user.role === 'user' ? (
-            <AuthenticatedUserStack />
-          ) : (
-            <AuthenticatedDeliveryStack />
-          )
-        ) : user.role === 'user' ? (
-          <UserAuthStack />
-        ) : (
-          <DeliveryAuthStack />
-        )}
+        {
+          isAuthenticated ? (<AuthenticatedUserStack />) : (<UserAuthStack />)
+        }
       </Provider>
     </NavigationContainer>
   )
