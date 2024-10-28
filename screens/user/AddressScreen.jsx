@@ -1,6 +1,6 @@
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import SearchInput from '../components/SearchInput'
+import SearchInput from '../../components/SearchInput'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import MapView, { Marker } from 'react-native-maps';
@@ -14,11 +14,11 @@ const Address = () => {
     const [openModal, setOpenModal] = useState(false)
     // const { location } = useContext(LocationContext)
     return (
-        <View style={{ flex: 1, position: "relative" }}>
+        <KeyboardAvoidingView style={{ flex: 1, position: "relative" }}>
             <Header isHidden={openModal} />
             <MapComponent />
             <BottomComponent openModal={openModal} setOpenModal={setOpenModal} />
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 

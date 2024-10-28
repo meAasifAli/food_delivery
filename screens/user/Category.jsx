@@ -1,8 +1,8 @@
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { categories, restaurants } from '../static/data';
+import { categories, restaurants } from '../../static/data';
 import IonIcons from 'react-native-vector-icons/Ionicons'
-import Typography from '../components/Typography';
+import Typography from '../../components/Typography';
 const { width, height } = Dimensions.get("window")
 import FA5 from 'react-native-vector-icons/FontAwesome5'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -160,6 +160,8 @@ const styles = StyleSheet.create({
     },
 
     restaurantsContainer: {
+        elevation: 3,
+        backgroundColor: "#fff",
         height: hp(25),
         width: wp(45),
         borderColor: "#D6D6D6",

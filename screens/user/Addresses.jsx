@@ -1,7 +1,7 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native'
-import Typography from '../components/Typography'
+import Typography from '../../components/Typography'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const Addresses = () => {
@@ -12,8 +12,8 @@ const Addresses = () => {
                 <Typography title={"Saved Addresses"} ff={"OpenSans-Regular"} color={"#000000"} fw={300} size={hp(2.3)} />
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AddressCard title={"Home"} Phone={"7889423564"} address={"Nowgam, Srinagar, J&K, 191113 "} img={require("../assets/images/home.png")} />
-                <AddressCard title={"Work"} Phone={"7889423564"} address={"Kursoo Rajbagh, Srinagar, J&K, 190008 "} img={require("../assets/images/building.png")} />
+                <AddressCard title={"Home"} Phone={"7889423564"} address={"Nowgam, Srinagar, J&K, 191113 "} img={require("../../assets/images/home.png")} />
+                <AddressCard title={"Work"} Phone={"7889423564"} address={"Kursoo Rajbagh, Srinagar, J&K, 190008 "} img={require("../../assets/images/building.png")} />
             </ScrollView>
         </ScrollView>
     )

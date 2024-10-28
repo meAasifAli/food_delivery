@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { Image, PermissionsAndroid, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Typography from '../components/Typography';
+import Typography from '../../components/Typography';
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import MapView, { Marker } from 'react-native-maps';
 import { useContext, useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ import Feather from 'react-native-vector-icons/Feather'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import Geolocation from '@react-native-community/geolocation';
-import { LocationContext } from '../context/LocationContext';
+import { LocationContext } from '../../context/LocationContext';
 
 
 
@@ -54,12 +54,12 @@ const Completed = () => {
         <ScrollView style={{ display: "flex", flexDirection: "column", marginBottom: hp(2) }}>
             <View style={{ height: hp(40), backgroundColor: "black", display: "flex", justifyContent: "center", alignItems: "center", gap: hp(2) }}>
                 <Typography maxW={wp(80)} ta={"center"} title={"YOUR ORDER HAS BEEN DELIVERED!"} ff={"OpenSans-Medium"} fw={400} size={hp(5)} lh={wp(hp(1.5))} color={"#fff"} />
-                <Image style={{ height: 50, width: 50, objectFit: "contain" }} source={require("../assets/images/completed.png")} />
+                <Image style={{ height: 50, width: 50, objectFit: "contain" }} source={require("../../assets/images/completed.png")} />
             </View>
             <View style={{ display: "flex", flexDirection: "column", gap: hp(2) }}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                     <View>
-                        <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/arrived.png")} />
+                        <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/arrived.png")} />
                     </View>
                     <View>
                         <Typography size={hp(3)} title={'Order Delivered Successfully'} ff={"OpenSans-Medium"} color={"#000"} lh={hp(3.5)} />
@@ -67,7 +67,7 @@ const Completed = () => {
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                     <View>
-                        <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/shopping-bag.png")} />
+                        <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/shopping-bag.png")} />
                     </View>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", flex: 1 }}>
                         <Typography size={hp(2)} title={'4 Items'} ff={"OpenSans-Regular"} color={"#202020"} lh={hp(3.5)} />
@@ -194,7 +194,7 @@ const Confirmed = () => {
         <View style={{ display: "flex", flexDirection: "column", gap: hp(2) }}>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/order.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/order.png")} />
                 </View>
                 <View>
                     <Typography size={hp(3)} title={'Your Order is getting Ready'} ff={"OpenSans-Medium"} color={"#000"} lh={hp(3)} />
@@ -203,7 +203,7 @@ const Confirmed = () => {
             </View>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/shopping-bag.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/shopping-bag.png")} />
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", flex: 1 }}>
                     <Typography size={hp(2)} title={'4 Items'} ff={"OpenSans-Regular"} color={"#202020"} lh={hp(3)} />
@@ -215,7 +215,7 @@ const Confirmed = () => {
             </View>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/building.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/building.png")} />
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <Typography size={hp(2)} title={'Delivering to: '} ff={"OpenSans-Regular"} color={"#000"} lh={hp(3)} fw={300} />
@@ -231,7 +231,7 @@ const OntheWay = () => {
         <View style={{ display: "flex", flexDirection: "column", gap: hp(2) }}>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/order.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/order.png")} />
                 </View>
                 <View>
                     <Typography size={hp(3)} title={'Your Order is on the way'} ff={"OpenSans-Medium"} color={"#000"} lh={hp(3)} />
@@ -240,7 +240,7 @@ const OntheWay = () => {
             </View>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/shopping-bag.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/shopping-bag.png")} />
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", flex: 1 }}>
                     <Typography size={hp(2)} title={'4 Items'} ff={"OpenSans-Regular"} color={"#202020"} lh={hp(3)} />
@@ -252,7 +252,7 @@ const OntheWay = () => {
             </View>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/building.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/building.png")} />
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <Typography size={hp(2)} title={'Delivering to: '} ff={"OpenSans-Regular"} color={"#000"} lh={hp(3)} fw={300} />
@@ -261,7 +261,7 @@ const OntheWay = () => {
             </View>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/motorcycle.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/motorcycle.png")} />
                 </View>
                 <View>
                     <Typography size={hp(3)} title={'Hi i am Aslam'} ff={"OpenSans-Medium"} color={"#000"} lh={hp(3)} />
@@ -280,7 +280,7 @@ const Arrived = () => {
         <View style={{ display: "flex", flexDirection: "column", gap: hp(2) }}>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/arrived.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/arrived.png")} />
                 </View>
                 <View>
                     <Typography size={hp(3)} title={'Your Order has Arrived'} ff={"OpenSans-Medium"} color={"#000"} lh={hp(3)} />
@@ -288,7 +288,7 @@ const Arrived = () => {
             </View>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/shopping-bag.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/shopping-bag.png")} />
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", flex: 1 }}>
                     <Typography size={hp(2)} title={'4 Items'} ff={"OpenSans-Regular"} color={"#202020"} lh={hp(3)} />
@@ -300,7 +300,7 @@ const Arrived = () => {
             </View>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/building.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/building.png")} />
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <Typography size={hp(2)} title={'Delivering to: '} ff={"OpenSans-Regular"} color={"#000"} lh={hp(3)} fw={300} />
@@ -309,7 +309,7 @@ const Arrived = () => {
             </View>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), padding: wp(3), borderBottomWidth: wp(0.1) }}>
                 <View>
-                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../assets/images/motorcycle.png")} />
+                    <Image style={{ height: 30, width: 30, objectFit: "contain" }} source={require("../../assets/images/motorcycle.png")} />
                 </View>
                 <View>
                     <Typography size={hp(3)} title={'Hi i am Aslam'} ff={"OpenSans-Medium"} color={"#000"} lh={hp(3)} />

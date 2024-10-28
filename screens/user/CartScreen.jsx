@@ -1,6 +1,6 @@
 import { Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import IonIcons from 'react-native-vector-icons/Ionicons'
-import Typography from '../components/Typography'
+import Typography from '../../components/Typography'
 import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -241,7 +241,7 @@ function SimilarItems() {
                         </View>
                     </View>
                     <View>
-                        <Image style={{ height: 80, width: 90, resizeMode: "contain", borderTopRightRadius: 10, borderBottomRightRadius: 10 }} source={require("../assets/images/shake.png")} />
+                        <Image style={{ height: 80, width: 90, resizeMode: "contain", borderTopRightRadius: 10, borderBottomRightRadius: 10 }} source={require("../../assets/images/shake.png")} />
                     </View>
                 </View>
                 <View style={styles.similarItemsWrapper}>
@@ -255,7 +255,7 @@ function SimilarItems() {
                         </View>
                     </View>
                     <View>
-                        <Image style={{ height: 80, width: 90, resizeMode: "contain", borderTopRightRadius: 10, borderBottomRightRadius: 10 }} source={require("../assets/images/shake.png")} />
+                        <Image style={{ height: 80, width: 90, resizeMode: "contain", borderTopRightRadius: 10, borderBottomRightRadius: 10 }} source={require("../../assets/images/shake.png")} />
                     </View>
                 </View>
             </ScrollView >
@@ -329,7 +329,7 @@ function GpayBox() {
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
                     <View>
-                        <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={require("../assets/images/gpay.webp")} />
+                        <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={require("../../assets/images/gpay.webp")} />
                     </View>
                     <View>
                         <Typography title={"Pay using"} ff={"OpenSans-Regular"} color={"#000"} size={14} lh={19} fw={400} />

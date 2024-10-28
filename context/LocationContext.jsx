@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { request, PERMISSIONS, RESULTS, openSettings } from 'react-native-permissions';
+import { request, PERMISSIONS, RESULTS, } from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 import { Alert } from "react-native";
 

@@ -3,7 +3,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import SignupForm from '../components/common/auth/SignupForm';
+import SignupForm from '../../components/common/auth/SignupForm';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -11,7 +11,7 @@ const SignUpScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.imgWrapper}>
-        <Image style={styles.img} source={require("../assets/images/bg.png")} />
+        <Image style={styles.img} source={require("../../assets/images/bg.png")} />
       </View>
       <View style={styles.formWrapper}>
         <SignupForm />

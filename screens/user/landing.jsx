@@ -9,7 +9,7 @@ const LandingPage = () => {
       <View style={styles.bgImgContainer}>
         <Image
           style={styles.bgImg}
-          source={require("../assets/images/bg.png")}
+          source={require("../../assets/images/bg.png")}
           resizeMode="contain" // Ensures the image scales without cutting corners
         />
       </View>

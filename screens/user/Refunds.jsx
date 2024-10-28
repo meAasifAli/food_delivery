@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useNavigation } from '@react-navigation/native'
-import Typography from '../components/Typography'
+import Typography from '../../components/Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const Refunds = () => {

@@ -3,16 +3,17 @@ import React from 'react'
 import Typography from '../../Typography'
 import { OtpInput } from 'react-native-otp-entry'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
 
-const OtpForm = () => {
+const OtpForm = ({ isDelivery, navigation }) => {
     return (
         <ScrollView>
             <Heading />
             <SecondaryHeading />
             <OtpInputs />
             <Option />
-            <ButtonComponent />
+            <ButtonComponent isDelivery={isDelivery} navigation={navigation} />
         </ScrollView>
     )
 }
@@ -139,9 +140,12 @@ const Option = () => {
     )
 }
 
-const ButtonComponent = () => {
+const ButtonComponent = ({ isDelivery, navigation }) => {
+
     return (
-        <TouchableOpacity onPress={() => { }} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center", marginHorizontal: "auto" }}>
+        <TouchableOpacity onPress={() => {
+            isDelivery ? navigation.navigate("partner-onboarding") : navigation.navigate("MainTabs")
+        }} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center", marginHorizontal: "auto" }}>
             <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Continue</Text>
         </TouchableOpacity>
     )

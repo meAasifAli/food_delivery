@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View, Switch, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import Typography from '../components/Typography'
+import Typography from '../../components/Typography'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useState } from 'react';

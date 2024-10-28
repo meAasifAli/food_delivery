@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import Typography from '../components/Typography';
+import Typography from '../../components/Typography';
 
 const Profile = () => {
     const navigation = useNavigation()
@@ -74,7 +74,7 @@ const SecondaryHeader = () => {
         }}>
             <View>
                 <Typography title={"Aasif Ali"} ff={"OpenSans-Medium"} color={"#000"} fw={400} size={hp(3)} lh={hp(3.5)} />
-                <Typography title={"+91-7889423564"} ff={"OpenSans-Regular"} color={"#202020B2"} fw={400} size={hp(2)} lh={hp(2.5)} />
+                <Typography title={"+91-7889423564"} ff={"OpenSans-Regular"} color={"#202020B2"} fw={400} size={hp(2)} lh={hp(3)} />
                 <Typography title={"aasif@gmail.com"} ff={"OpenSans-Regular"} color={"#202020B2"} fw={400} size={hp(2)} lh={hp(2.5)} />
             </View>
             <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
@@ -99,7 +99,7 @@ const OrderHistory = () => {
                     </View>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
                         <Typography title={"Delivered"} ff={"OpenSans-Regular"} color={"#202020"} fw={400} size={hp(2)} lh={hp(2.5)} />
-                        <Image style={{ width: wp(4), height: hp(4), objectFit: "contain" }} source={require("../assets/images/completed.png")} />
+                        <Image style={{ width: wp(4), height: hp(4), objectFit: "contain" }} source={require("../../assets/images/completed.png")} />
                     </View>
                 </View>
                 <View style={{ marginTop: hp(3) }}>
