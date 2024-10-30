@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {StyleSheet} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LandingPage from './screens/user/landing';
 import SignUpScreen from './screens/user/signup';
 import SigninScreen from './screens/user/signin';
@@ -9,17 +9,21 @@ import OtpScreen from './screens/user/otp';
 import Dining from './tabs/Dining';
 import Cart from './tabs/CartTab';
 import Reorder from './tabs/Reorder';
-import { View } from 'react-native';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Fontisto from 'react-native-vector-icons/Fontisto'
-import { Provider, useSelector } from 'react-redux';
-import { persistor, store } from './store/store';
+import {View} from 'react-native';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import {Provider, useSelector} from 'react-redux';
+import {persistor, store} from './store/store';
+import LocationContextProvider from './context/LocationContext';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import Profile from './screens/user/Profile';
 import EditProfile from './screens/user/EditProfile';
 import MyAccount from './screens/user/MyAccount';
@@ -28,7 +32,7 @@ import Payments from './screens/user/Payments';
 import Refunds from './screens/user/Refunds';
 import AddAddress from './screens/user/AddAddress';
 import Address from './screens/user/AddressScreen';
-import { PersistGate } from 'redux-persist/integration/react';
+import {PersistGate} from 'redux-persist/integration/react';
 // import LocationContextProvider from './context/LocationContext';
 // import DeliveryLanding from './screens/delivery/DeliveryLanding';
 // import DeliveryHomeScreen from './screens/delivery/DeliveryHomeScreen';
@@ -40,7 +44,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName='Dining'
+      initialRouteName="Dining"
       screenOptions={{
         tabBarActiveTintColor: '#FA4A0C',
         tabBarInactiveTintColor: '#202020',
@@ -50,79 +54,130 @@ const TabNavigator = () => {
           paddingBottom: hp(2),
         },
         tabBarLabelStyle: {
-          fontFamily: "OpenSans-Regular",
-          fontWeight: "600",
-          fontSize: wp(3.5)
+          fontFamily: 'OpenSans-Regular',
+          fontWeight: '600',
+          fontSize: wp(3.5),
         },
-        tabBarLabelPosition: "below-icon",
+        tabBarLabelPosition: 'below-icon',
         tabBarHideOnKeyboard: true,
         tabBarVisibilityAnimationConfig: {
-          show: true
-        }
-      }}
-    >
-      <Tab.Screen name='Dining' component={Dining} options={{
-        title: "Dining",
-        headerShown: false,
-        tabBarIcon: ({ color, size, focused }) => (
-          <View
-            style={[styles.activeTab,
-            {
-              backgroundColor: focused ? '#E8DEF8' : '#fff',
-            }
-            ]}
-          >
-            <MaterialIcon name='local-dining' size={size} color={color} />
-          </View>
-        )
-      }} />
-      <Tab.Screen name='Cart' component={Cart} options={{
-        title: "Cart",
-        headerShown: false,
-        tabBarIcon: ({ color, size, focused }) => (
-          <View
-            style={[styles.activeTab,
-            {
-              backgroundColor: focused ? '#E8DEF8' : '#fff',
-            }
-            ]}
-          >
-            <AntDesign name='shoppingcart' size={size} color={color} />
-          </View>
-        )
-      }} />
-      <Tab.Screen name='Reorder' component={Reorder} options={{
-        title: "Reorder",
-        tabBarIcon: ({ color, size, focused }) => (
-          <View
-            style={[styles.activeTab,
-            {
-              backgroundColor: focused ? '#E8DEF8' : '#fff',
-            }
-            ]}
-          >
-            <Fontisto name='spinner-rotate-forward' size={size} color={color} />
-          </View>
-        )
-      }} />
+          show: true,
+        },
+      }}>
+      <Tab.Screen
+        name="Dining"
+        component={Dining}
+        options={{
+          title: 'Dining',
+          headerShown: false,
+          tabBarIcon: ({color, size, focused}) => (
+            <View
+              style={[
+                styles.activeTab,
+                {
+                  backgroundColor: focused ? '#E8DEF8' : '#fff',
+                },
+              ]}>
+              <MaterialIcon name="local-dining" size={size} color={color} />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{
+          title: 'Cart',
+          headerShown: false,
+          tabBarIcon: ({color, size, focused}) => (
+            <View
+              style={[
+                styles.activeTab,
+                {
+                  backgroundColor: focused ? '#E8DEF8' : '#fff',
+                },
+              ]}>
+              <AntDesign name="shoppingcart" size={size} color={color} />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Reorder"
+        component={Reorder}
+        options={{
+          title: 'Reorder',
+          tabBarIcon: ({color, size, focused}) => (
+            <View
+              style={[
+                styles.activeTab,
+                {
+                  backgroundColor: focused ? '#E8DEF8' : '#fff',
+                },
+              ]}>
+              <Fontisto
+                name="spinner-rotate-forward"
+                size={size}
+                color={color}
+              />
+            </View>
+          ),
+        }}
+      />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
 const AuthenticatedUserStack = () => (
-  <Stack.Navigator initialRouteName='MainTabs'>
-    <Stack.Screen name="MainTabs" component={TabNavigator} options={{ headerShown: false }} />
-    <Stack.Screen name="Profile" component={Profile} options={{
-      title: "Profile",
-      headerShown: false
-    }} />
-    <Stack.Screen name='EditProfile' component={EditProfile} options={{ headerShown: false }} />
-    <Stack.Screen name='MyAccount' component={MyAccount} options={{ headerShown: false }} />
-    <Stack.Screen name='Addresses' component={Addresses} options={{ headerShown: false }} />
-    <Stack.Screen name='Payments' component={Payments} options={{ headerShown: false }} />
-    <Stack.Screen name='Refunds' component={Refunds} options={{ headerShown: false }} />
-    <Stack.Screen name='AddAddress' component={AddAddress} options={{ headerShown: false }} />
-    <Stack.Screen name='AddressScreen' component={Address} options={{ headerShown: false }} />
+  <Stack.Navigator initialRouteName="MainTabs">
+    <Stack.Screen
+      name="MainTabs"
+      component={TabNavigator}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        title: 'Profile',
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="EditProfile"
+      component={EditProfile}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="MyAccount"
+      component={MyAccount}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Addresses"
+      component={Addresses}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Payments"
+      component={Payments}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Refunds"
+      component={Refunds}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="AddAddress"
+      component={AddAddress}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="AddressScreen"
+      component={Address}
+      options={{headerShown: false}}
+    />
   </Stack.Navigator>
 );
 
@@ -147,7 +202,6 @@ const UserAuthStack = () => {
         }}
       />
 
-
       <Stack.Screen
         name="signin"
         component={SigninScreen}
@@ -163,37 +217,31 @@ const UserAuthStack = () => {
         }}
       />
     </Stack.Navigator>
-  )
-}
-
-
-const MainNavigator = () => {
-  // Access the auth state within the provider context
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
-  console.log(user);
-
-
-  return (
-    <NavigationContainer>
-      {isAuthenticated ? <AuthenticatedUserStack /> : <UserAuthStack />}
-    </NavigationContainer>
   );
 };
 
-
-
-const App = () => {
+const MainNavigator = () => {
+  // Access the auth state within the provider context
+  const {isAuthenticated, user} = useSelector(state => state.auth);
+  console.log(user);
 
   return (
+    <LocationContextProvider>
+      <NavigationContainer>
+        {isAuthenticated ? <AuthenticatedUserStack /> : <UserAuthStack />}
+      </NavigationContainer>
+    </LocationContextProvider>
+  );
+};
 
+const App = () => {
+  return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <MainNavigator />
       </PersistGate>
     </Provider>
-
-  )
-
+  );
 };
 
 export default App;
@@ -202,9 +250,9 @@ const styles = StyleSheet.create({
   activeTab: {
     width: 64,
     height: 32,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 16
-  }
-})
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 16,
+  },
+});
