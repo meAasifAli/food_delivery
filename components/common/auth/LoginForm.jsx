@@ -1,17 +1,50 @@
-import { Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Typography from '../../Typography'
 import CustomLink from '../../CustomLink'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { setOtp, setPhone, setUser, setVerificationWindow } from '../../../store/authSlice';
+import axios from 'axios'
 
 
 const LoginForm = () => {
+    const { user } = useSelector((state) => state?.auth)
+    const navigation = useNavigation()
+    const dispatch = useDispatch()
+    const [loading, setLoading] = useState(false)
+    const [mobile, setMobile] = useState("")
+
+    const handleLogin = async () => {
+        try {
+            setLoading(true)
+            const res = await axios.post(`http://192.168.100.3:3000/api/user/userSendOtp`, {
+                phone_no: mobile
+            })
+            if (res?.data) {
+                dispatch(setOtp(res?.data?.otp))
+                dispatch(setPhone(mobile))
+                dispatch(setVerificationWindow("signin"))
+                navigation.navigate("otp")
+                setMobile("")
+            }
+
+        } catch (error) {
+            setLoading(false)
+            console.log(error);
+            Alert.alert(error?.message)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
     return (
         <ScrollView>
             <Heading />
             <SecondaryHeading />
-            <Input />
-            <ButtonComponent />
+            <Input value={mobile} setMobile={setMobile} />
+            <ButtonComponent loading={loading} handlePress={handleLogin} />
             <GoogleNav />
             <BottomNav />
         </ScrollView>
@@ -101,23 +134,26 @@ const SecondaryHeading = () => {
         </View>
     )
 }
-const Input = () => {
+const Input = ({ mobile, setMobile }) => {
     return (
         <KeyboardAvoidingView style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: hp(1) }}>
             <Text style={{ color: "#fff", marginLeft: wp(5), fontFamily: "OpenSans-Regular", fontWeight: "300" }}>Mobile Number</Text>
-            <TextInput keyboardType='phone-pad' placeholderTextColor={"white"} placeholder='Enter Mobile Number' style={{ padding: wp(3), borderColor: "#fff", borderWidth: wp(0.5), width: wp(90), borderRadius: wp(3), marginVertical: wp(2), color: "#fff", marginHorizontal: "auto" }} />
+            <TextInput
+                value={mobile}
+                onChangeText={(text) => setMobile(text)}
+                keyboardType='phone-pad' placeholderTextColor={"white"} placeholder='Enter Mobile Number' style={{ padding: wp(3), borderColor: "#fff", borderWidth: wp(0.5), width: wp(90), borderRadius: wp(3), marginVertical: wp(2), color: "#fff", marginHorizontal: "auto" }} />
         </KeyboardAvoidingView>
     )
 }
 
-const ButtonComponent = () => {
-    const navigation = useNavigation()
+const ButtonComponent = ({ handlePress, loading }) => {
     return (
-        <View style={{ marginTop: hp(2), marginHorizontal: "auto" }}>
-            <TouchableOpacity onPress={() => navigation.navigate("otp")} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center" }}>
-                <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Sign In</Text>
-            </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={handlePress} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center", marginTop: hp(2), marginHorizontal: "auto" }}>
+            {
+                loading ? <ActivityIndicator size={"small"} color={"#fff"} /> : <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Sign In</Text>
+            }
+        </TouchableOpacity>
+
     )
 }
 

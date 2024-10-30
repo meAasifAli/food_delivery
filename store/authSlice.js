@@ -6,19 +6,33 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         user: null,
+        isAuthenticated: false,
+        verificationWindow: "signup",
+        phone: null,
         otp: null,
-        isAuthenticated: false
+        token: null
     },
     reducers: {
         setUser(state, action) {
-            state.user = action.payload.data,
-                state.otp = action.payload.otp
+            state.user = action.payload
         },
-        setAuthenticated(state, action) {
+        setAuthenticated(state,) {
             state.isAuthenticated = !state.isAuthenticated
+        },
+        setVerificationWindow(state, action) {
+            state.verificationWindow = action.payload
+        },
+        setPhone(state, action) {
+            state.phone = action.payload
+        },
+        setOtp(state, action) {
+            state.otp = action.payload
+        },
+        setToken(state, action) {
+            state.token = action.payload
         }
     }
 })
 
-export const { setUser, setAuthenticated } = authSlice.actions;
+export const { setUser, setAuthenticated, setVerificationWindow, setOtp, setPhone, setToken } = authSlice.actions;
 export default authSlice.reducer;

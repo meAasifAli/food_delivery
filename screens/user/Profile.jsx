@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../components/Typography';
 import { useDispatch } from 'react-redux';
-import { setAuthenticated } from '../../store/authSlice';
+import { setAuthenticated, setOtp, setToken, setUser } from '../../store/authSlice';
 
 const Profile = () => {
     const dispatch = useDispatch()
@@ -34,10 +34,12 @@ const Profile = () => {
 
     const handleLogout = () => {
         dispatch(setAuthenticated())
+        dispatch(setUser(null))
+        dispatch(setToken(null))
+        dispatch(setOtp(null))
     }
     return (
         <ScrollView style={styles.container}>
-
             <Header />
             <Pressable onPress={handleLogout}>
                 <Text>Logout</Text>

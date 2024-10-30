@@ -1,9 +1,18 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useSelector } from 'react-redux';
 
 
 const LandingPage = () => {
+
+  const { isAuthenticated, user, token, otp } = useSelector(state => state.auth)
+  console.log('user : ', user);
+  console.log('IsAuthenticated: ', isAuthenticated);
+  console.log('token: ', token);
+  console.log('otp: ', otp);
+
+
 
 
   const navigation = useNavigation();
