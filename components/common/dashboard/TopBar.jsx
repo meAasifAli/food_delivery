@@ -6,8 +6,15 @@ import SearchInput from '../../SearchInput'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
 const TopBar = () => {
     const navigation = useNavigation()
+    const { user, verificationWindow, phone, otp: storeOtp, token } = useSelector((state) => state?.auth)
+    console.log(user);
+
+    console.log(token);
+
+
     return (
         <View
             style={styles.topBar}

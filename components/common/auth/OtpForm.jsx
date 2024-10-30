@@ -5,23 +5,45 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import axios from 'axios';
-import { setAuthenticated } from '../../../store/authSlice';
+import { setAuthenticated, setToken, setUser } from '../../../store/authSlice';
 
 const OtpForm = ({ isDelivery, navigation }) => {
     const dispatch = useDispatch()
     const [otp, setOtp] = useState("")
     const [loading, setLoading] = useState(false)
-    const { user } = useSelector((state) => state?.auth)
+    const { user, verificationWindow, phone, otp: storeOtp } = useSelector((state) => state?.auth)
+
+    console.log(user);
+
+    console.log(storeOtp);
+
+
+
 
     const handleVerifyOtp = async () => {
         try {
             setLoading(true)
-            const res = await axios.post(`http://192.168.100.6:3000/api/user/userSignUp/${user?.phone_no}/${user?.username}/${user?.email}`, {
-                givenOTP: otp
-            })
-            if (res?.data) {
-                dispatch(setAuthenticated())
+            if (verificationWindow === "signup") {
+                const res = await axios.post(`http://192.168.100.3:3000/api/user/userSignUp/${user?.phone_no}/${user?.username}/${user?.email}`, {
+                    givenOTP: otp
+                })
+                if (res?.data) {
+                    dispatch(setAuthenticated())
+                    dispatch(setToken(res?.data?.token))
+                }
             }
+            if (verificationWindow === "signin") {
+                const res = await axios.post(`http://192.168.100.3:3000/api/user/userLogin/${phone}`, {
+                    givenOTP: otp
+                })
+                if (res?.data) {
+                    dispatch(setAuthenticated())
+                    dispatch(setUser(res?.data?.userData))
+                    dispatch(setToken(res?.data?.token))
+                    //Todo : store coming token in a state
+                }
+            }
+
         } catch (error) {
             console.log(error);
             setLoading(false);

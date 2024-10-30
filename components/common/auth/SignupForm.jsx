@@ -1,13 +1,12 @@
 import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
-import Button from '../../Button';
 import Typography from '../../Typography';
 import CustomLink from '../../CustomLink';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../../store/authSlice';
+import { setUser, setVerificationWindow, setOtp } from '../../../store/authSlice';
 const SignupForm = () => {
     const navigation = useNavigation()
     const dispatch = useDispatch()
@@ -21,13 +20,14 @@ const SignupForm = () => {
     const handeCreate = async () => {
         try {
             setLoading(true)
-            const res = await axios.post("http://192.168.100.6:3000/api/user/createUser", {
+            const res = await axios.post("http://192.168.100.3:3000/api/user/createUser", {
                 username: inputs.name,
                 email: inputs.email,
                 phone_no: inputs.phone
             })
             if (res?.data) {
                 dispatch(setUser(res?.data))
+                dispatch(setVerificationWindow("signup"))
                 navigation.navigate("otp")
                 setInputs({
                     name: "",
@@ -38,7 +38,7 @@ const SignupForm = () => {
 
         } catch (error) {
             setLoading(false)
-            console.log(error);
+            console.log(error?.message);
             Alert.alert(error?.message)
         }
         finally {
