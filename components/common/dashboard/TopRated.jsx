@@ -6,38 +6,32 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {restaurants} from '../../../static/data';
 import RestaurantCard from '../../shared/RestaurantCard';
-import BASE_URI from '../../../config/uri';
-import {useSelector} from 'react-redux';
-import {LocationContext} from '../../../context/LocationContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { LocationContext } from '../../../context/LocationContext';
+import { fetchRestaurants } from '../../../store/restaurantSlice';
 
-const {height, width} = Dimensions.get('window');
 
-const TopRated = ({navigation}) => {
-  const {token} = useSelector(state => state.auth);
-  const {location} = useContext(LocationContext);
 
-  const TopRestaurants = async () => {
-    const url = `${BASE_URI}/api/restaurant/popular/${location.latitude}/${location.longitude}`;
-    try {
-      const res = await axios.get(url, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log('my data', res.data);
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
-  };
+const TopRated = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const { token } = useSelector(state => state.auth);
+  const { location } = useContext(LocationContext);
+
+
+  const { loading, error, topRated } = useSelector(state => state?.restaurant)
+
+
+
   useEffect(() => {
-    TopRestaurants();
-  }, []);
+    dispatch(fetchRestaurants({ type: "topRated" }))
+  }, [dispatch])
+
+
+  // console.log("topRated", topRated);
 
   return (
     <>
@@ -73,9 +67,9 @@ const TopRated = ({navigation}) => {
       <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        data={restaurants}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
+        data={topRated}
+        keyExtractor={item => item?.restaurant_id}
+        renderItem={({ item }) => (
           <RestaurantCard item={item} navigation={navigation} />
         )}
       />

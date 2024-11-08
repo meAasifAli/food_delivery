@@ -1,25 +1,40 @@
-import { StyleSheet, Text, View, Image, Dimensions, Pressable, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import Modal from 'react-native-modal'
 import Typography from '../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import RadioButton from 'react-native-radio-button'
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch } from 'react-redux'
-import { addToCart } from '../../store/cartSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { BASE_URI } from '../../config/uri'
 
 
 
 const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize, item }) => {
-    const navigation = useNavigation()
-    const dispatch = useDispatch()
+    const [options, setOptions] = useState([])
 
-    const handleAdd = () => {
-        dispatch(addToCart({ id: 1, name: "Zinger Burger", price: 200, image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" }))
-        toggleSecondDrawer()
-        navigation.navigate("Cart", { screen: "CartScreen" })
-    }
+    const { token } = useSelector(state => state.auth)
 
+    useEffect(() => {
+        const getCustomization = async () => {
+            try {
+                const res = await axios.get(`http://192.168.100.26:3000/api/items/customisation/getCustomisation/${item?.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                setOptions(res?.data?.customizations?.Size?.options);
+
+            } catch (error) {
+                console.log(error);
+                Alert.alert("Something went wrong")
+
+            }
+        }
+        getCustomization()
+    }, [])
 
     return (
         <Modal
@@ -39,16 +54,16 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                 >
-                    <Header toggleSecondDrawer={toggleSecondDrawer} />
+                    <Header item={item} toggleSecondDrawer={toggleSecondDrawer} />
                     <View style={{ borderStyle: "dashed", borderColor: "#fff", borderWidth: 0.50, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0, paddingTop: hp(2) }}></View>
                     <View style={{ display: "flex", flexDirection: "column", gap: 5, justifyContent: "flex-start", paddingTop: hp(2) }}>
                         <Typography title={"Size"} color={"#fff"} ff={"OpenSans_regular"} fw={600} lh={23} ls={0.05} size={16} />
                         <Typography title={"Select any 1"} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
                     </View>
 
-                    <SizeItems size={size} setSize={setSize} />
+                    <SizeItems options={options} size={size} setSize={setSize} />
                     <ExtraItems />
-                    <Actions />
+                    <Actions options={options} size={size} item={item} />
                 </ScrollView>
             </View>
         </Modal>
@@ -137,11 +152,11 @@ const styles = StyleSheet.create({
     }
 })
 
-const Header = ({ toggleSecondDrawer }) => {
+const Header = ({ toggleSecondDrawer, item }) => {
     return (
         <View style={styles.modal2HeadingWrapper}>
             <View>
-                <Typography title={"Chicken Zinger"} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
+                <Typography title={item?.name} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
             </View>
             <TouchableOpacity onPress={() => toggleSecondDrawer()}>
                 <Entypo name='circle-with-cross' size={20} color={"#fff"} />
@@ -151,31 +166,18 @@ const Header = ({ toggleSecondDrawer }) => {
 }
 
 
-const SizeItems = ({ size, setSize }) => {
+const SizeItems = ({ size, setSize, options }) => {
     return (
         <View style={styles.sizeContainer}>
-            <SizeItem
-                title="Small"
-                selectedSize={size}
-                sizeValue="small"
-                onPress={() => setSize('small')}
-            />
-            <SizeItem
-                title="Medium"
-                selectedSize={size}
-                sizeValue="medium"
-                onPress={() => setSize('medium')}
-            />
-            <SizeItem
-                title="Large"
-                selectedSize={size}
-                sizeValue="large"
-                onPress={() => setSize('large')}
-            />
+            {
+                options.map((item, id) => (
+                    <SizeItem title={item?.name} price={item?.price} key={id} sizeValue={item?.name} selectedSize={size} onPress={() => setSize(item?.name)} />
+                ))
+            }
         </View>
     )
 }
-const SizeItem = ({ title, selectedSize, sizeValue, onPress }) => {
+const SizeItem = ({ title, selectedSize, sizeValue, onPress, price }) => {
     return (
         <View style={styles.sizeItem}>
             <View style={styles.sizeItemLeftWrapper}>
@@ -183,10 +185,11 @@ const SizeItem = ({ title, selectedSize, sizeValue, onPress }) => {
                     style={{ resizeMode: 'contain', height: 10, width: 10 }}
                     source={require('../../assets/images/arrowUpBox.png')}
                 />
+
                 <Typography
                     title={title}
                     color={'#fff'}
-                    ff={'OpenSans_regular'}
+                    ff={'OpenSans-Regular'}
                     fw={300}
                     lh={23}
                     ls={0.05}
@@ -241,24 +244,60 @@ const ExtraItems = () => {
     )
 }
 
-const Actions = () => {
+const Actions = ({ options, size, item }) => {
+    const { token } = useSelector(state => state?.auth)
     const navigation = useNavigation()
+    const [quantity, setQuanitity] = useState(1)
+    const [loading, setLoading] = useState(false)
+    const handleAddToCart = async () => {
+        try {
+            setLoading(true)
+            const res = await axios.post(`${BASE_URI}/api/cart/addItem/${item.id}`, {
+                quantity: quantity
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            if (res.data) {
+                Alert.alert("Item has been Added to the Cart")
+                navigation.navigate('Cart', { screen: "CartScreen" })
+            }
+        } catch (error) {
+            console.log(error);
+            Alert.alert("Error in adding to the cart")
+            setLoading(false)
+
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
+    const handleIncrease = () => {
+        setQuanitity(prev => prev + 1)
+    }
+    const handleDecrease = () => {
+        setQuanitity(prev => prev === 1 ? 1 : prev - 1)
+    }
     return (
         <View style={styles.actionWrapper}>
             <View style={styles.qtyWrapper}>
-                <TouchableOpacity style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
+                <TouchableOpacity onPress={handleIncrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
                     <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>+</Text>
                 </TouchableOpacity>
                 <View >
-                    <Typography title={"1"} color={'#FA4A0C'} ff={'OpenSans_regular'} fw={800} lh={60} ls={0.05} size={30} />
+                    <Typography title={quantity} color={'#FA4A0C'} ff={'OpenSans_regular'} fw={800} lh={60} ls={0.05} size={30} />
                 </View>
-                <TouchableOpacity style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
+                <TouchableOpacity onPress={handleDecrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
                     <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>-</Text>
                 </TouchableOpacity>
             </View>
             <View>
-                <TouchableOpacity onPress={() => navigation.navigate("Cart", { screen: "CartScreen" })} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(20), alignItems: "center", }}>
-                    <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Add</Text>
+                <TouchableOpacity onPress={handleAddToCart} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), alignItems: "center", }}>
+                    {
+                        loading ? <ActivityIndicator size={"small"} color={"#fff"} /> : <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>{`Add | Rs: ${options.find((item) => item?.name === size)?.price || 0}`}</Text>
+                    }
                 </TouchableOpacity>
             </View>
         </View>

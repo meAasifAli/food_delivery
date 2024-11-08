@@ -1,7 +1,7 @@
-import {StyleSheet} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { Alert, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LandingPage from './screens/user/landing';
 import SignUpScreen from './screens/user/signup';
 import SigninScreen from './screens/user/signin';
@@ -9,12 +9,12 @@ import OtpScreen from './screens/user/otp';
 import Dining from './tabs/Dining';
 import Cart from './tabs/CartTab';
 import Reorder from './tabs/Reorder';
-import {View} from 'react-native';
+import { View } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {Provider, useSelector} from 'react-redux';
-import {persistor, store} from './store/store';
+import { Provider, useSelector } from 'react-redux';
+import { persistor, store } from './store/store';
 import LocationContextProvider from './context/LocationContext';
 
 const Stack = createNativeStackNavigator();
@@ -32,7 +32,9 @@ import Payments from './screens/user/Payments';
 import Refunds from './screens/user/Refunds';
 import AddAddress from './screens/user/AddAddress';
 import Address from './screens/user/AddressScreen';
-import {PersistGate} from 'redux-persist/integration/react';
+import { PersistGate } from 'redux-persist/integration/react';
+import { useEffect } from 'react';
+import axios from 'axios';
 // import LocationContextProvider from './context/LocationContext';
 // import DeliveryLanding from './screens/delivery/DeliveryLanding';
 // import DeliveryHomeScreen from './screens/delivery/DeliveryHomeScreen';
@@ -70,7 +72,7 @@ const TabNavigator = () => {
         options={{
           title: 'Dining',
           headerShown: false,
-          tabBarIcon: ({color, size, focused}) => (
+          tabBarIcon: ({ color, size, focused }) => (
             <View
               style={[
                 styles.activeTab,
@@ -89,7 +91,7 @@ const TabNavigator = () => {
         options={{
           title: 'Cart',
           headerShown: false,
-          tabBarIcon: ({color, size, focused}) => (
+          tabBarIcon: ({ color, size, focused }) => (
             <View
               style={[
                 styles.activeTab,
@@ -107,7 +109,7 @@ const TabNavigator = () => {
         component={Reorder}
         options={{
           title: 'Reorder',
-          tabBarIcon: ({color, size, focused}) => (
+          tabBarIcon: ({ color, size, focused }) => (
             <View
               style={[
                 styles.activeTab,
@@ -133,7 +135,7 @@ const AuthenticatedUserStack = () => (
     <Stack.Screen
       name="MainTabs"
       component={TabNavigator}
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
     />
     <Stack.Screen
       name="Profile"
@@ -146,37 +148,37 @@ const AuthenticatedUserStack = () => (
     <Stack.Screen
       name="EditProfile"
       component={EditProfile}
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
     />
     <Stack.Screen
       name="MyAccount"
       component={MyAccount}
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
     />
     <Stack.Screen
       name="Addresses"
       component={Addresses}
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
     />
     <Stack.Screen
       name="Payments"
       component={Payments}
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
     />
     <Stack.Screen
       name="Refunds"
       component={Refunds}
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
     />
     <Stack.Screen
       name="AddAddress"
       component={AddAddress}
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
     />
     <Stack.Screen
       name="AddressScreen"
       component={Address}
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
     />
   </Stack.Navigator>
 );
@@ -222,8 +224,9 @@ const UserAuthStack = () => {
 
 const MainNavigator = () => {
   // Access the auth state within the provider context
-  const {isAuthenticated, user} = useSelector(state => state.auth);
-  console.log(user);
+  const { isAuthenticated, user } = useSelector(state => state.auth);
+
+
 
   return (
     <LocationContextProvider>

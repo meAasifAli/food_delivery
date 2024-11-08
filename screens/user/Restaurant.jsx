@@ -1,4 +1,4 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { restaurantMenus, restaurants } from '../../static/data';
 import IonIcons from 'react-native-vector-icons/Ionicons'
@@ -13,17 +13,23 @@ import FoodSizeMenu from '../../components/modals/FoodSizeMenu';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRestaurant } from '../../store/restaurantSlice';
 
 
-const { width, height } = Dimensions.get("window")
+
 
 const Restaurant = ({ route }) => {
+    const dispatch = useDispatch()
+    const { token } = useSelector((state) => state?.auth)
+    const { restaurant } = useSelector((state) => state?.restaurant)
     const [selectedMenu, setSelectedMenu] = useState("Veg")
-    const [item, setItem] = useState(null)
     const { restaurantId } = route.params;
     const [openfirstDrawer, setOpenFirstDrawer] = useState(false)
     const [openSecondDrawer, setOpenSecondDrawer] = useState(false)
     const [size, setSize] = useState("small")
+
 
     const toggleFirstDrawer = () => {
         setOpenFirstDrawer(!openfirstDrawer)
@@ -34,12 +40,22 @@ const Restaurant = ({ route }) => {
         setOpenSecondDrawer(!openSecondDrawer)
     }
 
-
-
     useEffect(() => {
-        const fetchRestaurant = () => {
-            const item = restaurants.find((item) => item?.id.toString() === restaurantId.toString())
-            setItem(item)
+        const fetchRestaurant = async () => {
+            try {
+                const res = await axios.get(`http://192.168.100.26:3000/api/menu/${restaurantId}/34.0837/74.7973`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                })
+                dispatch(setRestaurant(res?.data?.data))
+
+
+            } catch (error) {
+                Alert.alert("Error in fetching restaurant");
+                console.log(error?.message);
+
+            }
         }
         fetchRestaurant()
     }, [restaurantId])
@@ -49,19 +65,23 @@ const Restaurant = ({ route }) => {
             {/* header */}
             <TopHeading />
             {/* Restaurant Details */}
-            <RestaurantDetails item={item} />
+            <RestaurantDetails item={restaurant} />
             {/* Menu Divider */}
             <MenuDivider />
             {/* search */}
             <View>
                 <SearchMenu />
             </View>
-            <Menus selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} item={item} />
+            <Menus selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
             <Heading />
             <View>
-                <MenuItem openfirstDrawer={openfirstDrawer} openSecondDrawer={openSecondDrawer} size={size} setSize={setSize} toggleFirstDrawer={toggleFirstDrawer} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} isSecondDrawerVisible={openSecondDrawer} item={item} />
-                <MenuItem openfirstDrawer={openfirstDrawer} openSecondDrawer={openSecondDrawer} size={size} setSize={setSize} toggleFirstDrawer={toggleFirstDrawer} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} isSecondDrawerVisible={openSecondDrawer} item={item} />
-                <MenuItem openfirstDrawer={openfirstDrawer} openSecondDrawer={openSecondDrawer} size={size} setSize={setSize} toggleFirstDrawer={toggleFirstDrawer} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} isSecondDrawerVisible={openSecondDrawer} item={item} />
+                {
+                    restaurant?.menu?.TopSeller?.map((item, id) => (
+                        item?.type === selectedMenu.toLowerCase() && (
+                            <MenuItem selectedMenu={selectedMenu} key={id} openfirstDrawer={openfirstDrawer} openSecondDrawer={openSecondDrawer} size={size} setSize={setSize} toggleFirstDrawer={toggleFirstDrawer} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} isSecondDrawerVisible={openSecondDrawer} item={item} />
+                        )
+                    ))
+                }
             </View>
         </ScrollView>
     )
@@ -88,7 +108,6 @@ const styles = StyleSheet.create({
     restaurantWrapper: {
         padding: wp(2),
         width: "95%",
-        height: "17%",
         marginHorizontal: "auto",
         backgroundColor: "#202020",
         marginTop: hp(3),
@@ -180,7 +199,8 @@ const styles = StyleSheet.create({
     leftHeadingWrapper: {
         display: "flex",
         flexDirection: "row",
-        alignItems: "flex-end",
+        alignItems: "center",
+        gap: 5,
         width: wp(30)
 
     },
@@ -226,21 +246,22 @@ function TopHeading() {
 function RestaurantDetails({ item }) {
     return (
         <View style={styles.restaurantWrapper}>
-            <Typography title={item?.name} color={"#fff"} size={32} lh={43} ls={0.07} fw={600} ff={"OpenSans-Regular"} />
-            <Typography title={item?.des} lines={1} color={"#fff"} size={14} lh={18} ls={0.07} fw={300} ff={"OpenSans-Regular"} />
+            <Typography title={item?.restaurantName} color={"#fff"} size={32} lh={43} ls={0.07} fw={600} ff={"OpenSans-Regular"} />
+            <Typography title={item?.categories?.join(", ")} lines={1} color={"#fff"} size={14} lh={18} ls={0.07} fw={300} ff={"OpenSans-Regular"} />
             <View style={{ borderStyle: "dashed", borderColor: "#fff", borderWidth: 0.50, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0, width: wp(100), marginTop: hp(2) }}></View>
             <View style={styles.ratingWrapper}>
                 <View style={styles.ratingLeftWrapper}>
-                    <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={13} lh={27.02} ls={0.05} fw={400} ta={"center"} />
+                    <Typography title={item?.rating} color={"#fff"} ff={"OpenSans_regular"} size={13} lh={27.02} ls={0.05} fw={400} ta={"center"} />
                     <Entypo name='star-outlined' size={12} color={"#fff"} />
                 </View>
                 <View>
-                    <Typography title={"1k+ ratings"} color={"#fff"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
+                    <Typography title={`${item?.ratingCount} ratings`} color={"#fff"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
                 </View>
             </View>
             <View style={styles.bottomWrapper}>
                 <IonIcons name='timer-outline' size={20} color={"#fff"} />
-                <Typography title={`${item?.deliveryTime} - ${item?.address}`} color={"#fff"} size={14} lh={18} ls={0.07} fw={400} ff={"OpenSans-Regular"} />
+                {/* Todo : Add dynamic delivery time */}
+                <Typography title={`30-45 mins - ${item?.street}`} color={"#fff"} size={14} lh={18} ls={0.07} fw={400} ff={"OpenSans-Regular"} />
             </View>
         </View>
     )
@@ -256,7 +277,7 @@ function Heading() {
     )
 }
 
-function Menus({ selectedMenu, setSelectedMenu, item }) {
+function Menus({ selectedMenu, setSelectedMenu, }) {
     return (
         <View style={styles.menus}>
             {
@@ -290,13 +311,14 @@ function MenuDivider() {
 
 function MenuItem({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, openfirstDrawer, openSecondDrawer }) {
     const navigation = useNavigation()
+
     return (
         <View style={styles.menuContainer}>
             {/* left */}
             <View style={styles.leftWrapper}>
                 <View style={styles.leftHeadingWrapper}>
                     <View>
-                        <Text style={{ fontFamily: "OpenSans-Bold", color: "black", fontWeight: "600", fontSize: hp(2) }}>Chicken Zinger Meal Box</Text>
+                        <Text style={{ fontFamily: "OpenSans-Bold", color: "black", fontWeight: "600", fontSize: hp(2) }}>{item?.name}</Text>
                     </View>
                     <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
                         <AntDesign name='caretup' size={hp(0.8)} color={"#FA4A0C"} />
@@ -308,11 +330,11 @@ function MenuItem({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, 
                         <Entypo name='star-outlined' size={12} color={"#fff"} />
                     </View>
                     <View>
-                        <Typography title={"(24)"} color={"#20202080"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
+                        <Typography title={`(${item?.order_count})`} color={"#20202080"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
                     </View>
                 </View>
                 <View>
-                    <Typography title={"1 Zinger Burger + 2 Wings + 1 Fries + 400ml Pepsi"} color={"#000"} ff={"OpenSans_regular"} size={12} lh={16} ls={0.07} fw={300} maxW={wp(40)} />
+                    <Typography title={item?.description} color={"#000"} ff={"OpenSans_regular"} size={12} lh={16} ls={0.07} fw={300} maxW={wp(40)} />
                 </View>
             </View>
             {/* right */}

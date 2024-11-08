@@ -6,39 +6,33 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {restaurants} from '../../../static/data';
+import { restaurants } from '../../../static/data';
 import RestaurantCard from '../../shared/RestaurantCard';
 import axios from 'axios';
 import BASE_URI from '../../../config/uri';
-import {LocationContext} from '../../../context/LocationContext';
-import {useSelector} from 'react-redux';
+import { LocationContext } from '../../../context/LocationContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRestaurants } from '../../../store/restaurantSlice';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
-const PopularBrands = ({navigation}) => {
-  const {token} = useSelector(state => state.auth);
-  const {location} = useContext(LocationContext);
+const PopularBrands = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const { token } = useSelector(state => state.auth);
+  const { location } = useContext(LocationContext);
 
-  const PopularRestaurants = async () => {
-    const url = `${BASE_URI}/api/restaurant/popular/${location.latitude}/${location.longitude}`;
-    try {
-      const res = await axios.get(url, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log('my data', res.data);
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
-  };
+  const { loading, error, popular } = useSelector(state => state?.restaurant)
+
+
+
   useEffect(() => {
-    PopularRestaurants();
-  }, []);
+    dispatch(fetchRestaurants({ type: "popular" }))
+  }, [dispatch])
+
+
 
   return (
     <>
@@ -80,9 +74,9 @@ const PopularBrands = ({navigation}) => {
         <FlatList
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          data={restaurants}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => (
+          data={popular}
+          keyExtractor={item => item?.restaurant_id}
+          renderItem={({ item }) => (
             <RestaurantCard
               item={item}
               navigation={navigation}
@@ -139,7 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     flex: 1,
   },
-  divider: {borderBottomColor: '#D6D6D6', borderBottomWidth: 1},
+  divider: { borderBottomColor: '#D6D6D6', borderBottomWidth: 1 },
   ratingWrapper: {
     display: 'flex',
     flexDirection: 'row',

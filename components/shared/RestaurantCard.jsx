@@ -10,28 +10,28 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 const { height, width } = Dimensions.get("window")
 
 const RestaurantCard = ({ navigation, item, isPopular }) => {
+
     return (
-        <TouchableOpacity onPress={() => navigation.navigate("Restaurant", { restaurantId: item?.id })} style={[styles.restaurantsContainer, {
+        <TouchableOpacity onPress={() => navigation.navigate("Restaurant", { restaurantId: item?.restaurant_id })} style={[styles.restaurantsContainer, {
             elevation: 4,
             backgroundColor: isPopular ? "#000" : "#fff",
         }]}>
-            <Image source={item?.img} style={styles.restaurantImg} />
+            <Image source={require("../../assets/images/karims.png")} style={styles.restaurantImg} />
             <View style={styles.restaurantContentWrapper}>
-                <Typography title={item?.name} color={isPopular ? "#fff" : "#000000"} ff={"OpenSans_regular"} size={hp(2.7)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
+                <Typography title={item?.restaurant_name} color={isPopular ? "#fff" : "#000000"} ff={"OpenSans_regular"} size={hp(2.7)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
                 <View style={styles.divider}></View>
                 <View style={styles.ratingWrapper}>
                     <View style={styles.ratingLeftWrapper}>
-                        <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={hp(1.7)} lh={hp(2.2)} ls={0.05} fw={400} ta={"center"} />
+                        <Typography title={item?.avg_rating} color={"#fff"} ff={"OpenSans_regular"} size={hp(1.7)} lh={hp(2.2)} ls={0.05} fw={400} ta={"center"} />
                         <Entypo name='star-outlined' size={12} color={"#fff"} />
                     </View>
                     <View>
-                        <Typography title={item?.deliveryTime} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
+                        <Typography title={item?.delivery_time} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
                     </View>
                 </View>
                 <View style={styles.desWrapper}>
-                    <Typography lines={1} title={item?.des} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} ta={"center"} />
+                    <Typography lines={1} title={item?.categories?.join(", ")} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} ta={"center"} />
                 </View>
-
             </View>
         </TouchableOpacity>
     )
@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 5,
         padding: 2,
-        borderRadius: 5
+        borderRadius: 5,
+        paddingHorizontal: 5
     },
     desWrapper: {
         paddingHorizontal: 20,

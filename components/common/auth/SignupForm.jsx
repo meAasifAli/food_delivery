@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUser, setVerificationWindow, setOtp } from '../../../store/authSlice';
+import { BASE_URI } from '../../../config/uri';
 const SignupForm = () => {
     const navigation = useNavigation()
     const dispatch = useDispatch()
@@ -20,7 +21,7 @@ const SignupForm = () => {
     const handeCreate = async () => {
         try {
             setLoading(true)
-            const res = await axios.post("http://192.168.100.3:3000/api/user/createUser", {
+            const res = await axios.post(`${BASE_URI}/api/user/createUser`, {
                 username: inputs.name,
                 email: inputs.email,
                 phone_no: inputs.phone

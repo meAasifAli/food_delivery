@@ -3,10 +3,13 @@ import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../components/Typography';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuthenticated, setOtp, setToken, setUser } from '../../store/authSlice';
 
 const Profile = () => {
+    const { user } = useSelector(state => state?.auth)
+    console.log(user);
+
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const Items = [
@@ -44,7 +47,7 @@ const Profile = () => {
             <Pressable onPress={handleLogout}>
                 <Text>Logout</Text>
             </Pressable>
-            <SecondaryHeader />
+            <SecondaryHeader user={user} />
             <View style={{ borderBottomWidth: wp(0.2), marginVertical: hp(1) }}></View>
             <View>
                 {
@@ -79,16 +82,16 @@ const Header = () => {
     )
 }
 
-const SecondaryHeader = () => {
+const SecondaryHeader = ({ user }) => {
     const navigation = useNavigation()
     return (
         <View style={{
             marginTop: hp(2), display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
         }}>
             <View>
-                <Typography title={"Aasif Ali"} ff={"OpenSans-Medium"} color={"#000"} fw={400} size={hp(3)} lh={hp(3.5)} />
-                <Typography title={"+91-7889423564"} ff={"OpenSans-Regular"} color={"#202020B2"} fw={400} size={hp(2)} lh={hp(3)} />
-                <Typography title={"aasif@gmail.com"} ff={"OpenSans-Regular"} color={"#202020B2"} fw={400} size={hp(2)} lh={hp(2.5)} />
+                <Typography title={user?.username} ff={"OpenSans-Medium"} color={"#000"} fw={400} size={hp(3)} lh={hp(3.5)} />
+                <Typography title={`+91${user?.phone_no}`} ff={"OpenSans-Regular"} color={"#202020B2"} fw={400} size={hp(2)} lh={hp(3)} />
+                <Typography title={user?.email} ff={"OpenSans-Regular"} color={"#202020B2"} fw={400} size={hp(2)} lh={hp(2.5)} />
             </View>
             <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
                 <Typography title={"Edit Profile"} ff={"OpenSans-Regular"} color={"#FA4A0C"} fw={400} size={hp(2.5)} lh={hp(3.5)} />
