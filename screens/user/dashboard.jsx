@@ -6,10 +6,6 @@ import Nearest from '../../components/common/dashboard/Nearest'
 import TopRated from '../../components/common/dashboard/TopRated'
 import PopularBrands from '../../components/common/dashboard/PopularBrands'
 import { useNavigation } from '@react-navigation/native'
-import { useContext } from 'react'
-import { LocationContext } from '../../context/LocationContext'
-
-
 
 
 const DashboardScreen = () => {

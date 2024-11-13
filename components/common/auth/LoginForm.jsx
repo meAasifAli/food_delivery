@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Typography from '../../Typography'
 import CustomLink from '../../CustomLink'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { setOtp, setPhone, setUser, setVerificationWindow } from '../../../store/authSlice';
 import axios from 'axios'
+import { BASE_URI } from '../../../config/uri';
 
 
 const LoginForm = () => {
@@ -19,7 +20,7 @@ const LoginForm = () => {
     const handleLogin = async () => {
         try {
             setLoading(true)
-            const res = await axios.post(`http://192.168.100.3:3000/api/user/userSendOtp`, {
+            const res = await axios.post(`${BASE_URI}/api/user/userSendOtp`, {
                 phone_no: mobile
             })
             if (res?.data) {

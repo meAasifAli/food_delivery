@@ -8,17 +8,18 @@ import {
   View,
 } from 'react-native';
 import Typography from '../../Typography';
-import {OtpInput} from 'react-native-otp-entry';
+import { OtpInput } from 'react-native-otp-entry';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useDispatch, useSelector} from 'react-redux';
-import {useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import axios from 'axios';
-import {setAuthenticated, setToken, setUser} from '../../../store/authSlice';
+import { setAuthenticated, setToken, setUser } from '../../../store/authSlice';
+import { BASE_URI } from '../../../config/uri';
 
-const OtpForm = ({isDelivery, navigation}) => {
+const OtpForm = ({ isDelivery, navigation }) => {
   const dispatch = useDispatch();
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,7 +39,7 @@ const OtpForm = ({isDelivery, navigation}) => {
       setLoading(true);
       if (verificationWindow === 'signup') {
         const res = await axios.post(
-          `http://192.168.100.3:3000/api/user/userSignUp/${user?.data.phone_no}/${user?.data.username}/${user?.data.email}`,
+          `${BASE_URI}/api/user/userSignUp/${user?.data.phone_no}/${user?.data.username}/${user?.data.email}`,
           {
             givenOTP: otp,
           },
@@ -50,7 +51,7 @@ const OtpForm = ({isDelivery, navigation}) => {
       }
       if (verificationWindow === 'signin') {
         const res = await axios.post(
-          `http://192.168.100.3:3000/api/user/userLogin/${phone}`,
+          `${BASE_URI}/api/user/userLogin/${phone}`,
           {
             givenOTP: otp,
           },
@@ -167,7 +168,7 @@ const SecondaryHeading = () => {
   );
 };
 
-const OtpInputs = ({setOtp}) => {
+const OtpInputs = ({ setOtp }) => {
   return (
     <View style={styles.otpWrapper}>
       <OtpInput
@@ -208,7 +209,7 @@ const Option = () => {
   );
 };
 
-const ButtonComponent = ({handlePress, loading}) => {
+const ButtonComponent = ({ handlePress, loading }) => {
   return (
     <TouchableOpacity
       onPress={handlePress}

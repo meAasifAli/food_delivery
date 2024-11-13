@@ -1,43 +1,34 @@
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {restaurants} from '../../../static/data';
 import RestaurantCard from '../../shared/RestaurantCard';
-import axios from 'axios';
-import {useContext, useEffect} from 'react';
+import { useContext, useEffect } from 'react';
 import LocationContextProvider, {
   LocationContext,
 } from '../../../context/LocationContext';
-import {Header} from 'react-native/Libraries/NewAppScreen';
-import {useSelector} from 'react-redux';
+import { Header } from 'react-native/Libraries/NewAppScreen';
+import { useDispatch, useSelector } from 'react-redux';
 import BASE_URI from '../../../config/uri';
+import { fetchRestaurants } from '../../../store/restaurantSlice';
 
-const Nearest = ({navigation}) => {
-  const {token} = useSelector(state => state.auth);
+const Nearest = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const { token } = useSelector(state => state.auth);
 
-  const {location} = useContext(LocationContext);
+  const { location } = useContext(LocationContext);
   console.log('my location', location);
 
-  const NearestRestaurants = async () => {
-    console.log('hello');
-    const url = `${BASE_URI}/api/restaurant/${location.latitude}/${location.longitude}`;
-    console.log(url);
-    try {
-      const res = await axios.get(url, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log('my data', res.data);
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
-  };
+
+  const { loading, error, nearest } = useSelector(state => state?.restaurant)
+
+  console.log('nearest: ', nearest);
+
 
   useEffect(() => {
-    NearestRestaurants();
-  }, []);
+    dispatch(fetchRestaurants({ type: "nearest" }))
+  }, [dispatch])
+
+  // console.log("Nearest  restaurants", nearest)
 
   return (
     <>
@@ -73,9 +64,9 @@ const Nearest = ({navigation}) => {
       <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        data={restaurants}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
+        data={nearest}
+        keyExtractor={item => item?.restaurant_id}
+        renderItem={({ item }) => (
           <RestaurantCard item={item} navigation={navigation} />
         )}
       />

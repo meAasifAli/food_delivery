@@ -1,12 +1,20 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import Typography from '../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
 
-const { width, height } = Dimensions.get("window")
 const RestaurantMenu = ({ isDrawerVisible, toggleFirstDrawer, toggleSecondDrawer, item }) => {
+    const navigation = useNavigation()
+    // console.log(item);
+
+    const handlePress = () => {
+        console.log("Customization value:", item?.customisation);
+        item?.customisation === 0 ? navigation.navigate("Cart", { screen: "CartScreen" }) : toggleSecondDrawer()
+    };
+
     return (
         <Modal
             isVisible={isDrawerVisible}
@@ -29,19 +37,19 @@ const RestaurantMenu = ({ isDrawerVisible, toggleFirstDrawer, toggleSecondDrawer
                         borderTopRightRadius: 20, height: hp(30), resizeMode: "cover"
                     }} source={require("../../assets/images/modalImg.png")} />
                     <View style={styles.headingModal}>
-                        <Typography title={"Chicken Zinger Meal Box"} ff={"OpenSans-Medium"} size={24} color={"#fff"} ls={0.05} lh={29} fw={600} maxW={188} />
+                        <Typography title={item?.name} ff={"OpenSans-Medium"} size={24} color={"#fff"} ls={0.05} lh={29} fw={600} maxW={188} />
                     </View>
                     <View style={styles.ratingModalWrapper}>
                         <View style={styles.ratingModalLeftWrapper}>
                             <Typography title={"4.4"} color={"#fff"} ff={"OpenSans-Regular"} size={13} lh={27.02} ls={0.05} fw={400} ta={"center"} />
                             <Entypo name='star-outlined' size={12} color={"#fff"} />
                         </View>
-                        <TouchableOpacity style={styles.btnWrapper} onPress={toggleSecondDrawer}>
+                        <TouchableOpacity style={styles.btnWrapper} onPress={() => handlePress()}>
                             <Text style={styles.btnText}>Add</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.modalBottomWrapper}>
-                        <Typography title={"1 Zinger Burger + 2 Wings + 1 Fries + 400ml Pepsi"} color={"#fff"} ff={"OpenSans-Regular"} size={18} lh={24.32} ls={0.07} fw={300} />
+                        <Typography title={item?.description} color={"#fff"} ff={"OpenSans-Regular"} size={18} lh={24.32} ls={0.07} fw={300} />
                     </View>
                 </ScrollView>
             </View>

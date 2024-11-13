@@ -25,7 +25,7 @@ const Categories = ({ navigation }) => {
                             color={"#000000"}
                             ff={"OpenSans-Regular"}
                             size={16}
-                            lh={21.62}
+                            lh={25.62}
                             ls={0.05}
                         />
                     </TouchableOpacity>

@@ -10,7 +10,8 @@ export const authSlice = createSlice({
         verificationWindow: "signup",
         phone: null,
         otp: null,
-        token: null
+        token: null,
+        userData: null
     },
     reducers: {
         setUser(state, action) {
@@ -30,6 +31,9 @@ export const authSlice = createSlice({
         },
         setToken(state, action) {
             state.token = action.payload
+        },
+        setUserData(state, action) {
+            state.userData = action.payload
         }
     }
 })
