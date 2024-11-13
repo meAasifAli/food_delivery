@@ -5,14 +5,10 @@ import Reminders from '../../components/common/profile/myAccount/Reminders';
 import WhatsApp from '../../components/common/profile/myAccount/WhatsApp';
 import Sms from '../../components/common/profile/myAccount/Sms';
 import AccountDeletion from '../../components/common/profile/myAccount/AccountDeletion';
-import { useState } from 'react';
+
 
 const MyAccount = () => {
-    const [openModal, setOpenModal] = useState(false)
 
-    const toggleDrawer = () => {
-        setOpenModal((prev) => !prev)
-    }
     return (
         <ScrollView style={styles.container}>
             <Header />
@@ -20,7 +16,7 @@ const MyAccount = () => {
             <Reminders />
             <WhatsApp />
             <Sms />
-            <AccountDeletion openModal={openModal} toggleDrawer={toggleDrawer} />
+            <AccountDeletion />
         </ScrollView>
     )
 }
