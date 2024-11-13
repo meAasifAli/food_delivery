@@ -1,4 +1,4 @@
-import { Image } from "react-native"
+import { Image, View } from "react-native"
 import Typography from "../../../Typography"
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
