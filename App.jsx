@@ -33,15 +33,6 @@ import Refunds from './screens/user/Refunds';
 import AddAddress from './screens/user/AddAddress';
 import Address from './screens/user/AddressScreen';
 import { PersistGate } from 'redux-persist/integration/react';
-import { useEffect } from 'react';
-import axios from 'axios';
-// import LocationContextProvider from './context/LocationContext';
-// import DeliveryLanding from './screens/delivery/DeliveryLanding';
-// import DeliveryHomeScreen from './screens/delivery/DeliveryHomeScreen';
-// import DeliveryMobile from './screens/delivery/DeliveryMobile';
-// import VerifyMobile from './screens/delivery/VerifyMobile';
-// import PartnerOnboarding from './screens/delivery/PartnerOnboarding';
-// import PersonalInfo from './screens/delivery/PersonalInfo';
 
 const TabNavigator = () => {
   return (

@@ -8,9 +8,6 @@ import PopularBrands from '../../components/common/dashboard/PopularBrands'
 import { useNavigation } from '@react-navigation/native'
 
 
-
-
-
 const DashboardScreen = () => {
     const navigation = useNavigation()
     // const { location } = useContext(LocationContext)
