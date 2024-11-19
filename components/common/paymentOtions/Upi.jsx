@@ -11,7 +11,7 @@ const Upi = () => {
                 <Typography title={"Pay By Any UPI ID"} ff={"OpenSans-Bold"} fw={400} size={16} ls={0.05} color={"#000"} lh={21} />
             </View>
             <View style={{ width: "95%", borderColor: "#D6D6D6", borderWidth: 0.5, borderRadius: 10, marginTop: 20, padding: 20 }}>
-                <TouchableOpacity onPress={() => navigation.navigate("Cart", { screen: "AddUpi" })} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 30 }}>
+                <TouchableOpacity onPress={() => navigation.navigate("AddUpi")} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 30 }}>
                     <View style={{ borderColor: "#D6D6D6", borderWidth: 0.5, borderRadius: 10, padding: 10 }}>
                         <AntDesign name='plus' color={"#FA4A0C"} size={20} />
                     </View>

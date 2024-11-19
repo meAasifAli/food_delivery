@@ -4,7 +4,7 @@ import Typography from '../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import RadioButton from 'react-native-radio-button'
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -17,10 +17,11 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
 
     const { token } = useSelector(state => state.auth)
 
+
     useEffect(() => {
         const getCustomization = async () => {
             try {
-                const res = await axios.get(`http://192.168.100.26:3000/api/items/customisation/getCustomisation/${item?.id}`, {
+                const res = await axios.get(`${BASE_URI}/api/items/customisation/getCustomisation/${item?.id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -28,13 +29,15 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
                 setOptions(res?.data?.customizations?.Size?.options);
 
             } catch (error) {
-                console.log(error);
-                Alert.alert("Something went wrong")
+                console.log("get customization error: ", error?.response?.data?.message);
+                Alert.alert(error?.response?.data?.message)
 
             }
         }
-        getCustomization()
-    }, [])
+        if (isSecondDrawerVisible) {
+            getCustomization()
+        }
+    }, [isSecondDrawerVisible])
 
     return (
         <Modal
@@ -249,10 +252,12 @@ const Actions = ({ options, size, item }) => {
     const navigation = useNavigation()
     const [quantity, setQuanitity] = useState(1)
     const [loading, setLoading] = useState(false)
+
+
     const handleAddToCart = async () => {
         try {
             setLoading(true)
-            const res = await axios.post(`${BASE_URI}/api/cart/addItem/${item.id}`, {
+            const res = await axios.post(`${BASE_URI}/api/cart/addItem/${item?.id}`, {
                 quantity: quantity
             }, {
                 headers: {
@@ -264,10 +269,9 @@ const Actions = ({ options, size, item }) => {
                 navigation.navigate('Cart', { screen: "CartScreen" })
             }
         } catch (error) {
-            console.log(error);
-            Alert.alert("Error in adding to the cart")
+            console.log(error?.response?.data?.message);
+            Alert.alert(error?.response?.data?.message)
             setLoading(false)
-
         }
         finally {
             setLoading(false)
@@ -296,7 +300,7 @@ const Actions = ({ options, size, item }) => {
             <View>
                 <TouchableOpacity onPress={handleAddToCart} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), alignItems: "center", }}>
                     {
-                        loading ? <ActivityIndicator size={"small"} color={"#fff"} /> : <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>{`Add | Rs: ${options.find((item) => item?.name === size)?.price || 0}`}</Text>
+                        loading ? <ActivityIndicator size={"small"} color={"#fff"} /> : <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>{`Add | Rs: ${options.find((item) => item?.name === size)?.price || `Rs: 0`}`}</Text>
                     }
                 </TouchableOpacity>
             </View>

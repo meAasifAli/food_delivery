@@ -1,112 +1,92 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { decrementQuantity, fetchCartItems, incrementQuantity } from '../../../store/cartSlice'
+import axios from 'axios';
+import { BASE_URI } from '../../../config/uri';
 
 const CartItems = () => {
+
+    const dispatch = useDispatch()
+    const { cart } = useSelector((state) => state?.cart)
+    const { token } = useSelector((state) => state?.auth)
+
+    useEffect(() => {
+        dispatch(fetchCartItems({ token }))
+    }, [dispatch, handleDecrement, handleIncrement])
+
+
+    const handleIncrement = async (id, itemId, qty) => {
+
+
+        dispatch(incrementQuantity(id))
+        try {
+            await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${itemId}`, {
+                quantity: qty
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        } catch (error) {
+            Alert.alert("error", error)
+            console.log(error?.response);
+        }
+    }
+
+
+
+    const handleDecrement = async (id, itemId, qty) => {
+
+
+        dispatch(decrementQuantity(id))
+        try {
+            await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${itemId}`, {
+                quantity: qty
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        } catch (error) {
+            console.log(error?.response);
+        }
+
+    }
+
     return (
         <View style={styles.ItemContainer}>
-            {/* item1  */}
-            <View style={styles.ItemWrapper}>
-                <View style={styles.ItemLeftWrapper}>
-                    <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
-                        <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
-                    </View>
-                    <Typography title={"Popcorn Chicken Pizza"} ff={"OpenSans_Regular"} size={12} lh={16} fw={300} color={"#000000"} />
-                </View>
-                <View style={styles.ItemRightWrapper}>
-                    <View style={styles.ItemRightLeftWrapper}>
-                        <Pressable>
-                            <Text style={styles.actionTextPlus}>+</Text>
-                        </Pressable>
-                        <View>
-                            <Typography title={"1"} ff={"OpenSans_Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
+            {
+                cart && cart?.map((item, id) => (
+                    <View key={id} style={styles.ItemWrapper}>
+                        <View style={styles.ItemLeftWrapper}>
+                            <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
+                                <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
+                            </View>
+                            <Typography title={item?.name} ff={"OpenSans-Regular"} size={12} lh={16} fw={300} color={"#000000"} />
                         </View>
-                        <Pressable>
-                            <Text style={styles.actionTextMinus}>-</Text>
-                        </Pressable>
-                    </View>
-                    <View>
-                        <Typography title={"Rs 299"} ff={"OpenSans_Regular"} size={12} lh={16} fw={400} color={"#202020"} />
-                    </View>
-                </View>
-            </View>
-            {/* item 2 */}
-            <View style={styles.ItemWrapper}>
-                <View style={styles.ItemLeftWrapper}>
-                    <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
-                        <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
-                    </View>
-                    <Typography title={"Popcorn Chicken Pizza"} ff={"OpenSans_Regular"} size={12} lh={16} fw={300} color={"#000000"} />
-                </View>
-                <View style={styles.ItemRightWrapper}>
-                    <View style={styles.ItemRightLeftWrapper}>
-                        <Pressable>
-                            <Text style={styles.actionTextPlus}>+</Text>
-                        </Pressable>
-                        <View>
-                            <Typography title={"1"} ff={"OpenSans_Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
+                        <View style={styles.ItemRightWrapper}>
+                            <View style={styles.ItemRightLeftWrapper}>
+                                <TouchableOpacity onPress={() => handleIncrement(item?.id, item?.item_id, item?.quantity)}>
+                                    <Text style={styles.actionTextPlus}>+</Text>
+                                </TouchableOpacity>
+                                <View>
+                                    <Typography title={item?.quantity} ff={"OpenSans-Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
+                                </View>
+                                <TouchableOpacity onPress={() => handleDecrement(item?.id, item?.item_id, item?.quantity)}>
+                                    <Text style={styles.actionTextMinus}>-</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View>
+                                <Typography title={`Rs: ${item?.price}`} ff={"OpenSans-Regular"} size={12} lh={16} fw={400} color={"#202020"} />
+                            </View>
                         </View>
-                        <Pressable>
-                            <Text style={styles.actionTextMinus}>-</Text>
-                        </Pressable>
                     </View>
-                    <View>
-                        <Typography title={"Rs 299"} ff={"OpenSans_Regular"} size={12} lh={16} fw={400} color={"#202020"} />
-                    </View>
-                </View>
-            </View>
-            {/* item 3  */}
-            <View style={styles.ItemWrapper}>
-                <View style={styles.ItemLeftWrapper}>
-                    <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
-                        <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
-                    </View>
-                    <Typography title={"Popcorn Chicken Pizza"} ff={"OpenSans_Regular"} size={12} lh={16} fw={300} color={"#000000"} />
-                </View>
-                <View style={styles.ItemRightWrapper}>
-                    <View style={styles.ItemRightLeftWrapper}>
-                        <Pressable>
-                            <Text style={styles.actionTextPlus}>+</Text>
-                        </Pressable>
-                        <View>
-                            <Typography title={"1"} ff={"OpenSans_Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
-                        </View>
-                        <Pressable>
-                            <Text style={styles.actionTextMinus}>-</Text>
-                        </Pressable>
-                    </View>
-                    <View>
-                        <Typography title={"Rs 299"} ff={"OpenSans_Regular"} size={12} lh={16} fw={400} color={"#202020"} />
-                    </View>
-                </View>
-
-            </View>
-            {/* item4 */}
-            <View style={styles.ItemWrapper}>
-                <View style={styles.ItemLeftWrapper}>
-                    <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
-                        <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
-                    </View>
-                    <Typography title={"Popcorn Chicken Pizza"} ff={"OpenSans_Regular"} size={12} lh={16} fw={300} color={"#000000"} />
-                </View>
-                <View style={styles.ItemRightWrapper}>
-                    <View style={styles.ItemRightLeftWrapper}>
-                        <Pressable>
-                            <Text style={styles.actionTextPlus}>+</Text>
-                        </Pressable>
-                        <View>
-                            <Typography title={"1"} ff={"OpenSans_Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
-                        </View>
-                        <Pressable>
-                            <Text style={styles.actionTextMinus}>-</Text>
-                        </Pressable>
-                    </View>
-                    <View>
-                        <Typography title={"Rs 299"} ff={"OpenSans_Regular"} size={12} lh={16} fw={400} color={"#202020"} />
-                    </View>
-                </View>
-            </View>
+                ))
+            }
         </View>
     )
 }
@@ -116,8 +96,8 @@ export default CartItems
 const styles = StyleSheet.create({
     ItemContainer: {
         flex: 1,
-        height: hp(30),
         width: "95%",
+        paddingHorizontal: 10,
         marginHorizontal: "auto",
         borderColor: "#D6D6D6",
         borderWidth: 1,
@@ -160,6 +140,6 @@ const styles = StyleSheet.create({
         width: wp(20),
         borderRadius: wp(1),
     },
-    actionTextPlus: { fontSize: wp(3), lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginLeft: wp(3) },
-    actionTextMinus: { fontSize: wp(3), lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginRight: wp(3) },
+    actionTextPlus: { fontSize: 15, lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginLeft: wp(3) },
+    actionTextMinus: { fontSize: 15, lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginRight: wp(3) },
 })

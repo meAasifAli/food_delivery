@@ -30,7 +30,7 @@ const MoreOptions = () => {
                 </View>
                 <View style={{ borderStyle: "dashed", borderColor: "#000", borderWidth: 0.50, flex: 1, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0 }}></View>
                 <View style={{ padding: 20, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                    <TouchableOpacity onPress={() => navigation.navigate("Cart", { screen: "NetBanking" })} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate("NetBanking")} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
                         <View style={{ borderColor: "#D6D6D6", borderWidth: 0.5, borderRadius: 10, padding: 10 }}>
                             <Fa name='bank' color={"#000"} size={20} />
                         </View>

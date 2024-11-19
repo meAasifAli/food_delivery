@@ -27,7 +27,7 @@ const GpayBox = () => {
             </View>
             <View style={{ borderStyle: "dashed", borderColor: "#000", borderWidth: 0.50, flex: 1, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0 }}></View>
             <Pressable
-                onPress={() => navigation.navigate("Cart", { screen: "Tracking" })}
+                onPress={() => navigation.navigate("Tracking")}
                 style={{
                     backgroundColor: "#FA4A0C",
                     marginTop: hp(2.5),

@@ -5,9 +5,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { OtpInput } from 'react-native-otp-entry'
 import { widthPercentageToDP as wp, } from 'react-native-responsive-screen';
+import { BASE_URI } from '../../config/uri'
+import { useSelector } from 'react-redux'
 
 const EditProfileModal = ({ isOpen, setIsOpen, formData }) => {
     const [otp, setOtp] = useState("")
+    const { token } = useSelector(state => state?.auth)
     const updateProfile = async () => {
         try {
             const res = await axios.patch(`${BASE_URI}/api/user/editProfile/${formData?.name}/${formData.email}/${formData?.phone}`, {
@@ -47,7 +50,7 @@ const EditProfileModal = ({ isOpen, setIsOpen, formData }) => {
 
             }}>
 
-                <Text style={{ fontSize: 16, fontFamily: "OpenSans-Regular", textAlign: "center", color: "#000", lineHeight: 25 }}>Please Enter your 4 digit otp sent to your mobile number +91xxxxxxxx64</Text>
+                <Text style={{ fontSize: 16, fontFamily: "OpenSans-Regular", textAlign: "center", color: "#000", lineHeight: 25, marginBottom: 10 }}>Please Enter your 4 digit otp sent to your mobile number +91xxxxxxxx64</Text>
                 <OtpInput
                     focusColor={'#FA4A0C'}
                     theme={{

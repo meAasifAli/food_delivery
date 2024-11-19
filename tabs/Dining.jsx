@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import DashboardScreen from '../screens/user/dashboard';
-import TopRated from '../screens/user/TopRated';
-import Nearest from '../screens/user/Nearest';
-import PopularBrands from '../screens/user/PopularBrands';
-import Category from '../screens/user/Category';
-import Restaurant from '../screens/user/Restaurant';
+import DashboardScreen from '../screens/dashboard/dashboard';
+import TopRated from '../screens/dashboard/TopRated';
+import Nearest from '../screens/dashboard/Nearest';
+import PopularBrands from '../screens/dashboard/PopularBrands';
+import Category from '../screens/dashboard/Category';
+import Restaurant from '../screens/dashboard/Restaurant';
 
 const Stack = createNativeStackNavigator();
 
