@@ -1,7 +1,6 @@
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Typography from '../../components/Typography'
-import { restaurants } from '../../static/data'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useSelector } from 'react-redux'
 

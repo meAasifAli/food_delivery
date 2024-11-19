@@ -22,7 +22,7 @@ const RestaurantDetails = ({ item }) => {
             <View style={styles.bottomWrapper}>
                 <IonIcons name='timer-outline' size={20} color={"#fff"} />
                 {/* Todo : Add dynamic delivery time */}
-                <Typography title={`30-45 mins - ${item?.street}`} color={"#fff"} size={14} lh={18} ls={0.07} fw={400} ff={"OpenSans-Regular"} />
+                <Typography title={`${item?.deliveryTime} - ${item?.street}`} color={"#fff"} size={14} lh={18} ls={0.07} fw={400} ff={"OpenSans-Regular"} />
             </View>
         </View>
     )

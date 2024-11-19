@@ -56,6 +56,7 @@ const Restaurant = ({ route }) => {
         fetchRestaurant()
     }, [restaurantId])
 
+
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
             {/* header */}

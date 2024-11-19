@@ -1,17 +1,18 @@
 import { ScrollView, StyleSheet, View } from 'react-native'
 import TopBar from '../../components/common/dashboard/TopBar'
 import Categories from '../../components/common/dashboard/Categories'
-
 import Nearest from '../../components/common/dashboard/Nearest'
 import TopRated from '../../components/common/dashboard/TopRated'
 import PopularBrands from '../../components/common/dashboard/PopularBrands'
 import { useNavigation } from '@react-navigation/native'
 
 
+
 const DashboardScreen = () => {
     const navigation = useNavigation()
     // const { location } = useContext(LocationContext)
     // console.log(location);
+
 
     return (
         <View showsVerticalScrollIndicator={false} style={styles.container}>

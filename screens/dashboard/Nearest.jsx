@@ -1,20 +1,26 @@
-import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StyleSheet, View, Text } from 'react-native'
 import React from 'react'
-import Typography from '../../components/Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useSelector } from 'react-redux'
+import Typography from '../../components/Typography'
 
 const { height, width } = Dimensions.get("window")
 
 const Nearest = () => {
     const { nearest } = useSelector((state) => state?.restaurant)
-
-
-
     return (
         <ScrollView style={styles.container}>
             <View>
-                <Typography title={"Nearest"} color={"#000000"} ff={"OpenSans_regular"} size={20} lh={27} ls={0.05} fw={600} />
+                <Text style={{
+                    fontSize: 20,
+                    fontWeight: "600",
+                    color: "#000000",
+                    fontFamily: "OpenSans-Regular",
+                    lineHeight: 27,
+                    letterSpacing: 0.05,
+                    marginBottom: 20
+                }}>Nearest</Text>
+
             </View>
             <View style={styles.nearestWrapper}>
                 {
@@ -40,6 +46,7 @@ const Nearest = () => {
                         </View>
                     ))
                 }
+
             </View>
         </ScrollView>
     )

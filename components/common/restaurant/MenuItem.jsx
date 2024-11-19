@@ -23,7 +23,7 @@ const MenuItem = ({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, 
                 </View>
                 <View style={styles.ratingWrapper}>
                     <View style={styles.ratingLeftWrapper}>
-                        <Typography title={"4.4"} color={"#fff"} ff={"OpenSans_regular"} size={wp(3.5)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
+                        <Typography title={item?.rating} color={"#fff"} ff={"OpenSans_regular"} size={wp(3.5)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
                         <Entypo name='star-outlined' size={12} color={"#fff"} />
                     </View>
                     <View>

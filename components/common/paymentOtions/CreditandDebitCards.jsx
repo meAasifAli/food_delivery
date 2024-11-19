@@ -28,7 +28,7 @@ const CreditandDebitCards = () => {
           padding: 20,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Cart', { screen: 'AddCard' })}
+          onPress={() => navigation.navigate('AddCard')}
           style={{
             display: 'flex',
             flexDirection: 'row',

@@ -45,10 +45,12 @@ const Profile = () => {
     }
     return (
         <ScrollView style={styles.container}>
-            <Header />
-            <Pressable onPress={handleLogout}>
-                <Text>Logout</Text>
-            </Pressable>
+            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                <Header />
+                <Pressable onPress={handleLogout}>
+                    <Text>Logout</Text>
+                </Pressable>
+            </View>
             <SecondaryHeader user={user} />
             <View style={{ borderBottomWidth: wp(0.2), marginVertical: hp(1) }}></View>
             <View>
