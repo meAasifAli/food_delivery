@@ -1,23 +1,28 @@
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native'
 import React from 'react'
 import Evil from 'react-native-vector-icons/EvilIcons'
 
 
-const SearchInput = ({ placeholder, val, onValueChange }) => {
+const SearchInput = ({ placeholder, val, onValueChange, handleFocus, isOpen }) => {
+
     return (
         <View style={styles.container}>
-            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.inputWrapper}>
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} >
                 <TextInput
+
+                    onFocus={handleFocus}
                     value={val}
                     onChangeText={onValueChange}
-                    placeholderTextColor={"#FA4A0C"}
+                    placeholderTextColor={"#000"}
                     style={{
-                        paddingLeft: 10
+                        paddingLeft: 10,
+                        fontSize: 16,
+                        fontFamily: "OpenSans-Regular"
                     }}
                     placeholder={placeholder}
                 />
                 <View style={styles.iconWrapper}>
-                    <Evil name='search' size={24} color={"#FA4A0C"} />
+                    <Evil name='search' size={24} color={"#000"} />
                 </View>
 
             </KeyboardAvoidingView>
@@ -29,17 +34,19 @@ export default SearchInput
 
 const styles = StyleSheet.create({
     container: {
-        width: "95%",
+        width: "100%",
         height: 50,
-        backgroundColor: "#fff",
+        backgroundColor: "#F8F8F8",
         position: "relative",
         borderRadius: 10,
-        marginTop: 30,
-        marginHorizontal: "auto"
+        marginTop: 20,
+        marginHorizontal: "auto",
+
     },
     iconWrapper: {
         position: "absolute",
         right: 10,
-        top: 15
+        top: 15,
+
     }
 })

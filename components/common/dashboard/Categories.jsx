@@ -39,8 +39,7 @@ export default Categories
 
 const styles = StyleSheet.create({
     scrollContainer: {
-        marginTop: 20,
-        paddingBottom: 20,
+
         marginHorizontal: 10
     },
     categoryWrapper: {

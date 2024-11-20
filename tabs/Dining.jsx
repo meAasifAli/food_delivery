@@ -14,7 +14,7 @@ const Dining = () => {
 
         <Stack.Navigator
             screenOptions={{
-                statusBarColor: "#000"
+                statusBarColor: "#000",
             }}
         >
             <Stack.Screen name="Home" component={DashboardScreen} options={{

@@ -16,9 +16,9 @@ const DashboardScreen = () => {
 
     return (
         <View showsVerticalScrollIndicator={false} style={styles.container}>
-            {/* TopBar */}
-            <TopBar />
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 100 }} style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                {/* TopBar */}
+                <TopBar />
                 {/* category slider */}
                 <Categories navigation={navigation} />
                 {/* Nearest Restaurants */}

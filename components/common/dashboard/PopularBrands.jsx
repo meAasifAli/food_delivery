@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Dimensions,
   FlatList,
   Image,
@@ -30,7 +31,7 @@ const PopularBrands = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(fetchRestaurants({ type: "popular" }))
-  }, [dispatch])
+  }, [token])
 
 
 
@@ -77,13 +78,15 @@ const PopularBrands = ({ navigation }) => {
           data={popular}
           keyExtractor={item => item?.restaurant_id}
           renderItem={({ item }) => (
-            <RestaurantCard
-              item={item}
-              navigation={navigation}
-              isPopular={true}
-            />
+            loading ? <ActivityIndicator size={'large'} color={'#fff'} /> :
+              <RestaurantCard
+                item={item}
+                navigation={navigation}
+                isPopular={true}
+              />
           )}
         />
+
       </View>
     </>
   );

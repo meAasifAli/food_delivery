@@ -1,8 +1,8 @@
-import { Alert, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useEffect, useState } from 'react';
+import { useEffect, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrementQuantity, fetchCartItems, incrementQuantity } from '../../../store/cartSlice'
 import axios from 'axios';
@@ -16,16 +16,15 @@ const CartItems = () => {
 
     useEffect(() => {
         dispatch(fetchCartItems({ token }))
-    }, [dispatch, handleDecrement, handleIncrement])
+    }, [dispatch, token])
 
 
     const handleIncrement = async (id, itemId, qty) => {
-
-
+        const newQty = qty + 1;
         dispatch(incrementQuantity(id))
         try {
             await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${itemId}`, {
-                quantity: qty
+                quantity: newQty
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -41,11 +40,11 @@ const CartItems = () => {
 
     const handleDecrement = async (id, itemId, qty) => {
 
-
+        const newQty = qty - 1;
         dispatch(decrementQuantity(id))
         try {
             await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${itemId}`, {
-                quantity: qty
+                quantity: newQty
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`

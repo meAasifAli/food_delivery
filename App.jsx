@@ -4,10 +4,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigator from './config/AppNavigator';
 
 
-
-
-
-
 const App = () => {
   return (
     <Provider store={store}>

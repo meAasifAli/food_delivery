@@ -3,6 +3,7 @@ import LocationContextProvider from "../context/LocationContext"
 import AuthenticatedUserStack from "./AuthenticatedUserStack"
 import UnAuthenticatedUserStack from "./UnAuthenticatedUserStack"
 import { useSelector } from "react-redux"
+import { StatusBar } from "react-native"
 
 const AppNavigator = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
@@ -10,7 +11,10 @@ const AppNavigator = () => {
         <LocationContextProvider>
             <NavigationContainer>
                 {
-                    isAuthenticated ? <AuthenticatedUserStack /> : <UnAuthenticatedUserStack />
+                    isAuthenticated ? <>
+                        <StatusBar backgroundColor={"#fff"} barStyle={"dark-content"} />
+                        <AuthenticatedUserStack />
+                    </> : <UnAuthenticatedUserStack />
                 }
             </NavigationContainer>
         </LocationContextProvider>
