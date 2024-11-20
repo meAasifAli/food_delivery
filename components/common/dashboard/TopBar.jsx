@@ -1,18 +1,25 @@
-import { Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Image, Keyboard, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import Typography from '../../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import SearchInput from '../../SearchInput'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native'
+import SearchModal from '../../modals/SearchModal'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useSelector } from 'react-redux'
+
+
 const TopBar = () => {
     const navigation = useNavigation()
-    const { user, verificationWindow, phone, otp: storeOtp, token } = useSelector((state) => state?.auth)
-    console.log(user);
+    const [isOpen, setIsOpen] = useState(false)
+    const handleFocus = () => {
+        setIsOpen(prev => !prev)
+        Keyboard.dismiss()
+    }
 
-    console.log(token);
+    const { user } = useSelector(state => state?.auth)
 
 
     return (
@@ -22,7 +29,7 @@ const TopBar = () => {
             {/* heading */}
             <View style={styles.topBarHeading}>
                 <View style={styles.topBarHeadingLeft}>
-                    <Image resizeMode='contain' source={require("../../../assets/images/arrow.png")} />
+                    <Ionicons name='location' size={24} color={"#FA4A0C"} />
                     <Pressable onPress={() => navigation.navigate("AddAddress")} style={{
                         display: "flex",
                         flexDirection: "row",
@@ -36,10 +43,10 @@ const TopBar = () => {
                             size={16}
                             lh={21.62}
                             ls={0.05}
-                            color={"#fff"}
+                            color={"#000"}
                             maxW={131}
                         />
-                        <Entypo name='chevron-small-down' size={16} color={"#fff"} />
+                        <Entypo name='chevron-small-down' size={16} color={"#000"} />
                     </Pressable>
                 </View>
                 <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
@@ -48,36 +55,15 @@ const TopBar = () => {
                         style={styles.profileAvatar} />
                 </TouchableOpacity>
             </View>
-            {/* Text */}
-            <View
-                style={styles.contentWrapper}
-            >
-                <Typography
-                    title={"Embark on a culinary adventure"}
-                    maxW={298}
-                    ff={"OpenSans-Italic"}
-                    size={16}
-                    lh={21.62}
-                    ls={0.07}
-                    ta={"center"}
-                    color={"#fff"}
-                />
-                <Typography
-                    title={" Let's find your next Flavor Sensation!"}
-                    maxW={298}
-                    ff={"OpenSans-Italic"}
-                    size={16}
-                    lh={21.62}
-                    ls={0.07}
-                    ta={"center"}
-                    color={"#fff"}
-                />
-            </View>
             {/* search input */}
             <View style={{ marginBottom: 10 }}>
-                <SearchInput placeholder={"Search for Biryani"} />
+                <SearchInput isOpen={isOpen} handleFocus={handleFocus} placeholder={"Search for Biryani"} />
+                <SearchModal isOpen={isOpen} setIsOpen={setIsOpen} />
+                <View style={{ marginTop: 10, display: "flex", gap: 5, flexDirection: "row", alignItems: "center" }}>
+                    <Text style={{ color: "#000", textTransform: "uppercase", fontFamily: "OpenSans-Regular", fontSize: 12 }}>{user.username}, What&apos;s on your mind?</Text>
+                    <View style={{ borderColor: "#ccc", borderWidth: 0.2, flex: 1 }}></View>
+                </View>
             </View>
-
         </View>
     )
 }
@@ -86,9 +72,9 @@ export default TopBar
 
 const styles = StyleSheet.create({
     topBar: {
-        backgroundColor: "#202020",
-        borderBottomStartRadius: wp(12),
-        borderBottomEndRadius: wp(12),
+        // backgroundColor: "#202020",
+        // borderBottomStartRadius: wp(12),
+        // borderBottomEndRadius: wp(12),
         paddingVertical: hp(2),
         paddingHorizontal: wp(5),
     },

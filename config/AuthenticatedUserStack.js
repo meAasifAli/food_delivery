@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TabNavigator } from "./navigator";
+import { TabNavigator } from "./TabNavigator";
 import Profile from "../screens/profile/Profile";
 import EditProfile from "../screens/profile/EditProfile";
 import MyAccount from "../screens/profile/MyAccount";
@@ -13,12 +13,15 @@ import AddCard from "../screens/payments/AddCard";
 import AddUpi from "../screens/payments/AddUpi";
 import NetBanking from "../screens/payments/NetBanking";
 import Tracking from "../screens/order/Tracking";
+import SearchedRestaurants from "../screens/dashboard/SearchedRestaurants";
 
 
 const Stack = createNativeStackNavigator();
 
 const AuthenticatedUserStack = () => (
-  <Stack.Navigator initialRouteName="MainTabs">
+  <Stack.Navigator screenOptions={{
+
+  }} initialRouteName="MainTabs">
     <Stack.Screen
       name="MainTabs"
       component={TabNavigator}
@@ -90,6 +93,11 @@ const AuthenticatedUserStack = () => (
     <Stack.Screen
       name="Tracking"
       component={Tracking}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="SearchedRestaurants"
+      component={SearchedRestaurants}
       options={{ headerShown: false }}
     />
   </Stack.Navigator>

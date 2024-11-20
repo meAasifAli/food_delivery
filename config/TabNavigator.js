@@ -20,6 +20,10 @@ export const TabNavigator = () => {
                 tabBarStyle: {
                     height: "12%",
                     paddingBottom: 10,
+                    position: "absolute",
+                    bottom: 0,
+                    zIndex: 50,
+                    backgroundColor: "#fff"
                 },
                 tabBarLabelStyle: {
                     fontFamily: 'OpenSans-Regular',

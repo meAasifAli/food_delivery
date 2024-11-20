@@ -1,18 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../components/Typography';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAuthenticated, setOtp, setToken, setUser } from '../../store/authSlice';
+import { useSelector } from 'react-redux';
 import Header from '../../components/common/profile/Header';
 import SecondaryHeader from '../../components/common/profile/SecondaryHeader';
+import { useState } from 'react';
+import SignoutModal from '../../components/modals/SignoutModal';
+
 
 const Profile = () => {
     const { user } = useSelector(state => state?.auth)
-    console.log(user);
-
-    const dispatch = useDispatch()
+    const [isOpen, setIsOpen] = useState(false)
     const navigation = useNavigation()
     const Items = [
         {
@@ -37,20 +37,10 @@ const Profile = () => {
         },
     ]
 
-    const handleLogout = () => {
-        dispatch(setAuthenticated())
-        dispatch(setUser(null))
-        dispatch(setToken(null))
-        dispatch(setOtp(null))
-    }
+
     return (
-        <ScrollView style={styles.container}>
-            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                <Header />
-                <Pressable onPress={handleLogout}>
-                    <Text>Logout</Text>
-                </Pressable>
-            </View>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 50 }}>
+            <Header />
             <SecondaryHeader user={user} />
             <View style={{ borderBottomWidth: wp(0.2), marginVertical: hp(1) }}></View>
             <View>
@@ -63,6 +53,11 @@ const Profile = () => {
                     ))
                 }
             </View>
+            <TouchableOpacity onPress={() => setIsOpen(true)} style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 15 }}>
+                <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 18, color: "#202020" }}>Signout</Text>
+                <AntDesign name='logout' size={20} color={"#202020"} />
+            </TouchableOpacity>
+            <SignoutModal isOpen={isOpen} setIsOpen={setIsOpen} />
             <OrderHistory />
         </ScrollView>
     )
@@ -73,7 +68,7 @@ export default Profile
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: wp(3)
+        padding: 10
     }
 })
 
@@ -83,7 +78,7 @@ const styles = StyleSheet.create({
 
 const OrderHistory = () => {
     return (
-        <View style={{ marginTop: hp(6) }}>
+        <View style={{ marginTop: 20 }}>
             <View>
                 <Typography title={"Recent Orders"} ff={"OpenSans-Medium"} color={"#202020"} fw={400} size={hp(3)} lh={hp(3.5)} />
             </View>

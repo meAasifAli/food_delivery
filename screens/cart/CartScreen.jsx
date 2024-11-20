@@ -13,7 +13,7 @@ import GpayBox from '../../components/common/cart/GpayBox';
 
 const CartScreen = () => {
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={{ paddingBottom: 80 }} style={styles.container} showsVerticalScrollIndicator={false}>
             {/* header */}
             <Header />
             {/* Cart Items */}

@@ -3,6 +3,7 @@ import {
   View,
   Image,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import { useState } from 'react';
 import Heading from '../../components/common/auth/login/Heading';
@@ -11,11 +12,20 @@ import Input from '../../components/common/auth/login/Input';
 import Button from '../../components/common/auth/login/Button';
 import GoogleNav from '../../components/common/auth/login/GoogleNav';
 import BottomNav from '../../components/common/auth/login/BottomNav';
-import { Link } from '@react-navigation/native';
 import useSignin from '../../hooks/useSignin';
+import { useForm, Controller } from "react-hook-form"
 
 
 const SigninScreen = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      mobile: "",
+    },
+  })
   const [mobile, setMobile] = useState("")
   const { loading, handleSigninUser } = useSignin()
 
@@ -38,7 +48,6 @@ const SigninScreen = () => {
           <Button loading={loading} handleLogin={handleLogin} />
           <GoogleNav />
           <BottomNav />
-          <Link to={"/otp"} style={{ marginTop: 10, color: "#fff", textAlign: "center" }}>Otp</Link>
         </ScrollView>
       </View>
     </View>

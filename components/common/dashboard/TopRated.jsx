@@ -1,37 +1,29 @@
 import {
-  Dimensions,
+  ActivityIndicator,
   FlatList,
-  Image,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RestaurantCard from '../../shared/RestaurantCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { LocationContext } from '../../../context/LocationContext';
 import { fetchRestaurants } from '../../../store/restaurantSlice';
 
 
 
 const TopRated = ({ navigation }) => {
   const dispatch = useDispatch()
-  const { token } = useSelector(state => state.auth);
-  const { location } = useContext(LocationContext);
-
-
-  const { loading, error, topRated } = useSelector(state => state?.restaurant)
-
-
+  const { token } = useSelector((state) => state?.auth)
+  const { topRated, loading } = useSelector(state => state?.restaurant)
 
   useEffect(() => {
     dispatch(fetchRestaurants({ type: "topRated" }))
-  }, [dispatch])
+  }, [])
 
 
-  // console.log("topRated", topRated);
 
   return (
     <>
@@ -64,15 +56,22 @@ const TopRated = ({ navigation }) => {
           <Entypo name="chevron-small-down" size={16} color={'#000'} />
         </TouchableOpacity>
       </View>
-      <FlatList
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        data={topRated}
-        keyExtractor={item => item?.restaurant_id}
-        renderItem={({ item }) => (
-          <RestaurantCard item={item} navigation={navigation} />
-        )}
-      />
+      <>
+        <FlatList
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          data={topRated}
+          keyExtractor={item => item?.restaurant_id}
+          renderItem={({ item }) => (
+            loading ?
+              <View style={{ height: "30%", width: "60%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <ActivityIndicator color={"#000"} size={"large"} />
+              </View> :
+              <RestaurantCard item={item} navigation={navigation} />
+          )}
+        />
+
+      </>
     </>
   );
 };

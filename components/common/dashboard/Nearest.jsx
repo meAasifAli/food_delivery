@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RestaurantCard from '../../shared/RestaurantCard';
@@ -10,15 +10,15 @@ import { fetchRestaurants } from '../../../store/restaurantSlice';
 const Nearest = ({ navigation }) => {
   const dispatch = useDispatch()
 
+  const { token } = useSelector(state => state?.auth)
+  const { nearest, loading } = useSelector(state => state?.restaurant)
 
-  const { nearest } = useSelector(state => state?.restaurant)
-
-  console.log('nearest: ', nearest);
+  // console.log('nearest: ', nearest);
 
 
   useEffect(() => {
     dispatch(fetchRestaurants({ type: "nearest" }))
-  }, [dispatch])
+  }, [token])
 
   // console.log("Nearest  restaurants", nearest)
 
@@ -59,7 +59,7 @@ const Nearest = ({ navigation }) => {
         data={nearest}
         keyExtractor={item => item?.restaurant_id}
         renderItem={({ item }) => (
-          <RestaurantCard item={item} navigation={navigation} />
+          loading ? <ActivityIndicator color={"#000"} size={"large"} /> : <RestaurantCard item={item} navigation={navigation} />
         )}
       />
     </>
