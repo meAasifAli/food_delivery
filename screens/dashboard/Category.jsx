@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { Alert, ScrollView, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { categories, } from '../../static/data';
 import Typography from '../../components/Typography';
@@ -6,13 +6,18 @@ import Typography from '../../components/Typography';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Header from '../../components/common/category/Header';
 import Filters from '../../components/common/category/Filters';
+import axios from 'axios';
+import { BASE_URI } from '../../config/uri';
+import { useSelector } from 'react-redux';
 
 
 const Category = ({ route, navigation }) => {
     const [category, setCategory] = useState({})
     const { categoryId } = route?.params;
+    const [restaurants, setRestaurants] = useState([])
+    const { token } = useSelector((state) => state?.auth)
 
-    // console.log(categoryId);
+
 
     useEffect(() => {
         const fetchCategory = () => {
@@ -22,6 +27,27 @@ const Category = ({ route, navigation }) => {
         fetchCategory()
     }, [])
 
+    useEffect(() => {
+        const searchCategory = async () => {
+            try {
+                const res = await axios.get(`${BASE_URI}/api/restaurant/category/34.1200/74.8200/pizza`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+
+                console.log(res.data);
+
+
+            } catch (error) {
+                Alert.alert("Error in fetching categories")
+                console.error(error)
+            }
+        }
+        searchCategory()
+    }, [])
+
+    // console.log(category);
 
     return (
         <View

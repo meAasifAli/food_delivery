@@ -2,17 +2,22 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useEffect, } from 'react';
+import { useEffect, useState, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrementQuantity, fetchCartItems, incrementQuantity } from '../../../store/cartSlice'
 import axios from 'axios';
 import { BASE_URI } from '../../../config/uri';
+import Entypo from 'react-native-vector-icons/Entypo'
+import ItemCustomizationModal from '../../modals/ItemCustomizationModal';
 
 const CartItems = () => {
-
+    const [isOpen, setIsOpen] = useState(false)
     const dispatch = useDispatch()
     const { cart } = useSelector((state) => state?.cart)
     const { token } = useSelector((state) => state?.auth)
+
+
+
 
     useEffect(() => {
         dispatch(fetchCartItems({ token }))
@@ -65,7 +70,14 @@ const CartItems = () => {
                             <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
                                 <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
                             </View>
-                            <Typography title={item?.name} ff={"OpenSans-Regular"} size={12} lh={16} fw={300} color={"#000000"} />
+                            <View>
+                                <Typography title={item?.name} ff={"OpenSans-Regular"} size={12} lh={16} fw={300} color={"#000000"} />
+                                <TouchableOpacity onPress={() => setIsOpen(!isOpen)} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                                    <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", }}>customize</Text>
+                                    <Entypo name='chevron-down' size={16} />
+                                </TouchableOpacity>
+                                <ItemCustomizationModal isOpen={isOpen} setIsOpen={setIsOpen} />
+                            </View>
                         </View>
                         <View style={styles.ItemRightWrapper}>
                             <View style={styles.ItemRightLeftWrapper}>

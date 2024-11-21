@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: wp(2),
+        backgroundColor: "#fff"
 
     },
     noteBoxWrapper: { marginBottom: hp(4), width: "95%", marginHorizontal: "auto", borderWidth: 1, borderRadius: wp(2), borderColor: "#D6D6D6", padding: wp(2) },

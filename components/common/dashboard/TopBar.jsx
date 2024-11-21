@@ -60,7 +60,7 @@ const TopBar = () => {
                 <SearchInput isOpen={isOpen} handleFocus={handleFocus} placeholder={"Search for Biryani"} />
                 <SearchModal isOpen={isOpen} setIsOpen={setIsOpen} />
                 <View style={{ marginTop: 10, display: "flex", gap: 5, flexDirection: "row", alignItems: "center" }}>
-                    <Text style={{ color: "#000", textTransform: "uppercase", fontFamily: "OpenSans-Regular", fontSize: 12 }}>{user.username}, What&apos;s on your mind?</Text>
+                    <Text style={{ color: "#000", textTransform: "uppercase", fontFamily: "OpenSans-Regular", fontSize: 12 }}>{user?.username}, What&apos;s on your mind?</Text>
                     <View style={{ borderColor: "#ccc", borderWidth: 0.2, flex: 1 }}></View>
                 </View>
             </View>

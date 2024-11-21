@@ -81,17 +81,19 @@ const RestaurantMenu = ({ isDrawerVisible, toggleFirstDrawer, toggleSecondDrawer
                             <Typography title={"4.4"} color={"#fff"} ff={"OpenSans-Regular"} size={13} lh={27.02} ls={0.05} fw={400} ta={"center"} />
                             <Entypo name='star-outlined' size={12} color={"#fff"} />
                         </View>
-                        <View style={styles.qtyWrapper}>
-                            <TouchableOpacity onPress={handleIncrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
-                                <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>+</Text>
-                            </TouchableOpacity>
-                            <View >
-                                <Typography title={quantity} color={'#FA4A0C'} ff={'OpenSans_regular'} fw={800} lh={60} ls={0.05} size={30} />
+                        {
+                            item?.customisation === 0 && <View style={styles.qtyWrapper}>
+                                <TouchableOpacity onPress={handleIncrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
+                                    <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>+</Text>
+                                </TouchableOpacity>
+                                <View >
+                                    <Typography title={quantity} color={'#FA4A0C'} ff={'OpenSans_regular'} fw={800} lh={60} ls={0.05} size={30} />
+                                </View>
+                                <TouchableOpacity onPress={handleDecrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
+                                    <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>-</Text>
+                                </TouchableOpacity>
                             </View>
-                            <TouchableOpacity onPress={handleDecrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
-                                <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>-</Text>
-                            </TouchableOpacity>
-                        </View>
+                        }
 
                     </View>
                     <View style={styles.modalBottomWrapper}>
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#000',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        height: "65%",
+        height: "75%",
         width: "100%"
     },
     headingModal: {
