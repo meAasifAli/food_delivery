@@ -1,4 +1,4 @@
-import { Alert, ScrollView, StyleSheet, View } from 'react-native'
+import { Alert, Image, ScrollView, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Typography from '../../components/Typography';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -17,6 +17,7 @@ import MenuItem from '../../components/common/restaurant/MenuItem';
 
 
 const Restaurant = ({ route }) => {
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
     const { token } = useSelector((state) => state?.auth)
     const { restaurant } = useSelector((state) => state?.restaurant)
@@ -25,6 +26,7 @@ const Restaurant = ({ route }) => {
     const [openfirstDrawer, setOpenFirstDrawer] = useState(false)
     const [openSecondDrawer, setOpenSecondDrawer] = useState(false)
     const [size, setSize] = useState("small")
+
 
 
     const toggleFirstDrawer = () => {
@@ -39,6 +41,7 @@ const Restaurant = ({ route }) => {
     useEffect(() => {
         const fetchRestaurant = async () => {
             try {
+                setLoading(true)
                 const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/34.0837/74.7973`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -50,38 +53,46 @@ const Restaurant = ({ route }) => {
             } catch (error) {
                 Alert.alert("Error in fetching restaurant");
                 console.log(error?.message);
-
+                setLoading(false)
+            }
+            finally {
+                setLoading(false)
             }
         }
         fetchRestaurant()
     }, [restaurantId])
 
 
-    return (
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-            {/* header */}
-            <Header />
-            {/* Restaurant Details */}
-            <RestaurantDetails item={restaurant} />
-            {/* Menu Divider */}
-            <MenuDivider />
-            {/* search */}
-            <View>
-                <SearchMenu />
+    return loading ?
+        (
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <Image style={{ height: 100, width: 100, resizeMode: "contain" }} source={require("../../assets/images/loader.png")} />
             </View>
-            <Menus selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
-            <Heading />
-            <View>
-                {
-                    restaurant?.menu?.TopSeller?.map((item, id) => (
-                        item?.type === selectedMenu.toLowerCase() && (
-                            <MenuItem selectedMenu={selectedMenu} key={id} openfirstDrawer={openfirstDrawer} openSecondDrawer={openSecondDrawer} size={size} setSize={setSize} toggleFirstDrawer={toggleFirstDrawer} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} isSecondDrawerVisible={openSecondDrawer} item={item} />
-                        )
-                    ))
-                }
-            </View>
-        </ScrollView>
-    )
+        ) : (
+            <ScrollView contentContainerStyle={{ paddingBottom: 100 }} showsVerticalScrollIndicator={false} style={styles.container}>
+                {/* header */}
+                <Header />
+                {/* Restaurant Details */}
+                <RestaurantDetails item={restaurant} />
+                {/* Menu Divider */}
+                <MenuDivider />
+                {/* search */}
+                <View>
+                    <SearchMenu />
+                </View>
+                <Menus selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
+                <Heading />
+                <View>
+                    {
+                        restaurant?.menu?.TopSeller?.map((item, id) => (
+                            item?.type === selectedMenu.toLowerCase() && (
+                                <MenuItem selectedMenu={selectedMenu} key={id} openfirstDrawer={openfirstDrawer} openSecondDrawer={openSecondDrawer} size={size} setSize={setSize} toggleFirstDrawer={toggleFirstDrawer} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} isSecondDrawerVisible={openSecondDrawer} item={item} />
+                            )
+                        ))
+                    }
+                </View>
+            </ScrollView>
+        )
 }
 
 export default Restaurant

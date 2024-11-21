@@ -19,9 +19,7 @@ import SearchedRestaurants from "../screens/dashboard/SearchedRestaurants";
 const Stack = createNativeStackNavigator();
 
 const AuthenticatedUserStack = () => (
-  <Stack.Navigator screenOptions={{
-
-  }} initialRouteName="MainTabs">
+  <Stack.Navigator initialRouteName="MainTabs">
     <Stack.Screen
       name="MainTabs"
       component={TabNavigator}
