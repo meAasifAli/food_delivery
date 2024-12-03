@@ -11,10 +11,9 @@ const Stack = createNativeStackNavigator();
 
 const Dining = () => {
     return (
-
         <Stack.Navigator
             screenOptions={{
-                statusBarColor: "#000",
+                statusBarColor: "#202020",
             }}
         >
             <Stack.Screen name="Home" component={DashboardScreen} options={{

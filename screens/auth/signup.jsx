@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#202020',
     width: "100%",  // Full screen width
-    marginTop: "30%", // Responsive margin based on screen height
+    marginTop: "50%", // Responsive margin based on screen height
     borderTopRightRadius: 50, // Responsive corner radius
     borderTopLeftRadius: 50,
-    height: "50%"
+    height: "50%",
   },
 });

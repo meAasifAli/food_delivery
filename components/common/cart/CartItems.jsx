@@ -11,13 +11,16 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import ItemCustomizationModal from '../../modals/ItemCustomizationModal';
 
 const CartItems = () => {
-    const [isOpen, setIsOpen] = useState(false)
+
+    const [isOpen, setIsOpen] = useState(null)
     const dispatch = useDispatch()
     const { cart } = useSelector((state) => state?.cart)
     const { token } = useSelector((state) => state?.auth)
 
 
-
+    const toggleModal = (id) => {
+        setIsOpen((prev) => prev === id ? null : id)
+    }
 
     useEffect(() => {
         dispatch(fetchCartItems({ token }))
@@ -61,6 +64,9 @@ const CartItems = () => {
 
     }
 
+
+
+
     return (
         <View style={styles.ItemContainer}>
             {
@@ -72,11 +78,11 @@ const CartItems = () => {
                             </View>
                             <View>
                                 <Typography title={item?.name} ff={"OpenSans-Regular"} size={12} lh={16} fw={300} color={"#000000"} />
-                                <TouchableOpacity onPress={() => setIsOpen(!isOpen)} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                                    <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", }}>customize</Text>
-                                    <Entypo name='chevron-down' size={16} />
+                                <TouchableOpacity onPress={() => toggleModal(item?.item_id)} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                                    <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#ccc" }}>customize</Text>
+                                    <Entypo name='chevron-down' size={16} color={"#ccc"} />
                                 </TouchableOpacity>
-                                <ItemCustomizationModal isOpen={isOpen} setIsOpen={setIsOpen} />
+                                <ItemCustomizationModal isOpen={isOpen === item?.item_id} setIsOpen={() => toggleModal(item?.item_id)} item={item} />
                             </View>
                         </View>
                         <View style={styles.ItemRightWrapper}>
