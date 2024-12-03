@@ -14,12 +14,15 @@ import AddUpi from "../screens/payments/AddUpi";
 import NetBanking from "../screens/payments/NetBanking";
 import Tracking from "../screens/order/Tracking";
 import SearchedRestaurants from "../screens/dashboard/SearchedRestaurants";
+import SearchAddresses from "../screens/location/SearchAddresses";
 
 
 const Stack = createNativeStackNavigator();
 
 const AuthenticatedUserStack = () => (
-  <Stack.Navigator initialRouteName="MainTabs">
+  <Stack.Navigator screenOptions={{
+    statusBarColor: "#202020"
+  }} initialRouteName="MainTabs">
     <Stack.Screen
       name="MainTabs"
       component={TabNavigator}
@@ -66,6 +69,11 @@ const AuthenticatedUserStack = () => (
     <Stack.Screen
       name="AddressScreen"
       component={Address}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="SearchAddresses"
+      component={SearchAddresses}
       options={{ headerShown: false }}
     />
     <Stack.Screen

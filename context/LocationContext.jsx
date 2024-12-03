@@ -1,12 +1,16 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { request, PERMISSIONS, RESULTS, } from 'react-native-permissions';
-import Geolocation from '@react-native-community/geolocation';
 import { Alert } from "react-native";
+import Geolocation from "../config/locationConfig";
 
 export const LocationContext = createContext();
 
 const LocationContextProvider = ({ children }) => {
-    const [location, setLocation] = useState(null)
+    const mapRef = useRef(null)
+    const [location, setLocation] = useState({
+        longitude: 0,
+        latitude: 0
+    })
 
     useEffect(() => {
         requestLocationPermission();
@@ -14,27 +18,45 @@ const LocationContextProvider = ({ children }) => {
 
     const requestLocationPermission = async () => {
         try {
+            // const fallbackLocation = { latitude: 37.7749, longitude: -122.4194 };
             const result = await request(
                 Platform.OS === 'ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
             );
 
             if (result === RESULTS.GRANTED) {
-                // Permission granted, you can now access location
+                // console.log('Location permission granted');
                 Geolocation.getCurrentPosition(
                     (position) => {
+                        // console.log('Position:', position);
                         setLocation({
                             longitude: position?.coords?.longitude,
-                            latitude: position?.coords?.latitude
-                        })
+                            latitude: position?.coords?.latitude,
+                        });
+
+                        if (mapRef.current) {
+                            mapRef.current.animatecamera({
+                                center: { latitude, longitude },
+                                zoom: 20,
+                            }, { duration: 1500 })
+                        }
                     },
                     (error) => {
-                        console.log(error);
-
+                        console.error('Location error:', error);
+                        // setLocation(fallbackLocation)
+                        Alert.alert(
+                            'Location Error',
+                            `Code: ${error.code}, Message: ${error.message}`,
+                            [{ text: 'OK' }]
+                        );
                     },
-                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+                    {
+                        enableHighAccuracy: false,
+                        timeout: 30000,             // Maximum time to wait (15 seconds)
+                        maximumAge: 0,          // Cache location results up to 10 seconds
+                    }
                 );
             } else {
-                // Permission denied or unavailable
+                console.log('Location permission not granted');
                 Alert.alert(
                     'Location Permission Required',
                     'We need access to your location to provide the best experience. Please enable location services in your settings.',
@@ -42,11 +64,12 @@ const LocationContextProvider = ({ children }) => {
                 );
             }
         } catch (err) {
-            console.warn(err);
+            console.warn('Permission error:', err);
         }
     };
+
     return (
-        <LocationContext.Provider value={{ location }}>{children}</LocationContext.Provider>
+        <LocationContext.Provider value={{ location, setLocation, mapRef }}>{children}</LocationContext.Provider>
     )
 }
 

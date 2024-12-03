@@ -14,7 +14,7 @@ const SecondaryHeading = () => {
                 fontSize: 20,
                 lineHeight: 25,
                 textAlign: "center",
-                maxWidth: "70%",
+                maxWidth: "80%",
                 marginHorizontal: "auto"
             }}>
                 Feast on Convenience Login to indulge in culinary delights!

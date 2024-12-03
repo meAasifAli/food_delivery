@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from './cartSlice'
 import authReducer from './authSlice'
 import restaurantReducer from './restaurantSlice'
+import addressReducer from "./addressSlice"
 import { persistStore, persistReducer } from 'redux-persist'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -12,11 +13,13 @@ const persistConfig = {
 
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer)
+const persistedAddressReducer = persistReducer(persistConfig, addressReducer)
 const store = configureStore({
     reducer: {
         cart: cartReducer,
         auth: persistedAuthReducer,
-        restaurant: restaurantReducer
+        restaurant: restaurantReducer,
+        address: persistedAddressReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: {
