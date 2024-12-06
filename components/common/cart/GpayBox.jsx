@@ -44,7 +44,7 @@ const GpayBox = () => {
         })
     }
     return (
-        <View style={{ marginBottom: 20, padding: 20, marginTop: 20, width: "95%", height: height * 0.25, borderRadius: 10, backgroundColor: "#FFFFFF", marginHorizontal: "auto", elevation: 2 }}>
+        <View style={{ padding: 20, width: "95%", marginHorizontal: "auto", height: height * 0.25, borderRadius: 10, backgroundColor: "#FFFFFF", marginHorizontal: "auto", elevation: 1, }}>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
                     <View>

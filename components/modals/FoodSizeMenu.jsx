@@ -12,8 +12,8 @@ import { BASE_URI } from '../../config/uri'
 
 
 
-const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize, item }) => {
-    const [options, setOptions] = useState([])
+const FoodSizeMenu = ({ size, setSize, item, isCustomizable, setIsCustomizable }) => {
+    const [options, setOptions] = useState(null)
 
     const { token } = useSelector(state => state.auth)
 
@@ -26,7 +26,7 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
                         Authorization: `Bearer ${token}`
                     }
                 })
-                setOptions(res?.data?.customizations?.Size?.options);
+                setOptions(res?.data?.customizations);
 
             } catch (error) {
                 console.log("get customization error: ", error?.response?.data?.message);
@@ -34,15 +34,17 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
 
             }
         }
-        if (isSecondDrawerVisible) {
+        if (isCustomizable) {
             getCustomization()
         }
-    }, [isSecondDrawerVisible])
+    }, [isCustomizable])
+
+    // console.log("customizations options: ", options);
 
     return (
         <Modal
-            isVisible={isSecondDrawerVisible}
-            onBackdropPress={toggleSecondDrawer}
+            isVisible={isCustomizable}
+            onBackdropPress={() => setIsCustomizable(prev => !prev)}
             // swipeDirection="down"
             // onSwipeComplete={toggleSecondDrawer}
             style={styles.modal2}
@@ -57,7 +59,7 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                 >
-                    <Header item={item} toggleSecondDrawer={toggleSecondDrawer} />
+                    <Header item={item} setIsCustomizable={setIsCustomizable} />
                     <View style={{ borderStyle: "dashed", borderColor: "#fff", borderWidth: 0.50, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0, paddingTop: hp(2) }}></View>
                     <View style={{ display: "flex", flexDirection: "column", gap: 5, justifyContent: "flex-start", paddingTop: hp(2) }}>
                         <Typography title={"Size"} color={"#fff"} ff={"OpenSans_regular"} fw={600} lh={23} ls={0.05} size={16} />
@@ -65,7 +67,7 @@ const FoodSizeMenu = ({ isSecondDrawerVisible, toggleSecondDrawer, size, setSize
                     </View>
 
                     <SizeItems options={options} size={size} setSize={setSize} />
-                    <ExtraItems />
+                    <ExtraItems options={options} size={size} setSize={setSize} />
                     <Actions options={options} size={size} item={item} />
                 </ScrollView>
             </View>
@@ -155,13 +157,13 @@ const styles = StyleSheet.create({
     }
 })
 
-const Header = ({ toggleSecondDrawer, item }) => {
+const Header = ({ setIsCustomizable, item }) => {
     return (
         <View style={styles.modal2HeadingWrapper}>
             <View>
                 <Typography title={item?.name} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
             </View>
-            <TouchableOpacity onPress={() => toggleSecondDrawer()}>
+            <TouchableOpacity onPress={() => setIsCustomizable(prev => !prev)}>
                 <Entypo name='circle-with-cross' size={20} color={"#fff"} />
             </TouchableOpacity>
         </View>
@@ -173,7 +175,7 @@ const SizeItems = ({ size, setSize, options }) => {
     return (
         <View style={styles.sizeContainer}>
             {
-                options.map((item, id) => (
+                options?.Size?.options.map((item, id) => (
                     <SizeItem title={item?.name} price={item?.price} key={id} sizeValue={item?.name} selectedSize={size} onPress={() => setSize(item?.name)} />
                 ))
             }
@@ -213,36 +215,14 @@ const SizeItem = ({ title, selectedSize, sizeValue, onPress, price }) => {
     );
 };
 
-const ExtraItems = () => {
+const ExtraItems = ({ options, size, setSize }) => {
     return (
         <View style={styles.extraContainer}>
-            <View style={styles.sizeItem}>
-                <View style={styles.sizeItemLeftWrapper}>
-                    <Image
-                        style={{ resizeMode: 'contain', height: 10, width: 10 }}
-                        source={require('../../assets/images/arrowUpBox.png')}
-                    />
-                    <Typography
-                        title={"Extra Cheese"}
-                        color={'#fff'}
-                        ff={'OpenSans_regular'}
-                        fw={300}
-                        lh={23}
-                        ls={0.05}
-                        size={16}
-                    />
-                </View>
-                <View>
-                    <RadioButton
-                        size={10}
-                        animation={'bounceIn'}
-                        isSelected={true}
-                        onPress={() => { }}
-                        innerColor={'#FA4A0C'}
-                        outerColor={'#FA4A0C'}
-                    />
-                </View>
-            </View>
+            {
+                options?.Extras?.options.map((item, id) => (
+                    <SizeItem title={item?.name} price={item?.price} key={id} sizeValue={item?.name} selectedSize={size} onPress={() => setSize(item?.name)} />
+                ))
+            }
         </View>
     )
 }
@@ -300,7 +280,7 @@ const Actions = ({ options, size, item }) => {
             <View>
                 <TouchableOpacity onPress={handleAddToCart} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), alignItems: "center", }}>
                     {
-                        loading ? <ActivityIndicator size={"small"} color={"#fff"} /> : <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>{`Add | Rs: ${options.find((item) => item?.name === size)?.price || `Rs: 0`}`}</Text>
+                        loading ? <ActivityIndicator size={"small"} color={"#fff"} /> : <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>{`Add `}</Text>
                     }
                 </TouchableOpacity>
             </View>

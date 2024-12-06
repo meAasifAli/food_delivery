@@ -23,20 +23,12 @@ const Restaurant = ({ route }) => {
     const { restaurant } = useSelector((state) => state?.restaurant)
     const [selectedMenu, setSelectedMenu] = useState("Veg")
     const { restaurantId } = route.params;
-    const [openfirstDrawer, setOpenFirstDrawer] = useState(false)
-    const [openSecondDrawer, setOpenSecondDrawer] = useState(false)
+    // const [openfirstDrawer, setOpenFirstDrawer] = useState(false)
+    // const [openSecondDrawer, setOpenSecondDrawer] = useState(false)
     const [size, setSize] = useState("small")
 
 
 
-    const toggleFirstDrawer = () => {
-        setOpenFirstDrawer(!openfirstDrawer)
-    }
-
-    const toggleSecondDrawer = () => {
-        setOpenFirstDrawer(false)
-        setOpenSecondDrawer(!openSecondDrawer)
-    }
 
     useEffect(() => {
         const fetchRestaurant = async () => {
@@ -86,7 +78,7 @@ const Restaurant = ({ route }) => {
                     {
                         restaurant?.menu?.TopSeller?.map((item, id) => (
                             item?.type === selectedMenu.toLowerCase() && (
-                                <MenuItem selectedMenu={selectedMenu} key={id} openfirstDrawer={openfirstDrawer} openSecondDrawer={openSecondDrawer} size={size} setSize={setSize} toggleFirstDrawer={toggleFirstDrawer} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} isSecondDrawerVisible={openSecondDrawer} item={item} />
+                                <MenuItem selectedMenu={selectedMenu} key={id} size={size} setSize={setSize} item={item} />
                             )
                         ))
                     }

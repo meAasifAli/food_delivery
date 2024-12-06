@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -9,13 +9,20 @@ import axios from 'axios';
 import { BASE_URI } from '../../../config/uri';
 import Entypo from 'react-native-vector-icons/Entypo'
 import ItemCustomizationModal from '../../modals/ItemCustomizationModal';
+import SetUserCustomization from '../../modals/SetUserCustomization';
+
 
 const CartItems = () => {
-
+    const [isOpenCustomization, setIsOpenCustomization] = useState(false)
     const [isOpen, setIsOpen] = useState(null)
     const dispatch = useDispatch()
     const { cart } = useSelector((state) => state?.cart)
     const { token } = useSelector((state) => state?.auth)
+    const [incrementLoader, setIncrementLoader] = useState(false)
+    const [decrementLoader, setDecrementLoader] = useState({});
+
+
+
 
 
     const toggleModal = (id) => {
@@ -24,47 +31,63 @@ const CartItems = () => {
 
     useEffect(() => {
         dispatch(fetchCartItems({ token }))
-    }, [dispatch, token])
+    }, [])
 
 
-    const handleIncrement = async (id, itemId, qty) => {
-        const newQty = qty + 1;
-        dispatch(incrementQuantity(id))
-        try {
-            await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${itemId}`, {
-                quantity: newQty
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-        } catch (error) {
-            Alert.alert("error", error)
-            console.log(error?.response);
+
+
+
+    const handleIncrement = async (cartItemId, qty, customizations) => {
+        if (Object.keys(customizations)?.length > 0) {
+            setIsOpenCustomization(true)
+        }
+        else {
+            const newQty = qty + 1;
+            setIncrementLoader((prev) => ({ ...prev, [cartItemId]: true }));
+            try {
+                await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${cartItemId}`, {
+                    quantity: newQty
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            } catch (error) {
+                setIncrementLoader((prev) => ({ ...prev, [cartItemId]: false }));
+                Alert.alert("error", error)
+                console.log(error?.response);
+            }
+            finally {
+                setIncrementLoader((prev) => ({ ...prev, [cartItemId]: false }));
+            }
         }
     }
 
 
 
-    const handleDecrement = async (id, itemId, qty) => {
 
+
+    const handleDecrement = async (cartItemId, qty) => {
         const newQty = qty - 1;
-        dispatch(decrementQuantity(id))
+        setDecrementLoader((prev) => ({ ...prev, [cartItemId]: true }));
         try {
-            await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${itemId}`, {
+            await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${cartItemId}`, {
                 quantity: newQty
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
+            dispatch(fetchCartItems({ token }))
         } catch (error) {
+            setDecrementLoader((prev) => ({ ...prev, [cartItemId]: false }));
             console.log(error?.response);
         }
-
+        finally {
+            setDecrementLoader((prev) => ({ ...prev, [cartItemId]: false }));
+            setDecrementLoader(false)
+        }
     }
-
-
 
 
     return (
@@ -77,29 +100,39 @@ const CartItems = () => {
                                 <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
                             </View>
                             <View>
-                                <Typography title={item?.name} ff={"OpenSans-Regular"} size={12} lh={16} fw={300} color={"#000000"} />
-                                <TouchableOpacity onPress={() => toggleModal(item?.item_id)} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                                    <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#ccc" }}>customize</Text>
-                                    <Entypo name='chevron-down' size={16} color={"#ccc"} />
-                                </TouchableOpacity>
-                                <ItemCustomizationModal isOpen={isOpen === item?.item_id} setIsOpen={() => toggleModal(item?.item_id)} item={item} />
+                                <Typography title={item?.item_name} ff={"OpenSans-Regular"} size={12} lh={16} fw={300} color={"#000000"} />
+                                {
+                                    Object.keys(item?.customizations)?.length > 0 && <TouchableOpacity onPress={() => toggleModal(item?.cart_item_id)} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                                        <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#ccc" }}>customize</Text>
+                                        <Entypo name='chevron-down' size={16} color={"#ccc"} />
+                                    </TouchableOpacity>
+                                }
+                                <ItemCustomizationModal isOpen={isOpen === item?.cart_item_id} setIsOpen={() => toggleModal(item?.item_id)} item={item} />
                             </View>
                         </View>
                         <View style={styles.ItemRightWrapper}>
                             <View style={styles.ItemRightLeftWrapper}>
-                                <TouchableOpacity onPress={() => handleIncrement(item?.id, item?.item_id, item?.quantity)}>
-                                    <Text style={styles.actionTextPlus}>+</Text>
+                                <TouchableOpacity onPress={() => handleIncrement(item?.cart_item_id, item?.quantity, item?.customizations)}>
+                                    <Text style={styles.actionTextPlus}>{
+                                        incrementLoader[item?.cart_item_id] ? <ActivityIndicator size={15} color={"#FA4A0C"} /> : '+'
+                                    }</Text>
                                 </TouchableOpacity>
+                                <SetUserCustomization setIscustomization={() => toggleModal(item?.cart_item_id)} title={item?.item_name} price={item?.item_price} isOpen={isOpenCustomization} setIsOpen={setIsOpenCustomization} />
                                 <View>
                                     <Typography title={item?.quantity} ff={"OpenSans-Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
                                 </View>
-                                <TouchableOpacity onPress={() => handleDecrement(item?.id, item?.item_id, item?.quantity)}>
-                                    <Text style={styles.actionTextMinus}>-</Text>
+                                <TouchableOpacity onPress={() => handleDecrement(item?.cart_item_id, item?.quantity)}>
+
+                                    <Text style={styles.actionTextMinus}>{
+                                        decrementLoader[item?.cart_item_id] ? <ActivityIndicator size={15} color={"#FA4A0C"} /> : '-'
+                                    }</Text>
+
                                 </TouchableOpacity>
                             </View>
                             <View>
-                                <Typography title={`Rs: ${item?.price}`} ff={"OpenSans-Regular"} size={12} lh={16} fw={400} color={"#202020"} />
+                                <Typography title={`Rs: ${item?.item_total}`} ff={"OpenSans-Regular"} size={12} lh={16} fw={400} color={"#202020"} />
                             </View>
+
                         </View>
                     </View>
                 ))

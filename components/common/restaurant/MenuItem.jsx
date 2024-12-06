@@ -6,8 +6,11 @@ import Typography from '../../Typography'
 import RestaurantMenu from '../../modals/RestaurantMenu'
 import FoodSizeMenu from '../../modals/FoodSizeMenu'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useState } from 'react'
 
-const MenuItem = ({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, openfirstDrawer, openSecondDrawer }) => {
+const MenuItem = ({ item, size, setSize, }) => {
+    const [isCustomizable, setIsCustomizable] = useState(false)
+    const [isNonCustomizable, setIsNonCustomizable] = useState(false)
     const navigation = useNavigation()
     return (
         <View style={{
@@ -44,13 +47,20 @@ const MenuItem = ({ item, size, setSize, toggleFirstDrawer, toggleSecondDrawer, 
                 <View style={styles.rightWrapper}>
                     <Image style={{ width: 150, height: 150, resizeMode: "contain" }} source={require("../../../assets/images/menuImg.png")} />
                     <View style={{ position: "absolute", bottom: 8, right: 15 }}>
-                        <TouchableOpacity onPress={toggleFirstDrawer} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: 120, alignItems: "center" }}>
+                        <TouchableOpacity onPress={() => {
+                            item?.customisation === 0 ? setIsNonCustomizable(prev => !prev) : setIsCustomizable(prev => !prev)
+                        }} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: 120, alignItems: "center" }}>
                             <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Add </Text>
                         </TouchableOpacity>
                     </View>
                     {/* Restaurant Menu  modal */}
-                    <RestaurantMenu item={item} toggleSecondDrawer={toggleSecondDrawer} isDrawerVisible={openfirstDrawer} toggleFirstDrawer={toggleFirstDrawer} />
-                    <FoodSizeMenu item={item} navigation={navigation} setSize={setSize} size={size} isSecondDrawerVisible={openSecondDrawer} toggleSecondDrawer={toggleSecondDrawer} />
+                    {
+                        item?.customisation === 0 && <RestaurantMenu item={item} isNonCustomizable={isNonCustomizable} setIsNonCustomizable={setIsNonCustomizable} />
+                    }
+                    {
+                        item?.customisation === 1 && <FoodSizeMenu item={item} setSize={setSize} size={size} isCustomizable={isCustomizable} setIsCustomizable={setIsCustomizable} />
+                    }
+
 
                 </View>
             </View>

@@ -24,13 +24,12 @@ const SignoutModal = ({ isOpen, setIsOpen }) => {
             <View style={{
                 backgroundColor: "#fff",
                 borderRadius: 15,
-                height: 220,
                 padding: "5%",
                 width: "90%",
                 marginHorizontal: "auto"
 
             }}>
-                <Text style={{ fontSize: 18, fontFamily: "OpenSans-Regular", textAlign: "center", color: "#000", lineHeight: 25, marginBottom: 10 }}>Are you sure you want to signout?</Text>
+                <Text style={{ fontSize: 18, fontFamily: "OpenSans-Medium", textAlign: "center", color: "#000", lineHeight: 25, marginBottom: 10 }}>Are you sure you want to signout?</Text>
                 <View>
                     <TouchableOpacity onPress={() => setIsOpen(prev => !prev)} style={{ marginTop: 20, borderRadius: 10, height: 50, backgroundColor: "#fff", display: "flex", justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "#000" }}>
                         <Text style={{ color: "#000", fontFamily: "OpenSans-Regular", fontSize: 16 }}>Cancel</Text>

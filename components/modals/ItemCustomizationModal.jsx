@@ -1,47 +1,146 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
-import { BASE_URI } from '../../config/uri'
-import { useSelector } from 'react-redux'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import Typography from '../Typography'
+import RadioButton from 'react-native-radio-button'
+import { useEffect, useState } from 'react'
+import SelectMultiple from 'react-native-select-multiple'
+import CheckBox from '@react-native-community/checkbox'
+import axios from 'axios'
+import { BASE_URI } from '../../config/uri'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCustomizations } from '../../store/customizationSlice'
 
 const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
-
-    // console.log("item: ", item);
-    // const { cart } = useSelector((state) => state?.cart)
+    const dispatch = useDispatch()
+    // const [size, setSize] = useState("small")
+    const [selectedItems, setSelectedItems] = useState({});
+    const { customizations } = useSelector((state) => state?.customization)
     const { token } = useSelector((state) => state?.auth)
-    const [customizedItem, setCustomizedItem] = useState(null)
+    const [inputCustomizations, setInputCustomizations] = useState([
+        {
+            title_id: null,
+            option_ids: []
+        }
+    ])
 
-
-    console.log("item", item);
 
 
     useEffect(() => {
-        const fetchCustomizedItem = async () => {
-            try {
-                const res = await axios.get(`${BASE_URI}/api/items/customisation/getSelectedCustomisation/${item.item_id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                if (res?.data) {
-                    setCustomizedItem(res?.data?.data)
+        if (isOpen) {
+            dispatch(getCustomizations({ token, itemId: item?.item_id }))
+            dispatch(getCustomizations({ token, cartItemId: item?.cart_item_id }))
+        }
+    }, [isOpen])
+
+    // console.log(customizations);
+
+    const handleSelection = (key, optionId, titleId) => {
+        setSelectedItems((prev) => ({
+            ...prev,
+            [key]: optionId,
+        }));
+
+        setInputCustomizations((prev) => {
+            // Remove existing customization for the current title_id
+            const updatedCustomizations = prev.filter((item) => item.title_id !== titleId);
+
+            // Add the new customization
+            return [
+                ...updatedCustomizations,
+                {
+                    title_id: titleId,
+                    option_ids: [optionId], // Single selection
+                },
+            ];
+        });
+    };
+
+    const toggleSelection = (key, optionId, titleID) => {
+        // Update selectedItems state
+        setSelectedItems((prev) => {
+            const prevOptions = prev[key] || []; // Get current selections for the given key
+
+            if (prevOptions.includes(optionId)) {
+                // If already selected, remove it
+                return {
+                    ...prev,
+                    [key]: prevOptions.filter((id) => id !== optionId),
+                };
+            } else {
+                // If not selected, add it
+                return {
+                    ...prev,
+                    [key]: [...prevOptions, optionId],
+                };
+            }
+        });
+
+        // Update inputCustomizations state
+        setInputCustomizations((prev) => {
+            // Find the current customization for the given titleID
+            const existingCustomization = prev.find((item) => item.title_id === titleID);
+
+            if (existingCustomization) {
+                const updatedOptionIds = existingCustomization.option_ids.includes(optionId)
+                    ? existingCustomization.option_ids.filter((id) => id !== optionId) // Remove optionId
+                    : [...existingCustomization.option_ids, optionId]; // Add optionId
+
+                // If no options remain, remove the customization entirely
+                if (updatedOptionIds.length === 0) {
+                    return prev.filter((item) => item.title_id !== titleID);
                 }
 
-            } catch (error) {
-                Alert.alert(error?.response?.data?.message)
-                console.log(error?.response?.data?.message);
+                // Update the customization with the new options
+                return prev.map((item) =>
+                    item.title_id === titleID
+                        ? { ...item, option_ids: updatedOptionIds }
+                        : item
+                );
             }
+
+            // If no existing customization, add a new one
+            return [
+                ...prev,
+                {
+                    title_id: titleID,
+                    option_ids: [optionId],
+                },
+            ];
+        });
+    };
+
+
+
+
+    const handleUpdateCustomization = async (cartItemId, quantity) => {
+        const customizations = inputCustomizations.slice(1)
+        // console.log(customizations);
+
+        try {
+            const res = await axios.patch(`${BASE_URI}/api/items/customisation/updateSelectedCustomisation/${cartItemId}`, {
+                quantity: quantity,
+                customizations: customizations
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setInputCustomizations([{
+                title_id: null,
+                option_ids: []
+            }])
+            if (res?.data) {
+                Alert.alert("Success", "Customization updated successfully")
+                setIsOpen(false)
+            }
+        } catch (error) {
+            console.log(error?.response);
+            Alert.alert("Error in updating customization: ", error?.response?.data?.message)
         }
-
-        if (isOpen && item?.item_id) {
-            fetchCustomizedItem()
-        }
-
-    }, [isOpen, item])
-
-    console.log("customizedItem: ", customizedItem);
+    }
 
 
 
@@ -61,24 +160,115 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
 
         >
             <View style={styles.drawer}>
-                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                        <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16 }}>{item?.name}</Text>
-                        <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16 }}>&middot;</Text>
-                        <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16 }}>{item?.price}</Text>
+                <ScrollView contentContainerStyle={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false}>
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                            <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16 }}>{item?.item_name}</Text>
+                            <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16 }}>&middot;</Text>
+                            <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16 }}>{item?.item_price}</Text>
+                        </View>
+                        <TouchableOpacity onPress={setIsOpen}>
+                            <AntDesign name='closecircle' color={"#fff"} size={20} />
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={setIsOpen}>
-                        <AntDesign name='closecircle' color={"#fff"} size={20} />
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <Text style={{ color: "#fff", fontFamily: "OpenSans-Bold", fontSize: 20, lineHeight: 40 }}>Customize as per your Taste</Text>
-                </View>
-                <View style={{ backgroundColor: "#ccc", height: 1, width: "100%", marginTop: 10, marginBottom: 20 }}></View>
-                <View>
-                    <Text style={{ color: "#fff", fontFamily: "OpenSans-Bold", fontSize: 16 }}>Size</Text>
-                    <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16, lineHeight: 25 }}>Select Anyone</Text>
-                </View>
+                    <View>
+                        <Text style={{ color: "#fff", fontFamily: "OpenSans-Bold", fontSize: 20, lineHeight: 40 }}>Customize as per your Taste</Text>
+                    </View>
+                    <View style={{ backgroundColor: "#ccc", height: 1, width: "100%", marginTop: 10, marginBottom: 20 }}></View>
+                    <View>
+                        {
+                            customizations && Object.entries(customizations || {})?.map(([key, customization]) => {
+                                // console.log("customization : ", customization.title_id);
+
+                                return (
+                                    <View key={key}>
+                                        <View style={{ marginTop: 15 }}>
+                                            <Text style={{ color: "#fff", fontFamily: "OpenSans-Medium", fontSize: 16 }}>{key}</Text>
+                                            <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16, lineHeight: 24 }}>{`Select any ${customization?.selection_type}`}</Text>
+                                        </View>
+                                        <View style={styles.extraContainer}>
+                                            {
+                                                customization?.options?.map((data, id) => {
+                                                    // console.log("data: ", data);
+
+                                                    return (
+                                                        <View key={id} style={styles.sizeItem}>
+                                                            {
+                                                                customization?.selection_type === "one" ? (
+                                                                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                                                                        <View style={styles.sizeItemLeftWrapper}>
+                                                                            <Image
+                                                                                style={{ resizeMode: "contain", height: 10, width: 10 }}
+                                                                                source={require("../../assets/images/arrowUpBox.png")}
+                                                                            />
+                                                                            <Text style={{
+                                                                                color: "#fff",
+                                                                                fontFamily: "OpenSans-Regular",
+                                                                                fontSize: 16,
+                                                                                lineHeight: 23,
+
+                                                                            }}>{data?.option_name}</Text>
+                                                                        </View>
+                                                                        <View>
+                                                                            <RadioButton
+                                                                                size={10}
+                                                                                animation={"bounceIn"}
+                                                                                isSelected={selectedItems[key] === data?.option_id} // Check if this option is selected
+                                                                                onPress={() => handleSelection(key, data?.option_id, customization?.title_id)} // Update the selection
+                                                                                innerColor={selectedItems[key] === data?.option_id ? "#FA4A0C" : "#000"}
+                                                                                outerColor={selectedItems[key] === data?.option_id ? "#FA4A0C" : "#fff"}
+                                                                            />
+
+                                                                        </View>
+                                                                    </View>
+
+                                                                ) :
+                                                                    (
+
+                                                                        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                                                                            <View style={styles.sizeItemLeftWrapper}>
+                                                                                <Image
+                                                                                    style={{ resizeMode: "contain", height: 10, width: 10 }}
+                                                                                    source={require("../../assets/images/arrowUpBox.png")}
+                                                                                />
+                                                                                <Typography
+                                                                                    title={data?.option_name}
+                                                                                    color={"#fff"}
+                                                                                    ff={"OpenSans-Regular"}
+                                                                                    fw={300}
+                                                                                    lh={23}
+                                                                                    ls={0.05}
+                                                                                    size={16}
+                                                                                />
+                                                                            </View>
+                                                                            <View>
+                                                                                <CheckBox
+                                                                                    value={selectedItems[key]?.includes(data?.option_id)}
+                                                                                    onValueChange={() => toggleSelection(key, data?.option_id, customization?.title_id)}
+                                                                                    tintColors={{ true: "#FA4A0C", false: "#fff" }}
+                                                                                />
+                                                                            </View>
+                                                                        </View>
+
+                                                                    )
+                                                            }
+                                                        </View>
+                                                    )
+                                                })
+                                            }
+                                        </View>
+                                    </View>
+                                )
+                            })
+                        }
+
+
+                        <TouchableOpacity onPress={() => handleUpdateCustomization(item?.cart_item_id, item?.quantity)} style={{ marginTop: 20, backgroundColor: "#FA4A0C", height: 50, borderRadius: 15, justifyContent: "center", alignItems: "center" }}>
+                            <Text style={{ color: "#fff", fontFamily: "OpenSans-Bold", fontSize: 16 }}>update item</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+
             </View>
         </Modal>
     )
@@ -95,8 +285,67 @@ const styles = StyleSheet.create({
         backgroundColor: '#000',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        height: "75%",
         width: "100%",
-        padding: 20
+        padding: 20,
+        maxHeight: "75%"
     },
+    sizeContainer: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        // height: height * 0.25,
+        width: "100%",
+        marginHorizontal: "auto",
+        borderColor: "#D6D6D680",
+        borderWidth: 1,
+        borderRadius: wp(5),
+        marginTop: hp(4),
+        padding: wp(4)
+    },
+    sizeItem: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: wp(4),
+        marginBottom: hp(2)
+
+    },
+    sizeItemLeftWrapper: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: wp(2)
+    },
+    extraContainer: {
+        display: "flex",
+        justifyContent: "center",
+        width: "100%",
+        marginHorizontal: "auto",
+        borderColor: "#D6D6D680",
+        borderWidth: 1,
+        borderRadius: wp(3),
+        marginTop: hp(4),
+        paddingHorizontal: wp(5),
+        paddingTop: hp(2)
+    },
+    actionWrapper: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        // borderTopColor: "#D6D6D6",
+        // borderTopWidth: 1,
+        marginTop: hp(5)
+    },
+    qtyWrapper: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: wp(3),
+    }
 })
+
+
+
