@@ -17,7 +17,7 @@ export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async ({ t
             Authorization: `Bearer ${token}`
         }
     })
-    return response?.data?.rows
+    return response?.data?.data
 })
 
 
@@ -25,18 +25,7 @@ const cartSlice = createSlice({
     name: "cart",
     initialState: initial,
     reducers: {
-        incrementQuantity: (state, action) => {
-            const item = state.cart.find((item) => item.id === action.payload);
-            if (item) {
-                item.quantity += 1;
-            }
-        },
-        decrementQuantity: (state, action) => {
-            const item = state.cart.find((item) => item.id === action.payload);
-            if (item.quantity > 1) {
-                item.quantity -= 1
-            }
-        }
+
     },
     extraReducers: (builder) => {
         builder
@@ -57,5 +46,5 @@ const cartSlice = createSlice({
     }
 })
 
-export const { decrementQuantity, incrementQuantity } = cartSlice.actions
+
 export default cartSlice.reducer

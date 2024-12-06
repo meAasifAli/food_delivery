@@ -10,12 +10,12 @@ import { useState } from 'react';
 import { BASE_URI } from '../../config/uri';
 
 
-const RestaurantMenu = ({ isDrawerVisible, toggleFirstDrawer, toggleSecondDrawer, item }) => {
+const RestaurantMenu = ({ item, isNonCustomizable, setIsNonCustomizable }) => {
     const { token } = useSelector((state) => state?.auth)
     const navigation = useNavigation()
     const [quantity, setQuanitity] = useState(1)
     const [loading, setLoading] = useState(false)
-    console.log("menu: ", item);
+    // console.log("menu: ", item);
 
     const handlePress = () => {
         item?.customisation === 0 ? handleAddToCart() : toggleSecondDrawer()
@@ -54,8 +54,8 @@ const RestaurantMenu = ({ isDrawerVisible, toggleFirstDrawer, toggleSecondDrawer
 
     return (
         <Modal
-            isVisible={isDrawerVisible}
-            onBackdropPress={toggleFirstDrawer}
+            isVisible={isNonCustomizable}
+            onBackdropPress={() => setIsNonCustomizable(prev => !prev)}
             // swipeDirection="down"
             // onSwipeComplete={toggleFirstDrawer}
             style={styles.modal}
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#000',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        height: "75%",
+        height: "65%",
         width: "100%"
     },
     headingModal: {
