@@ -40,8 +40,8 @@ const Category = ({ route, navigation }) => {
 
 
             } catch (error) {
-                Alert.alert("Error in fetching categories")
-                console.error(error)
+                Alert.alert("Error in fetching categories: ", error?.response?.data?.message)
+                console.error(error?.response?.data?.message)
             }
         }
         searchCategory()

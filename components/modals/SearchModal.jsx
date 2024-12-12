@@ -15,217 +15,105 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import IonIcons from 'react-native-vector-icons/Ionicons';
+import usefetchRestaurantBySearch from '../../hooks/useFetchRestaurantBySearch';
 
 const SearchModal = ({ isOpen, setIsOpen }) => {
-    const navigation = useNavigation()
+    const navigation = useNavigation();
     const [searchVal, setSearchVal] = useState('');
 
-    const AllRestaurnts = useRef([
-        {
-            id: 1,
-            name: 'Burger King',
-            address: 'Near Bus Stand, New Delhi',
-            rating: 4.5,
-            orders: '1.7k',
-            menu: ['Burger', 'Pizza', 'Rolls'],
-            src: require('../../assets/images/burger.png'),
-            deliveryTime: '30-40 min',
-        },
-        {
-            id: 2,
-            name: 'Pizza Hut',
-            address: 'Nowgam, Srinagar',
-            rating: 4.5,
-            orders: '1.7k',
-            menu: ['Burger', 'Pizza', 'Rolls'],
-            src: require('../../assets/images/burger.png'),
-            deliveryTime: '30-40 min',
-        },
-        {
-            id: 3,
-            name: 'Cafe Ertugrul',
-            address: 'Rajbagh',
-            rating: 4.5,
-            orders: '1.7k',
-            menu: ['Burger', 'Pizza', 'Rolls'],
-            src: require('../../assets/images/burger.png'),
-            deliveryTime: '30-40 min',
-        },
-        {
-            id: 4,
-            name: 'Al Baik',
-            address: 'Sanat Nagar, Srinagar',
-            rating: 4.5,
-            orders: '1.7k',
-            menu: ['Burger', 'Pizza', 'Rolls'],
-            src: require('../../assets/images/burger.png'),
-            deliveryTime: '30-40 min',
-        },
-    ])
+    const { loading, handleFetchSearchRestaurants, searchRestaurants } = usefetchRestaurantBySearch()
 
-    const [restaurants, setRestaurants] = useState(AllRestaurnts.current);
+
 
 
     useEffect(() => {
-        const filterRestaurants = () => {
-            if (searchVal.trim() === '') {
-                // Reset to all restaurants when search is cleared
-                setRestaurants(AllRestaurnts.current);
-            } else {
-                const filteredRestaurants = AllRestaurnts.current.filter(restaurant =>
-                    restaurant.name.toLowerCase().includes(searchVal.trim().toLowerCase())
-                );
-                setRestaurants(filteredRestaurants);
-            }
-        };
-        filterRestaurants();
-    }, [searchVal]);
+        if (searchVal.trim() !== '') {
+            handleFetchSearchRestaurants({ query: searchVal })
+        }
+    }, [searchVal])
+
+
+
     return (
         <Modal
             isVisible={isOpen}
             onBackdropPress={() => setIsOpen(false)}
-            style={{
-                margin: 0,
-                justifyContent: 'flex-start',
-                flex: 1,
-                backgroundColor: '#fff',
-                borderBottomStartRadius: 25,
-                borderBottomEndRadius: 25,
-                width: '100%',
-                marginHorizontal: 'auto',
-                position: 'absolute',
-                top: 0,
-            }}
-            animationIn={'slideInDown'}
+            style={styles.modal}
+            animationIn={'slideInUp'}
             animationInTiming={300}
-            animationOut={'slideOutUp'}
+            animationOut={'slideOutDown'}
             animationOutTiming={300}>
             <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}>
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={{ padding: 10 }}>
-                        <View
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}>
+                    <View style={styles.container}>
+                        {/* Header */}
+                        <View style={styles.header}>
                             <TouchableOpacity onPress={() => setIsOpen(false)}>
-                                <IonIcons name="arrow-back" size={20} color={'#000'} />
+                                <IonIcons name="arrow-back" size={24} color={'#000'} />
                             </TouchableOpacity>
-                            <View
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                <Text
-                                    style={{
-                                        fontSize: 16,
-                                        fontFamily: 'OpenSans-Regular',
-                                        color: '#000',
-                                    }}>
-                                    Search for Dishes and Restaurants
-                                </Text>
-                            </View>
+                            <Text style={styles.headerText}>
+                                Search for Dishes and Restaurants
+                            </Text>
                         </View>
+
+                        {/* Search Input */}
                         <TextInput
                             value={searchVal}
                             onChangeText={val => setSearchVal(val)}
-                            style={{
-                                paddingLeft: 10,
-                                marginTop: 10,
-                                height: 50,
-                                width: '100%',
-                                borderColor: '#ccc',
-                                borderWidth: 1,
-                                borderRadius: 10,
-                                fontFamily: 'OpenSans-Regular',
-                                color: '#000',
-                                fontSize: 16,
-                            }}
+                            style={styles.searchInput}
                             placeholder={'Try Cake'}
+                            placeholderTextColor="#aaa"
                         />
                         {
-                            searchVal.trim() !== "" && <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-                                {restaurants.map((item, id) => (
-                                    <TouchableOpacity
-                                        onPress={() => navigation.navigate("SearchedRestaurants", { query: item?.name })}
-                                        key={id}
-                                        style={{
-                                            padding: 10,
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            gap: 10,
-                                        }}>
-                                        <View>
+                            searchVal.trim() !== "" && (
+                                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+                                    {searchRestaurants.map((item, id) => (
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                navigation.navigate("SearchedRestaurants", {
+                                                    query: item?.restaurant_name,
+                                                })
+                                            }
+                                            key={id}
+                                            style={styles.restaurantCard}>
                                             <Image
-                                                source={item.src}
-                                                style={{ width: 50, height: 50, resizeMode: 'contain' }}
+                                                source={require("../../assets/images/burger.png")}
+                                                style={styles.restaurantImage}
                                             />
-                                        </View>
-                                        <View>
-                                            <Text
-                                                style={{
-                                                    fontSize: 14,
-                                                    fontFamily: 'OpenSans-Medium',
-                                                    color: '#000',
-                                                }}>
-                                                {item.name}
-                                            </Text>
-                                            <View
-                                                style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'row',
-                                                    alignItems: 'center',
-                                                    gap: 5,
-                                                }}>
-                                                <View
-                                                    style={{
-                                                        display: 'flex',
-                                                        flexDirection: 'row',
-                                                        alignItems: 'center',
-                                                        gap: 5,
-                                                    }}>
-                                                    <Image
-                                                        source={require('../../assets/images/star.png')}
-                                                        style={{ width: 10, height: 10, resizeMode: 'contain' }}
-                                                    />
-                                                    <Text
-                                                        style={{
-                                                            fontSize: 12,
-                                                            fontFamily: 'OpenSans-Regular',
-                                                            color: '#000',
-                                                        }}>
-                                                        {item.rating}
+                                            <View>
+                                                <Text style={styles.restaurantName}>
+                                                    {item?.restaurant_name}
+                                                </Text>
+                                                <View style={styles.restaurantDetails}>
+                                                    <View style={styles.ratingContainer}>
+                                                        <Image
+                                                            source={require('../../assets/images/star.png')}
+                                                            style={styles.ratingImage}
+                                                        />
+                                                        <Text style={styles.ratingText}>
+                                                            {item.avg_rating}
+                                                        </Text>
+                                                    </View>
+                                                    {/* {`(${item.orders}+)`} */}
+                                                    <Text>(10)</Text>
+                                                    <Text>&middot;</Text>
+                                                    <Text style={styles.addressText}>
+                                                        Rajbagh
+                                                    </Text>
+                                                    <Text>&middot;</Text>
+                                                    <Text style={styles.deliveryTimeText}>
+                                                        {item.delivery_time}
                                                     </Text>
                                                 </View>
-                                                <Text>{`(${item.orders}+)`}</Text>
-                                                <Text>&middot;</Text>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 12,
-                                                        fontFamily: 'OpenSans-Regular',
-                                                        color: '#000',
-                                                    }}>
-                                                    {item.address}
-                                                </Text>
-                                                <Text>&middot;</Text>
-                                                <Text
-                                                    style={{
-                                                        fontSize: 12,
-                                                        fontFamily: 'OpenSans-Regular',
-                                                        color: '#000',
-                                                    }}>
-                                                    {item.deliveryTime}
-                                                </Text>
                                             </View>
-                                        </View>
-                                    </TouchableOpacity>
-                                ))}
-                            </ScrollView>
+                                        </TouchableOpacity>
+                                    ))}
+                                </ScrollView>
+                            )
                         }
+
                     </View>
                 </TouchableWithoutFeedback>
             </KeyboardAvoidingView>
@@ -235,4 +123,89 @@ const SearchModal = ({ isOpen, setIsOpen }) => {
 
 export default SearchModal;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    modal: {
+        margin: 0,
+        justifyContent: 'flex-start',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        borderBottomStartRadius: 25,
+        borderBottomEndRadius: 25,
+        paddingHorizontal: 15,
+        paddingTop: 20,
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    headerText: {
+        fontSize: 16,
+        fontFamily: 'OpenSans-Regular',
+        color: '#000',
+        flex: 1,
+        textAlign: 'center',
+    },
+    searchInput: {
+        paddingLeft: 10,
+        height: 50,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 10,
+        fontFamily: 'OpenSans-Regular',
+        color: '#000',
+        fontSize: 16,
+        marginBottom: 10,
+    },
+    restaurantCard: {
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
+    restaurantImage: {
+        width: 50,
+        height: 50,
+        resizeMode: 'contain',
+    },
+    restaurantName: {
+        fontSize: 14,
+        fontFamily: 'OpenSans-Medium',
+        color: '#000',
+    },
+    restaurantDetails: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+    },
+    ratingContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+    },
+    ratingImage: {
+        width: 10,
+        height: 10,
+        resizeMode: 'contain',
+    },
+    ratingText: {
+        fontSize: 12,
+        fontFamily: 'OpenSans-Regular',
+        color: '#000',
+    },
+    addressText: {
+        fontSize: 12,
+        fontFamily: 'OpenSans-Regular',
+        color: '#000',
+    },
+    deliveryTimeText: {
+        fontSize: 12,
+        fontFamily: 'OpenSans-Regular',
+        color: '#000',
+    },
+});
+
+
+// {/* Search Results */}

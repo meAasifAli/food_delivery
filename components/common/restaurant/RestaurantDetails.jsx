@@ -5,6 +5,8 @@ import Typography from '../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const RestaurantDetails = ({ item }) => {
+
+
     return (
         <View style={styles.restaurantWrapper}>
             <Typography title={item?.restaurantName} color={"#fff"} size={32} lh={43} ls={0.07} fw={600} ff={"OpenSans-Regular"} />

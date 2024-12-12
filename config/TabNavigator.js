@@ -1,11 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Dining from "../tabs/Dining";
-import CartTab from "../tabs/CartTab";
 import Reorder from "../tabs/Reorder";
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Easing } from "react-native";
 
 const Tab = createBottomTabNavigator()
 
@@ -38,6 +36,7 @@ export const TabNavigator = () => {
             <Tab.Screen
                 name="Dining"
                 component={Dining}
+
                 options={{
                     title: 'Dining',
                     headerShown: false,
@@ -52,27 +51,17 @@ export const TabNavigator = () => {
                             <MaterialIcon name="local-dining" size={size} color={color} />
                         </View>
                     ),
+                    transitionSpec: {
+                        animation: 'timing',
+                        config: {
+                            duration: 150,
+                            easing: Easing.inOut(Easing.ease),
+                        },
+                    },
+
                 }}
             />
-            <Tab.Screen
-                name="Cart"
-                component={CartTab}
-                options={{
-                    title: 'Cart',
-                    headerShown: false,
-                    tabBarIcon: ({ color, size, focused }) => (
-                        <View
-                            style={[
-                                styles.activeTab,
-                                {
-                                    backgroundColor: focused ? '#E8DEF8' : '#fff',
-                                },
-                            ]}>
-                            <AntDesign name="shoppingcart" size={size} color={color} />
-                        </View>
-                    ),
-                }}
-            />
+
             <Tab.Screen
                 name="Reorder"
                 component={Reorder}
@@ -93,6 +82,13 @@ export const TabNavigator = () => {
                             />
                         </View>
                     ),
+                    transitionSpec: {
+                        animation: 'timing',
+                        config: {
+                            duration: 150,
+                            easing: Easing.inOut(Easing.ease),
+                        },
+                    },
                 }}
             />
         </Tab.Navigator>

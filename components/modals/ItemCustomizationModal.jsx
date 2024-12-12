@@ -6,7 +6,6 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import Typography from '../Typography'
 import RadioButton from 'react-native-radio-button'
 import { useEffect, useState } from 'react'
-import SelectMultiple from 'react-native-select-multiple'
 import CheckBox from '@react-native-community/checkbox'
 import axios from 'axios'
 import { BASE_URI } from '../../config/uri'
@@ -27,7 +26,6 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
     ])
 
 
-
     useEffect(() => {
         if (isOpen) {
             dispatch(getCustomizations({ token, itemId: item?.item_id }))
@@ -37,80 +35,110 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
 
     // console.log(customizations);
 
+    // console.log("Selected Customizations: ", item?.customizations);
+
+
+    useEffect(() => {
+        if (!customizations || Object.keys(customizations).length === 0) {
+            return;
+        }
+
+        const initialSelections = {};
+        const initialCustomizations = [];
+
+        Object.entries(customizations).forEach(([key, customization]) => {
+            const { options, selection_type, title_id } = customization;
+
+            // console.log("options: ", options);
+
+
+            if (selection_type === "one") {
+                const defaultOption = options.find((option) => option.option_id);
+                if (defaultOption) {
+                    initialSelections[key] = defaultOption.option_id;
+
+                    initialCustomizations.push({
+                        title_id,
+                        option_ids: [defaultOption.option_id],
+                    });
+                }
+            } else {
+                const selectedOptions = options?.map((item) => item?.option_id)
+
+
+                if (selectedOptions.length > 0) {
+                    initialSelections[key] = selectedOptions;
+
+                    initialCustomizations.push({
+                        title_id,
+                        option_ids: selectedOptions,
+                    });
+                }
+            }
+        });
+
+        console.log("initialSelections: ", initialSelections);
+
+        setSelectedItems(initialSelections);
+        setInputCustomizations(initialCustomizations);
+    }, []);
+
+
+
+
+
+
     const handleSelection = (key, optionId, titleId) => {
         setSelectedItems((prev) => ({
             ...prev,
-            [key]: optionId,
+            [key]: optionId, // Update the selected option for the given customization key
         }));
 
         setInputCustomizations((prev) => {
-            // Remove existing customization for the current title_id
             const updatedCustomizations = prev.filter((item) => item.title_id !== titleId);
 
-            // Add the new customization
             return [
                 ...updatedCustomizations,
                 {
                     title_id: titleId,
-                    option_ids: [optionId], // Single selection
+                    option_ids: [optionId], // RadioButton only allows one selection
                 },
             ];
         });
     };
 
-    const toggleSelection = (key, optionId, titleID) => {
-        // Update selectedItems state
+
+    const toggleSelection = (key, optionId, titleId) => {
         setSelectedItems((prev) => {
-            const prevOptions = prev[key] || []; // Get current selections for the given key
+            const currentSelections = prev[key] || [];
+            const isSelected = currentSelections.includes(optionId);
 
-            if (prevOptions.includes(optionId)) {
-                // If already selected, remove it
-                return {
-                    ...prev,
-                    [key]: prevOptions.filter((id) => id !== optionId),
-                };
-            } else {
-                // If not selected, add it
-                return {
-                    ...prev,
-                    [key]: [...prevOptions, optionId],
-                };
-            }
+            return {
+                ...prev,
+                [key]: isSelected
+                    ? currentSelections.filter((id) => id !== optionId) // Remove if already selected
+                    : [...currentSelections, optionId], // Add if not selected
+            };
         });
 
-        // Update inputCustomizations state
         setInputCustomizations((prev) => {
-            // Find the current customization for the given titleID
-            const existingCustomization = prev.find((item) => item.title_id === titleID);
+            const updatedCustomizations = prev.filter((item) => item.title_id !== titleId);
+            const currentCustomization = prev.find((item) => item.title_id === titleId) || { title_id: titleId, option_ids: [] };
 
-            if (existingCustomization) {
-                const updatedOptionIds = existingCustomization.option_ids.includes(optionId)
-                    ? existingCustomization.option_ids.filter((id) => id !== optionId) // Remove optionId
-                    : [...existingCustomization.option_ids, optionId]; // Add optionId
+            const updatedOptionIds = currentCustomization.option_ids.includes(optionId)
+                ? currentCustomization.option_ids.filter((id) => id !== optionId)
+                : [...currentCustomization.option_ids, optionId];
 
-                // If no options remain, remove the customization entirely
-                if (updatedOptionIds.length === 0) {
-                    return prev.filter((item) => item.title_id !== titleID);
-                }
-
-                // Update the customization with the new options
-                return prev.map((item) =>
-                    item.title_id === titleID
-                        ? { ...item, option_ids: updatedOptionIds }
-                        : item
-                );
-            }
-
-            // If no existing customization, add a new one
             return [
-                ...prev,
+                ...updatedCustomizations,
                 {
-                    title_id: titleID,
-                    option_ids: [optionId],
+                    title_id: titleId,
+                    option_ids: updatedOptionIds,
                 },
             ];
         });
     };
+
 
 
 

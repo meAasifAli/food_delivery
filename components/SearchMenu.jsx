@@ -4,13 +4,14 @@ import Evil from 'react-native-vector-icons/EvilIcons'
 
 const { height, width } = Dimensions.get("window")
 
-const SearchMenu = () => {
+const SearchMenu = ({ handleFocus }) => {
     return (
 
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <TouchableWithoutFeedback>
                 <View style={styles.container}>
                     <TextInput
+                        onFocus={handleFocus}
                         placeholderTextColor={"#FA4A0C"}
                         style={{
                             paddingLeft: 10

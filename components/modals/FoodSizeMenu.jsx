@@ -4,19 +4,146 @@ import Typography from '../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import RadioButton from 'react-native-radio-button'
 import { useNavigation } from '@react-navigation/native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { BASE_URI } from '../../config/uri'
+import CheckBox from '@react-native-community/checkbox'
+import { fetchCartItems } from '../../store/cartSlice'
 
 
 
-const FoodSizeMenu = ({ size, setSize, item, isCustomizable, setIsCustomizable }) => {
-    const [options, setOptions] = useState(null)
 
+const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
+    const navigation = useNavigation()
+    const dispatch = useDispatch()
+    const [customizations, setCustomizations] = useState(null)
     const { token } = useSelector(state => state.auth)
+    const [selectedItems, setSelectedItems] = useState({});
+    const [itemQuantity, setItemQuantity] = useState(1)
+    const [inputCustomizations, setInputCustomizations] = useState([
+        {
+            title_id: null,
+            option_ids: []
+        }
+    ])
+    const [loading, setLoading] = useState(false)
+    const [additionalPrice, setAdditionalPrice] = useState(0.00);
 
+
+    // console.log('inputCustomizations: ', inputCustomizations);
+
+
+    const handleSelection = (key, optionId, titleId, optionAdditionalPrice) => {
+        // Parse the additional price to ensure it's a valid number
+        const parsedAdditionalPrice = parseFloat(optionAdditionalPrice || 0);
+
+        // Update selected items for the key
+        setSelectedItems((prev) => ({
+            ...prev,
+            [key]: optionId,
+        }));
+
+        // Update customizations to reflect the selected option
+        setInputCustomizations((prev) => {
+            // Remove existing customization for this titleId
+            const updatedCustomizations = prev.filter((item) => item.title_id !== titleId);
+
+            // Add the new customization
+            return [
+                ...updatedCustomizations,
+                {
+                    title_id: titleId,
+                    option_ids: [optionId],
+                },
+            ];
+        });
+
+        // Update the additional price
+        setAdditionalPrice((prev) => {
+            // Identify the currently selected option's additional price
+            const currentOptionId = selectedItems[key];
+            const currentAdditionalPrice = currentOptionId
+                ? parseFloat(
+                    customizations[key]?.options.find(
+                        (option) => option.option_id === currentOptionId
+                    )?.additional_price || 0
+                )
+                : 0;
+
+            // Calculate the new total additional price
+            const newPrice = prev - currentAdditionalPrice + parsedAdditionalPrice;
+
+            // Return the price rounded to two decimals
+            return parseFloat(newPrice.toFixed(2));
+        });
+    };
+
+
+
+
+    const toggleSelection = (key, titleId, optionId, optionAdditionalPrice) => {
+        const parsedAdditionalPrice = parseFloat(optionAdditionalPrice || 0);
+
+        setSelectedItems((prev) => {
+            // Toggle the checkbox selection
+            const updatedSelections = prev[key] || [];
+            const isAlreadySelected = updatedSelections.includes(optionId);
+
+
+            return {
+                ...prev,
+                [key]: isAlreadySelected
+                    ? updatedSelections.filter((id) => id !== optionId) // Remove the option if already selected
+                    : [...updatedSelections, optionId], // Add the option if not selected
+            };
+        });
+
+        // Update the additional price
+        setAdditionalPrice((prev) => {
+            const isAlreadySelected = selectedItems[key]?.includes(optionId);
+
+            // Add or subtract the price based on the selection state
+            const newPrice = isAlreadySelected
+                ? prev - parsedAdditionalPrice // Subtract the price if unselected
+                : prev + parsedAdditionalPrice; // Add the price if selected
+
+            // Return the price rounded to two decimals
+            return parseFloat(newPrice.toFixed(2));
+        });
+
+        // Update customizations (optional, if needed for your use case)
+        setInputCustomizations((prev) => {
+            // Ensure customization state reflects the toggle action
+            const updatedCustomizations = [...prev];
+            const existingIndex = updatedCustomizations.findIndex(
+                (item) => item.title_id === titleId && item.option_ids.includes(optionId)
+            );
+
+            if (existingIndex >= 0) {
+                // Remove the customization if the checkbox is being unchecked
+                updatedCustomizations.splice(existingIndex, 1);
+            } else {
+                // Add the customization if the checkbox is being checked
+                updatedCustomizations.push({ title_id: titleId, option_ids: [optionId] });
+            }
+
+            return updatedCustomizations;
+        });
+    };
+
+
+
+
+    // console.log(item);
+
+    const handleIncrease = () => {
+        setItemQuantity(prev => prev + 1)
+    }
+    const handleDecrease = () => {
+        setItemQuantity(prev => prev === 1 ? 1 : prev - 1)
+    }
 
     useEffect(() => {
         const getCustomization = async () => {
@@ -26,7 +153,8 @@ const FoodSizeMenu = ({ size, setSize, item, isCustomizable, setIsCustomizable }
                         Authorization: `Bearer ${token}`
                     }
                 })
-                setOptions(res?.data?.customizations);
+                setCustomizations(res?.data?.customizations);
+
 
             } catch (error) {
                 console.log("get customization error: ", error?.response?.data?.message);
@@ -39,7 +167,36 @@ const FoodSizeMenu = ({ size, setSize, item, isCustomizable, setIsCustomizable }
         }
     }, [isCustomizable])
 
-    // console.log("customizations options: ", options);
+
+
+
+    const handleSetCustomization = async () => {
+        setLoading(true)
+        try {
+            const res = await axios.post(`${BASE_URI}/api/items/customisation/setUserCustomisation/${item?.id}`, {
+                quantity: itemQuantity,
+                customizations: inputCustomizations.slice(1)
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            if (res?.data) {
+                // setIsCustomizable(prev => !prev)
+                Alert.alert("Customization added successfully")
+                navigation.navigate("CartScreen")
+                dispatch(fetchCartItems({ token }))
+            }
+        } catch (error) {
+            setLoading(false)
+            console.error(error?.response?.data?.message);
+            Alert.alert(error?.message)
+
+        }
+        finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <Modal
@@ -56,19 +213,118 @@ const FoodSizeMenu = ({ size, setSize, item, isCustomizable, setIsCustomizable }
             animationOutTiming={1000}
         >
             <View style={styles.drawer2}>
+
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                 >
                     <Header item={item} setIsCustomizable={setIsCustomizable} />
                     <View style={{ borderStyle: "dashed", borderColor: "#fff", borderWidth: 0.50, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0, paddingTop: hp(2) }}></View>
-                    <View style={{ display: "flex", flexDirection: "column", gap: 5, justifyContent: "flex-start", paddingTop: hp(2) }}>
-                        <Typography title={"Size"} color={"#fff"} ff={"OpenSans_regular"} fw={600} lh={23} ls={0.05} size={16} />
-                        <Typography title={"Select any 1"} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
-                    </View>
+                    {
+                        Object.entries(customizations || {})?.map(([key, customization]) => {
+                            // console.log(key);
+                            // console.log(customization);
+                            return (
+                                <View key={key}>
+                                    <View style={{ display: "flex", flexDirection: "column", gap: 5, justifyContent: "flex-start", paddingTop: hp(2) }}>
+                                        <Typography title={key} color={"#fff"} ff={"OpenSans-Regular"} fw={600} lh={23} ls={0.05} size={16} />
+                                        <Typography title={customization?.selection_type === "one" ? "Select any One" : "Select more than one"} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
+                                    </View>
+                                    <View style={styles.extraContainer}>
+                                        {
+                                            customization?.options?.map((data, id) => {
+                                                // console.log("data: ", data);
 
-                    <SizeItems options={options} size={size} setSize={setSize} />
-                    <ExtraItems options={options} size={size} setSize={setSize} />
-                    <Actions options={options} size={size} item={item} />
+                                                return (
+                                                    <View key={id} style={styles.sizeItem}>
+                                                        {
+                                                            customization?.selection_type === "one" ? (
+                                                                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                                                                    <View style={styles.sizeItemLeftWrapper}>
+                                                                        <Image
+                                                                            style={{ resizeMode: "contain", height: 10, width: 10 }}
+                                                                            source={require("../../assets/images/arrowUpBox.png")}
+                                                                        />
+                                                                        <Text style={{
+                                                                            color: "#fff",
+                                                                            fontFamily: "OpenSans-Regular",
+                                                                            fontSize: 16,
+                                                                            lineHeight: 23,
+
+                                                                        }}>{data?.option_name}</Text>
+                                                                    </View>
+                                                                    <View>
+                                                                        <RadioButton
+                                                                            size={10}
+                                                                            animation={"bounceIn"}
+                                                                            isSelected={selectedItems[key] === data?.option_id} // Check if this option is selected
+                                                                            onPress={() => handleSelection(key, data?.option_id, customization?.title_id, data?.additional_price)} // Update the selection
+                                                                            innerColor={selectedItems[key] === data?.option_id ? "#FA4A0C" : "#000"}
+                                                                            outerColor={selectedItems[key] === data?.option_id ? "#FA4A0C" : "#fff"}
+                                                                        />
+
+                                                                    </View>
+                                                                </View>
+
+                                                            ) :
+                                                                (
+
+                                                                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                                                                        <View style={styles.sizeItemLeftWrapper}>
+                                                                            <Image
+                                                                                style={{ resizeMode: "contain", height: 10, width: 10 }}
+                                                                                source={require("../../assets/images/arrowUpBox.png")}
+                                                                            />
+                                                                            <Typography
+                                                                                title={data?.option_name}
+                                                                                color={"#fff"}
+                                                                                ff={"OpenSans-Regular"}
+                                                                                fw={300}
+                                                                                lh={23}
+                                                                                ls={0.05}
+                                                                                size={16}
+                                                                            />
+                                                                        </View>
+                                                                        <View>
+                                                                            <CheckBox
+                                                                                value={selectedItems[key]?.includes(data?.option_id)}
+                                                                                onValueChange={() => toggleSelection(key, customization?.title_id, data?.option_id, data?.additional_price)}
+                                                                                tintColors={{ true: "#FA4A0C", false: "#fff" }}
+                                                                            />
+                                                                        </View>
+                                                                    </View>
+
+                                                                )
+                                                        }
+                                                    </View>
+                                                )
+                                            })
+                                        }
+                                    </View>
+                                </View>
+                            )
+                        })
+                    }
+
+                    <View style={styles.actionWrapper}>
+                        <View style={styles.qtyWrapper}>
+                            <TouchableOpacity onPress={handleIncrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
+                                <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>+</Text>
+                            </TouchableOpacity>
+                            <View >
+                                <Typography title={itemQuantity} color={'#FA4A0C'} ff={'OpenSans_regular'} fw={800} lh={60} ls={0.05} size={30} />
+                            </View>
+                            <TouchableOpacity onPress={handleDecrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
+                                <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>-</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <TouchableOpacity onPress={handleSetCustomization} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), alignItems: "center", }}>
+                                {
+                                    loading ? <ActivityIndicator size={"small"} color={"#fff"} /> : <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>{`Add | Rs: ${Number(item?.price) + Number(additionalPrice)}`}</Text>
+                                }
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </ScrollView>
             </View>
         </Modal>
@@ -129,7 +385,6 @@ const styles = StyleSheet.create({
     extraContainer: {
         display: "flex",
         justifyContent: "center",
-        height: hp(10),
         width: "100%",
         marginHorizontal: "auto",
         borderColor: "#D6D6D680",
@@ -171,119 +426,4 @@ const Header = ({ setIsCustomizable, item }) => {
 }
 
 
-const SizeItems = ({ size, setSize, options }) => {
-    return (
-        <View style={styles.sizeContainer}>
-            {
-                options?.Size?.options.map((item, id) => (
-                    <SizeItem title={item?.name} price={item?.price} key={id} sizeValue={item?.name} selectedSize={size} onPress={() => setSize(item?.name)} />
-                ))
-            }
-        </View>
-    )
-}
-const SizeItem = ({ title, selectedSize, sizeValue, onPress, price }) => {
-    return (
-        <View style={styles.sizeItem}>
-            <View style={styles.sizeItemLeftWrapper}>
-                <Image
-                    style={{ resizeMode: 'contain', height: 10, width: 10 }}
-                    source={require('../../assets/images/arrowUpBox.png')}
-                />
 
-                <Typography
-                    title={title}
-                    color={'#fff'}
-                    ff={'OpenSans-Regular'}
-                    fw={300}
-                    lh={23}
-                    ls={0.05}
-                    size={16}
-                />
-            </View>
-            <View>
-                <RadioButton
-                    size={10}
-                    animation={'bounceIn'}
-                    isSelected={selectedSize === sizeValue}
-                    onPress={onPress}
-                    innerColor={selectedSize === sizeValue ? '#FA4A0C' : '#000'}
-                    outerColor={selectedSize === sizeValue ? '#FA4A0C' : '#fff'}
-                />
-            </View>
-        </View>
-    );
-};
-
-const ExtraItems = ({ options, size, setSize }) => {
-    return (
-        <View style={styles.extraContainer}>
-            {
-                options?.Extras?.options.map((item, id) => (
-                    <SizeItem title={item?.name} price={item?.price} key={id} sizeValue={item?.name} selectedSize={size} onPress={() => setSize(item?.name)} />
-                ))
-            }
-        </View>
-    )
-}
-
-const Actions = ({ options, size, item }) => {
-    const { token } = useSelector(state => state?.auth)
-    const navigation = useNavigation()
-    const [quantity, setQuanitity] = useState(1)
-    const [loading, setLoading] = useState(false)
-
-
-    const handleAddToCart = async () => {
-        try {
-            setLoading(true)
-            const res = await axios.post(`${BASE_URI}/api/cart/addItem/${item?.id}`, {
-                quantity: quantity
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            if (res.data) {
-                Alert.alert("Item has been Added to the Cart")
-                navigation.navigate('Cart', { screen: "CartScreen" })
-            }
-        } catch (error) {
-            console.log(error?.response?.data?.message);
-            Alert.alert(error?.response?.data?.message)
-            setLoading(false)
-        }
-        finally {
-            setLoading(false)
-        }
-    }
-
-    const handleIncrease = () => {
-        setQuanitity(prev => prev + 1)
-    }
-    const handleDecrease = () => {
-        setQuanitity(prev => prev === 1 ? 1 : prev - 1)
-    }
-    return (
-        <View style={styles.actionWrapper}>
-            <View style={styles.qtyWrapper}>
-                <TouchableOpacity onPress={handleIncrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
-                    <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>+</Text>
-                </TouchableOpacity>
-                <View >
-                    <Typography title={quantity} color={'#FA4A0C'} ff={'OpenSans_regular'} fw={800} lh={60} ls={0.05} size={30} />
-                </View>
-                <TouchableOpacity onPress={handleDecrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
-                    <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>-</Text>
-                </TouchableOpacity>
-            </View>
-            <View>
-                <TouchableOpacity onPress={handleAddToCart} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), alignItems: "center", }}>
-                    {
-                        loading ? <ActivityIndicator size={"small"} color={"#fff"} /> : <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>{`Add `}</Text>
-                    }
-                </TouchableOpacity>
-            </View>
-        </View>
-    )
-}

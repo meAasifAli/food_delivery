@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        padding: wp(3)
+        padding: wp(3),
+        elevation: 3,
+        backgroundColor: "#fff"
     },
     headingRightContainer: {
         display: "flex",

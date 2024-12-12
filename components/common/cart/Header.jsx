@@ -10,7 +10,7 @@ const Header = () => {
             <Pressable onPress={() => navigation.goBack()}>
                 <IonIcons name='arrow-back' size={24} color={"#202020"} />
             </Pressable>
-            <Typography title={"Cart"} ta={"center"} ff={"OpenSans_Regular"} size={24} lh={32} fw={400} color={"#000000"} flex={1} />
+            <Typography title={"Cart"} ta={"center"} ff={"OpenSans-Bold"} size={20} lh={32} fw={400} color={"#000000"} flex={1} />
         </View>
     )
 }
@@ -18,5 +18,5 @@ const Header = () => {
 export default Header
 
 const styles = StyleSheet.create({
-    headingWrapper: { display: "flex", alignItems: "center", flexDirection: "row", width: "95%", marginHorizontal: "auto" },
+    headingWrapper: { display: "flex", alignItems: "center", flexDirection: "row", marginHorizontal: "auto", elevation: 5, backgroundColor: "#fff", padding: 10 },
 })

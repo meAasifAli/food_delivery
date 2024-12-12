@@ -12,6 +12,8 @@ const MenuItem = ({ item, size, setSize, }) => {
     const [isCustomizable, setIsCustomizable] = useState(false)
     const [isNonCustomizable, setIsNonCustomizable] = useState(false)
     const navigation = useNavigation()
+    // console.log(item);
+
     return (
         <View style={{
             orderBottomColor: "#D6D6D6",

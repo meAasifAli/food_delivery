@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#202020",
     // height: height * (628 / height),
     width: "100%",
-    marginTop: "50%",
+    marginTop: "70%",
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
     padding: 10,
