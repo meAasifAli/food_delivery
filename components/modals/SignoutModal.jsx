@@ -25,7 +25,7 @@ const SignoutModal = ({ isOpen, setIsOpen }) => {
                 backgroundColor: "#fff",
                 borderRadius: 15,
                 padding: "5%",
-                width: "90%",
+                width: "100%",
                 marginHorizontal: "auto"
 
             }}>

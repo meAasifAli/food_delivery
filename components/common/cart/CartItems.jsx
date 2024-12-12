@@ -4,7 +4,7 @@ import Typography from '../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useEffect, useState, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { decrementQuantity, fetchCartItems, incrementQuantity } from '../../../store/cartSlice'
+import { fetchCartItems, } from '../../../store/cartSlice'
 import axios from 'axios';
 import { BASE_URI } from '../../../config/uri';
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -22,12 +22,18 @@ const CartItems = () => {
     const [decrementLoader, setDecrementLoader] = useState({});
 
 
+    // console.log(cart);
 
 
 
     const toggleModal = (id) => {
         setIsOpen((prev) => prev === id ? null : id)
     }
+
+    const toggleCustomizationModal = (id) => {
+        setIsOpenCustomization((prev) => prev === id ? null : id)
+    }
+
 
     useEffect(() => {
         dispatch(fetchCartItems({ token }))
@@ -39,7 +45,7 @@ const CartItems = () => {
 
     const handleIncrement = async (cartItemId, qty, customizations) => {
         if (Object.keys(customizations)?.length > 0) {
-            setIsOpenCustomization(true)
+            toggleCustomizationModal(cartItemId)
         }
         else {
             const newQty = qty + 1;
@@ -52,6 +58,7 @@ const CartItems = () => {
                         Authorization: `Bearer ${token}`
                     }
                 })
+                dispatch(fetchCartItems({ token }))
             } catch (error) {
                 setIncrementLoader((prev) => ({ ...prev, [cartItemId]: false }));
                 Alert.alert("error", error)
@@ -117,7 +124,7 @@ const CartItems = () => {
                                         incrementLoader[item?.cart_item_id] ? <ActivityIndicator size={15} color={"#FA4A0C"} /> : '+'
                                     }</Text>
                                 </TouchableOpacity>
-                                <SetUserCustomization setIscustomization={() => toggleModal(item?.cart_item_id)} title={item?.item_name} price={item?.item_price} isOpen={isOpenCustomization} setIsOpen={setIsOpenCustomization} />
+                                <SetUserCustomization setIsCustomization={() => toggleModal(item?.cart_item_id)} cartItemId={item?.cart_item_id} quantity={item?.quantity} title={item?.item_name} price={item?.item_price} isOpen={isOpenCustomization === item?.cart_item_id} setIsOpen={setIsOpenCustomization} />
                                 <View>
                                     <Typography title={item?.quantity} ff={"OpenSans-Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
                                 </View>

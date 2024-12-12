@@ -35,7 +35,6 @@ const cartSlice = createSlice({
             })
             .addCase(fetchCartItems.fulfilled, (state, action) => {
                 state.loading = false;
-
                 state.cart = action.payload
             })
             .addCase(fetchCartItems.rejected, (state, action) => {

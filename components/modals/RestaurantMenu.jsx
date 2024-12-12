@@ -5,9 +5,10 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { BASE_URI } from '../../config/uri';
+import { fetchCartItems } from '../../store/cartSlice';
 
 
 const RestaurantMenu = ({ item, isNonCustomizable, setIsNonCustomizable }) => {
@@ -15,6 +16,7 @@ const RestaurantMenu = ({ item, isNonCustomizable, setIsNonCustomizable }) => {
     const navigation = useNavigation()
     const [quantity, setQuanitity] = useState(1)
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
     // console.log("menu: ", item);
 
     const handlePress = () => {
@@ -33,7 +35,8 @@ const RestaurantMenu = ({ item, isNonCustomizable, setIsNonCustomizable }) => {
             })
             if (res.data) {
                 Alert.alert("Item has been Added to the Cart")
-                navigation.navigate('Cart', { screen: "CartScreen" })
+                dispatch(fetchCartItems({ token }))
+                navigation.navigate('CartScreen')
             }
         } catch (error) {
             console.log(error?.response?.data?.message);

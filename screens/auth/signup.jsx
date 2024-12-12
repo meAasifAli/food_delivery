@@ -94,6 +94,5 @@ const styles = StyleSheet.create({
     marginTop: "50%", // Responsive margin based on screen height
     borderTopRightRadius: 50, // Responsive corner radius
     borderTopLeftRadius: 50,
-    height: "50%",
   },
 });

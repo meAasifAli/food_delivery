@@ -12,11 +12,12 @@ import Header from '../../components/common/restaurant/Header';
 import RestaurantDetails from '../../components/common/restaurant/RestaurantDetails';
 import Menus from '../../components/common/restaurant/Menus';
 import MenuItem from '../../components/common/restaurant/MenuItem';
+import { Keyboard } from 'react-native';
 
 
 
 
-const Restaurant = ({ route }) => {
+const Restaurant = ({ route, navigation }) => {
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
     const { token } = useSelector((state) => state?.auth)
@@ -28,6 +29,7 @@ const Restaurant = ({ route }) => {
     const [size, setSize] = useState("small")
 
 
+    // console.log(restaurant);
 
 
     useEffect(() => {
@@ -54,6 +56,11 @@ const Restaurant = ({ route }) => {
         fetchRestaurant()
     }, [restaurantId])
 
+    const handleFocusSearch = () => {
+        Keyboard.dismiss()
+        navigation.navigate("SearchMenu", { params: { restaurantName: restaurant?.restaurantName } })
+    }
+
 
     return loading ?
         (
@@ -61,7 +68,7 @@ const Restaurant = ({ route }) => {
                 <Image style={{ height: 100, width: 100, resizeMode: "contain" }} source={require("../../assets/images/loader.png")} />
             </View>
         ) : (
-            <ScrollView contentContainerStyle={{ paddingBottom: 100 }} showsVerticalScrollIndicator={false} style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
                 {/* header */}
                 <Header />
                 {/* Restaurant Details */}
@@ -70,7 +77,7 @@ const Restaurant = ({ route }) => {
                 <MenuDivider />
                 {/* search */}
                 <View>
-                    <SearchMenu />
+                    <SearchMenu handleFocus={handleFocusSearch} />
                 </View>
                 <Menus selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
                 <Heading />

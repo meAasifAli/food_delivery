@@ -1,44 +1,57 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Typography from '../../components/Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useSelector } from 'react-redux'
-
+import AntDesign from 'react-native-vector-icons/AntDesign'
 const { height, width } = Dimensions.get("window")
 
-const PopularBrands = () => {
+const PopularBrands = ({ navigation }) => {
     const { popular } = useSelector((state) => state?.restaurant)
     return (
-        <ScrollView style={styles.container}>
-            <View>
-                <Typography title={"Popular Brands"} color={"#000000"} ff={"OpenSans_regular"} size={20} lh={27} ls={0.05} fw={600} />
+        <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 10, elevation: 5, backgroundColor: "#fff", padding: 10 }}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <AntDesign name='arrowleft' size={20} color={"#000000"} />
+                </TouchableOpacity>
+                <Text style={{
+                    fontSize: 16,
+                    fontWeight: "600",
+                    color: "#000000",
+                    fontFamily: "OpenSans-Bold",
+                    lineHeight: 27,
+                    letterSpacing: 0.05,
+                }}>Popular Brands</Text>
+
             </View>
-            <View style={styles.brandsWrapper}>
-                {
-                    popular.map((item, id) => (
-                        <View key={id} style={styles.restaurantsContainer}>
-                            <Image source={require("../../assets/images/menuImg.png")} style={styles.restaurantImg} />
-                            <View style={styles.restaurantContentWrapper}>
-                                <Typography title={item?.restaurant_name} color={"#fff"} ff={"OpenSans_regular"} size={11} lh={15} ls={0.05} fw={400} ta={"center"} />
-                                <View style={styles.divider}></View>
-                                <View style={styles.ratingWrapper}>
-                                    <View style={styles.ratingLeftWrapper}>
-                                        <Typography title={item?.avg_rating} color={"#fff"} ff={"OpenSans_regular"} size={12} lh={27.02} ls={0.05} fw={400} ta={"center"} />
-                                        <Entypo name='star-outlined' size={12} color={"#fff"} />
+            <ScrollView style={styles.container}>
+
+                <View style={styles.brandsWrapper}>
+                    {
+                        popular.map((item, id) => (
+                            <TouchableOpacity onPress={() => navigation.navigate("Restaurant", { restaurantId: item?.restaurant_id })} key={id} style={styles.restaurantsContainer}>
+                                <Image source={require("../../assets/images/menuImg.png")} style={styles.restaurantImg} />
+                                <View style={styles.restaurantContentWrapper}>
+                                    <Typography title={item?.restaurant_name} color={"#fff"} ff={"OpenSans_regular"} size={11} lh={15} ls={0.05} fw={400} ta={"center"} />
+                                    <View style={styles.divider}></View>
+                                    <View style={styles.ratingWrapper}>
+                                        <View style={styles.ratingLeftWrapper}>
+                                            <Typography title={item?.avg_rating} color={"#fff"} ff={"OpenSans_regular"} size={12} lh={27.02} ls={0.05} fw={400} ta={"center"} />
+                                            <Entypo name='star-outlined' size={12} color={"#fff"} />
+                                        </View>
+                                        <View>
+                                            <Typography title={item?.delivery_time} color={"#fff"} ff={"OpenSans_regular"} size={11} lh={12} ls={0.05} fw={300} />
+                                        </View>
                                     </View>
-                                    <View>
-                                        <Typography title={item?.delivery_time} color={"#fff"} ff={"OpenSans_regular"} size={11} lh={12} ls={0.05} fw={300} />
+                                    <View style={styles.desWrapper}>
+                                        <Typography lines={1} title={item?.categories.join(", ")} color={"#fff"} ff={"OpenSans_regular"} size={11} lh={21} ls={0.05} fw={300} ta={"center"} />
                                     </View>
                                 </View>
-                                <View style={styles.desWrapper}>
-                                    <Typography lines={1} title={item?.categories.join(", ")} color={"#fff"} ff={"OpenSans_regular"} size={11} lh={21} ls={0.05} fw={300} ta={"center"} />
-                                </View>
-                            </View>
-                        </View>
-                    ))
-                }
-            </View>
-        </ScrollView>
+                            </TouchableOpacity>
+                        ))
+                    }
+                </View>
+            </ScrollView></View>
     )
 }
 

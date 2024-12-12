@@ -3,8 +3,21 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useNavigation } from '@react-navigation/native'
 import Typography from '../../components/Typography'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchSavedAddresses } from '../../store/addressSlice';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const Addresses = () => {
+    const dispatch = useDispatch()
+    const { savedUserAddresses } = useSelector((state) => state?.address)
+    const { token } = useSelector((state) => state?.auth)
+    console.log(savedUserAddresses);
+
+    useEffect(() => {
+        dispatch(fetchSavedAddresses({ token }))
+    }, [])
+
     return (
         <ScrollView style={styles.container}>
             <Header />
@@ -12,8 +25,11 @@ const Addresses = () => {
                 <Typography title={"Saved Addresses"} ff={"OpenSans-Regular"} color={"#000000"} fw={300} size={hp(2.3)} />
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AddressCard title={"Home"} Phone={"7889423564"} address={"Nowgam, Srinagar, J&K, 191113 "} img={require("../../assets/images/home.png")} />
-                <AddressCard title={"Work"} Phone={"7889423564"} address={"Kursoo Rajbagh, Srinagar, J&K, 190008 "} img={require("../../assets/images/building.png")} />
+                {
+                    savedUserAddresses && savedUserAddresses?.map((item, id) => (
+                        <AddressCard key={id} title={item?.type} Phone={item?.R_phone_no} address={`${item?.area} ${item?.city} ${item?.state}`} img={item?.type === "home" ? require("../../assets/images/home.png") : require("../../assets/images/building.png")} />
+                    ))
+                }
             </ScrollView>
         </ScrollView>
     )
@@ -43,8 +59,8 @@ const Header = () => {
 
 const AddressCard = ({ img, title, address, Phone }) => {
     return (
-        <View style={{ display: "flex", flexDirection: "column", gap: hp(2) }}>
-            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(5), padding: wp(5) }}>
+        <View style={{ display: "flex", flexDirection: "column", gap: hp(2), elevation: 3, backgroundColor: "#fff", width: "90%", marginHorizontal: "auto", marginBottom: 20, borderRadius: 15 }}>
+            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(5), padding: 15, borderBottomWidth: 0.5, borderStyle: "dotted", borderBottomColor: "#000" }}>
                 <Image source={img} style={{ width: wp(5), height: hp(5), objectFit: "contain" }} />
                 <Typography title={title} color={"#000000"} ff={"OpenSans-Medium"} fw={400} lh={hp(2.5)} size={hp(2)} />
             </View>

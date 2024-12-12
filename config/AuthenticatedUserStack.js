@@ -15,6 +15,14 @@ import NetBanking from "../screens/payments/NetBanking";
 import Tracking from "../screens/order/Tracking";
 import SearchedRestaurants from "../screens/dashboard/SearchedRestaurants";
 import SearchAddresses from "../screens/location/SearchAddresses";
+import MenuSearch from "../screens/dashboard/MenuSearch";
+import TopRated from "../screens/dashboard/TopRated";
+import Nearest from "../screens/dashboard/Nearest";
+import PopularBrands from "../screens/dashboard/PopularBrands";
+import Category from "../screens/dashboard/Category";
+import Restaurant from "../screens/dashboard/Restaurant";
+import CartScreen from "../screens/cart/CartScreen";
+
 
 
 const Stack = createNativeStackNavigator();
@@ -23,10 +31,38 @@ const AuthenticatedUserStack = () => (
   <Stack.Navigator screenOptions={{
     statusBarColor: "#202020"
   }} initialRouteName="MainTabs">
+
     <Stack.Screen
       name="MainTabs"
       component={TabNavigator}
       options={{ headerShown: false }}
+    />
+    <Stack.Screen name="TopRated" component={TopRated} options={{
+      headerShown: false
+    }} />
+    <Stack.Screen name="Nearest" component={Nearest} options={{
+      headerShown: false
+    }} />
+    <Stack.Screen name="PopularBrands" component={PopularBrands} options={{
+      headerShown: false
+    }} />
+    <Stack.Screen name="Category" component={Category} options={{
+      headerShown: false
+    }} />
+    <Stack.Screen name="Restaurant" component={Restaurant} options={{
+      headerShown: false
+    }} />
+    <Stack.Screen name="CartScreen" component={CartScreen} options={{ headerShown: false }} />
+    <Stack.Screen
+      name="SearchMenu"
+      component={MenuSearch}
+      options={{
+        title: 'Search Menu',
+        headerShown: false,
+        presentation: "modal",
+        animation: "fade_from_bottom",
+        animationDuration: 8000
+      }}
     />
     <Stack.Screen
       name="Profile"
@@ -64,17 +100,29 @@ const AuthenticatedUserStack = () => (
     <Stack.Screen
       name="AddAddress"
       component={AddAddress}
-      options={{ headerShown: false }}
+      options={{
+        headerShown: false,
+
+      }}
     />
     <Stack.Screen
       name="AddressScreen"
       component={Address}
-      options={{ headerShown: false }}
+      options={{
+        headerShown: false,
+        presentation: "modal",
+        animation: "fade_from_bottom",
+        animationDuration: 8000
+      }}
     />
     <Stack.Screen
       name="SearchAddresses"
       component={SearchAddresses}
-      options={{ headerShown: false }}
+      options={{
+        headerShown: false, presentation: "modal",
+        animation: "fade_from_bottom",
+        animationDuration: 8000
+      }}
     />
     <Stack.Screen
       name="PaymentOptions"
