@@ -1,11 +1,11 @@
 module.exports = {
-  project:{
-    android :{
-      
+  project: {
+    android: {
+
     },
     ios: {
-      
+
     }
   },
-  assets : ['./assets/fonts','./assets/images']
+  assets: ['./src/assets/fonts', './src/assets/images']
 };
