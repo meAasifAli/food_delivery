@@ -2,152 +2,228 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "assets/fonts/OpenSans-Bold.ttf",
+      "path": "src/assets/fonts/OpenSans-Bold.ttf",
       "sha1": "953814da1b753763dfa5a7ecc18bdbb14890e16b"
     },
     {
-      "path": "assets/fonts/OpenSans-BoldItalic.ttf",
+      "path": "src/assets/fonts/OpenSans-BoldItalic.ttf",
       "sha1": "508254f3ae9edb33159c601b349f0c813d66dfce"
     },
     {
-      "path": "assets/fonts/OpenSans-ExtraBold.ttf",
+      "path": "src/assets/fonts/OpenSans-ExtraBold.ttf",
       "sha1": "3a02724d19fdb3c67b174be7a789757a194ee2ff"
     },
     {
-      "path": "assets/fonts/OpenSans-ExtraBoldItalic.ttf",
+      "path": "src/assets/fonts/OpenSans-ExtraBoldItalic.ttf",
       "sha1": "e45774d6be6af8f5d6bc9af4e4c9e6b3f00b53c1"
     },
     {
-      "path": "assets/fonts/OpenSans-Italic.ttf",
+      "path": "src/assets/fonts/OpenSans-Italic.ttf",
       "sha1": "01dbaae7500dc9244c68eb081cd5d4b61d4acb6b"
     },
     {
-      "path": "assets/fonts/OpenSans-Light.ttf",
+      "path": "src/assets/fonts/OpenSans-Light.ttf",
       "sha1": "9292ee344b331c5959c7b130d1a2df5543dfa58a"
     },
     {
-      "path": "assets/fonts/OpenSans-LightItalic.ttf",
+      "path": "src/assets/fonts/OpenSans-LightItalic.ttf",
       "sha1": "b09eeda714e31150395fd24a603684e0fc9a3b16"
     },
     {
-      "path": "assets/fonts/OpenSans-Medium.ttf",
+      "path": "src/assets/fonts/OpenSans-Medium.ttf",
       "sha1": "a44dcac0388d78404b84578f3e593c740399ebb5"
     },
     {
-      "path": "assets/fonts/OpenSans-MediumItalic.ttf",
+      "path": "src/assets/fonts/OpenSans-MediumItalic.ttf",
       "sha1": "3ac7cf35a225574a0e1508d6df731b6ecdd5cf9b"
     },
     {
-      "path": "assets/fonts/OpenSans-Regular.ttf",
+      "path": "src/assets/fonts/OpenSans-Regular.ttf",
       "sha1": "76ea5d4c70539ad9b0e7faf7e4fbe3bae8a961c7"
     },
     {
-      "path": "assets/fonts/OpenSans-SemiBold.ttf",
+      "path": "src/assets/fonts/OpenSans-SemiBold.ttf",
       "sha1": "9b1adfbc773bb8bd1e6c4ca85c34441a43c2bc54"
     },
     {
-      "path": "assets/fonts/OpenSans-SemiBoldItalic.ttf",
+      "path": "src/assets/fonts/OpenSans-SemiBoldItalic.ttf",
       "sha1": "3add68a065e0eaa54ded5170348ffd811c409e63"
     },
     {
-      "path": "assets/fonts/OpenSans_Condensed-Bold.ttf",
-      "sha1": "5ca9b1fed6fa826bcd74a90624fe0fa2d9b10db9"
+      "path": "src/assets/images/amazon_pay.png",
+      "sha1": "0064686f62fcf9516c5643b56c11e9e97aff5b36"
     },
     {
-      "path": "assets/fonts/OpenSans_Condensed-BoldItalic.ttf",
-      "sha1": "4d48baf883294e634b40fab13ae773c1a89b4ecf"
+      "path": "src/assets/images/arrived.png",
+      "sha1": "982118940964f80e46358c273923538b393e01f9"
     },
     {
-      "path": "assets/fonts/OpenSans_Condensed-ExtraBold.ttf",
-      "sha1": "2f37cb86645df10affdaefe32e0d367c61487d73"
+      "path": "src/assets/images/arrow.png",
+      "sha1": "bf57f07e4beea5a04844f744d98f7aa607377349"
     },
     {
-      "path": "assets/fonts/OpenSans_Condensed-ExtraBoldItalic.ttf",
-      "sha1": "82e86c63a13c4f0158d3e7e2bedf42db1fae92dc"
+      "path": "src/assets/images/arrow_up_box.png",
+      "sha1": "0f3c02066bf53e6d7f8ac9abdafde0fc94b5ab45"
     },
     {
-      "path": "assets/fonts/OpenSans_Condensed-Italic.ttf",
-      "sha1": "d2366db9c0ac58643156c629409edba4097f36d7"
-    },
-    {
-      "path": "assets/fonts/OpenSans_Condensed-Light.ttf",
-      "sha1": "36514e24ba6ec85d65770310c0c6dc345f8df204"
-    },
-    {
-      "path": "assets/fonts/OpenSans_Condensed-LightItalic.ttf",
-      "sha1": "5bb1046e22abbbfe9b581ca6d725f11f87ab6cbf"
-    },
-    {
-      "path": "assets/fonts/OpenSans_Condensed-Medium.ttf",
-      "sha1": "ab5f2c2782a0375d3ac7b834cf5e4bd5a34e0596"
-    },
-    {
-      "path": "assets/fonts/OpenSans_Condensed-MediumItalic.ttf",
-      "sha1": "6aa4579a321ac50e472d365292e2c8655e060850"
-    },
-    {
-      "path": "assets/fonts/OpenSans_Condensed-Regular.ttf",
-      "sha1": "02ff457da3d6a5cbd9b724d67ddfe04a475629e4"
-    },
-    {
-      "path": "assets/fonts/OpenSans_Condensed-SemiBold.ttf",
-      "sha1": "4cdfa2d1c0f59e850270303fba59a2ee9c7fa9b6"
-    },
-    {
-      "path": "assets/fonts/OpenSans_Condensed-SemiBoldItalic.ttf",
-      "sha1": "17ed332f677efa739bf69db84ff5701a4670b9f1"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-Bold.ttf",
-      "sha1": "0eaebb398eb9c4b76a4a4b35e14bfce27143a343"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-BoldItalic.ttf",
-      "sha1": "5e7958bb61e18669f5b027e5a7dd241c5f7501ac"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-ExtraBold.ttf",
-      "sha1": "0cb7f90387d655115f7e616225351ca28c4281e4"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-ExtraBoldItalic.ttf",
-      "sha1": "5615756fffe5247fb28cf40f06ea6f5bce314af8"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-Italic.ttf",
-      "sha1": "f5e3e1b9b2fbe64c6da453a4d254760d9a118da7"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-Light.ttf",
-      "sha1": "b11092193079ea83836e2ec3a03e8604853281af"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-LightItalic.ttf",
-      "sha1": "99d36fab637575161c4bd49a610df1a24a43b537"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-Medium.ttf",
-      "sha1": "4cb07b1df33da931e34dd4ee8b05bad1176fe015"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-MediumItalic.ttf",
-      "sha1": "3750342910ad3d1162dd5854807e68c8984529d7"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-Regular.ttf",
-      "sha1": "c0db672a3020eac972b232c55b830a38654ba0e1"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-SemiBold.ttf",
-      "sha1": "26a2922ed8ae1463e9d3ba0db9c2ad3eac38681b"
-    },
-    {
-      "path": "assets/fonts/OpenSans_SemiCondensed-SemiBoldItalic.ttf",
-      "sha1": "44c7798ee52de7a6249a30d6675862785814298e"
-    },
-    {
-      "path": "assets/images/bg.png",
+      "path": "src/assets/images/bg.png",
       "sha1": "da750345c35fa85f2422b2878bcc9a82f43012f7"
+    },
+    {
+      "path": "src/assets/images/biryani.png",
+      "sha1": "9e50966cbc23ecd4cfd63206e708c13bea628a0a"
+    },
+    {
+      "path": "src/assets/images/building.png",
+      "sha1": "3b4f43b0d398da9974a271282cffaa7d3df51323"
+    },
+    {
+      "path": "src/assets/images/burger.png",
+      "sha1": "9471b9da51d71ff8aa5929d357b4d1f0aea1a4d7"
+    },
+    {
+      "path": "src/assets/images/burgers.png",
+      "sha1": "5cc17b62e75e696b32189821df86f57813961870"
+    },
+    {
+      "path": "src/assets/images/chinese.png",
+      "sha1": "383909862b3583391f9255547332cb98d07baa68"
+    },
+    {
+      "path": "src/assets/images/completed.png",
+      "sha1": "771fe3d796903555125979505960e9a3e8948d5b"
+    },
+    {
+      "path": "src/assets/images/dot_box.png",
+      "sha1": "dac3ef01e979d17e19d1ac9ac7e075e5761657d9"
+    },
+    {
+      "path": "src/assets/images/emptycart.webp",
+      "sha1": "fbe07aba5d9cb13a59a13f20747d4aa87f34cab6"
+    },
+    {
+      "path": "src/assets/images/filter.png",
+      "sha1": "8e5f04d0753e744263a272638304fd0b3232f907"
+    },
+    {
+      "path": "src/assets/images/google.png",
+      "sha1": "8fcc0f066627615a10eb47704aa690ac1cc6b368"
+    },
+    {
+      "path": "src/assets/images/gpay.png",
+      "sha1": "d5b5dd745c27753deaec038edf5db39dca2a1a3a"
+    },
+    {
+      "path": "src/assets/images/gpay.webp",
+      "sha1": "671b9bc8c45fb58ec5b8cd2b4047b148267803ba"
+    },
+    {
+      "path": "src/assets/images/gpay_gray.png",
+      "sha1": "2162c7a704627cf17a0b1c0546466015be9355d0"
+    },
+    {
+      "path": "src/assets/images/home.png",
+      "sha1": "e2856493f0b6f2aa1c8a53ef9e3b1735774e7318"
+    },
+    {
+      "path": "src/assets/images/karims.png",
+      "sha1": "59ffc56ed03bbeb5bcf8b7ee2e226e4388ef1828"
+    },
+    {
+      "path": "src/assets/images/loader.png",
+      "sha1": "83b3dcc95bba937c4f6796e006eeaedae291adc8"
+    },
+    {
+      "path": "src/assets/images/menu_img.png",
+      "sha1": "c05d8a860d8553fae92c4b666824b27559607e15"
+    },
+    {
+      "path": "src/assets/images/mobikwik.png",
+      "sha1": "95a3bda3bf11af99cac5bdfe87fc4614f989059e"
+    },
+    {
+      "path": "src/assets/images/modal_img.png",
+      "sha1": "2d2bc9e1efd9bd29c83fc7580607a05ae21539d4"
+    },
+    {
+      "path": "src/assets/images/momos.png",
+      "sha1": "094465d45c17c2d371f72ae7d336c26867248244"
+    },
+    {
+      "path": "src/assets/images/motorcycle.png",
+      "sha1": "29cfcff9eaa3c9a856928d7d6c3e39b7470c8332"
+    },
+    {
+      "path": "src/assets/images/order.png",
+      "sha1": "81c9ace31c81db8bfa42a22652f1e97f7356ae0e"
+    },
+    {
+      "path": "src/assets/images/pana.png",
+      "sha1": "96a9d29216d5f10316f0da4784a7cd50948986db"
+    },
+    {
+      "path": "src/assets/images/pay.png",
+      "sha1": "d58e87469d3e49b0fde3650faef7703736c2dd32"
+    },
+    {
+      "path": "src/assets/images/paytm.png",
+      "sha1": "fcb17f9e27678d3258489a879794628f2db4f440"
+    },
+    {
+      "path": "src/assets/images/paytm_logo.png",
+      "sha1": "fe41cba7af1bab2992a29673298596a72d50f824"
+    },
+    {
+      "path": "src/assets/images/phonepe.png",
+      "sha1": "44e83dfeef7e92ef9c01b75f60f9eea38a71eb3f"
+    },
+    {
+      "path": "src/assets/images/phonepe_logo.png",
+      "sha1": "9bec6ea151ec3bed8a99e7e890085c31e05943b0"
+    },
+    {
+      "path": "src/assets/images/pizza.png",
+      "sha1": "11b9ac4e34f54068363170fb59f14eeaf0d81c69"
+    },
+    {
+      "path": "src/assets/images/profile.png",
+      "sha1": "51d5b3b332383fd2f419372452125c8788451957"
+    },
+    {
+      "path": "src/assets/images/rolls.png",
+      "sha1": "76fa68f31bcf08bdcf29152b3fa63fde43e08e85"
+    },
+    {
+      "path": "src/assets/images/shake.png",
+      "sha1": "3be119871e767c09467f65cc3e4ecf37416468dc"
+    },
+    {
+      "path": "src/assets/images/shawarama.png",
+      "sha1": "9b4c8593211226f788d83150176587970310aa19"
+    },
+    {
+      "path": "src/assets/images/shopping_bag.png",
+      "sha1": "716adce33011a8efe00911fab4df3b0d5bad7f4f"
+    },
+    {
+      "path": "src/assets/images/sort.png",
+      "sha1": "8f6f40ade9521d53beb9d0f1ca0b84873c9759c5"
+    },
+    {
+      "path": "src/assets/images/spoon.png",
+      "sha1": "fd23cd8d5c356ba45d2ae4401263db55f0e65ed8"
+    },
+    {
+      "path": "src/assets/images/star.png",
+      "sha1": "de3f0935e516687cbf14690be0b377f6efdf3849"
+    },
+    {
+      "path": "src/assets/images/upi.png",
+      "sha1": "b693c45e455c58efa84287054278115c5b6fb8dd"
+    },
+    {
+      "path": "src/assets/images/upi2.png",
+      "sha1": "ef0613c6d70a6af8a7d83873abd8cde7a49e2a52"
     }
   ]
 }
