@@ -20,7 +20,7 @@ const Categories = ({ navigation }) => {
                     setcategories(res?.data?.data)
                 }
             } catch (error) {
-                Alert.alert("Error in Getting the categories: ", error?.response?.data?.message)
+                // Alert.alert("Error in Getting the categories: ", error?.response?.data?.message)
             }
         }
         fetchMainCategories()

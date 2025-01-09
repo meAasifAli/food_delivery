@@ -11,7 +11,8 @@ export const authSlice = createSlice({
         phone: null,
         otp: null,
         token: null,
-        userData: null
+        userData: null,
+        file: null
     },
     reducers: {
         setUser(state, action) {
@@ -34,9 +35,12 @@ export const authSlice = createSlice({
         },
         setUserData(state, action) {
             state.userData = action.payload
+        },
+        setFile(state, action) {
+            state.file = action.payload
         }
     }
 })
 
-export const { setUser, setAuthenticated, setVerificationWindow, setOtp, setPhone, setToken } = authSlice.actions;
+export const { setUser, setAuthenticated, setVerificationWindow, setOtp, setPhone, setToken, setFile } = authSlice.actions;
 export default authSlice.reducer;

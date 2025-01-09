@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     otpPinCodeContainer: {
         backgroundColor: '#fff',
         height: 60,
-        width: 60,
+        width: 70,
     },
     pinCodeText: {
         color: '#FA4A0C',

@@ -11,7 +11,7 @@ const SecondaryHeading = () => {
             <Text style={{
                 fontFamily: "OpenSans-Medium",
                 color: "#fff",
-                fontSize: 16,
+                fontSize: 14,
                 lineHeight: 25,
                 textAlign: "center",
                 maxWidth: "70%",
@@ -22,7 +22,7 @@ const SecondaryHeading = () => {
             <Text style={{
                 fontFamily: "OpenSans-Medium",
                 color: "#fff",
-                fontSize: 16,
+                fontSize: 12,
                 lineHeight: 25,
                 textAlign: "center",
                 maxWidth: "80%",

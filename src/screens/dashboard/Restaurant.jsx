@@ -36,7 +36,7 @@ const Restaurant = ({ route, navigation }) => {
         const fetchRestaurant = async () => {
             try {
                 setLoading(true)
-                const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/34.063930/74.813021 `, {
+                const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/34.074744/74.820444 `, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }

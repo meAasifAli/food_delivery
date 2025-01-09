@@ -1,23 +1,17 @@
 import {
-  ActivityIndicator,
   Dimensions,
   FlatList,
-  Image,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { restaurants } from '../../../static/data';
 import RestaurantCard from '../../shared/RestaurantCard';
-import axios from 'axios';
-import BASE_URI from '../../../config/uri';
-import { LocationContext } from '../../../context/LocationContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../../../store/restaurantSlice';
-import ContentLoader, { Rect, Circle, List } from 'react-content-loader/native'
+import { List } from 'react-content-loader/native'
 
 
 const { height, width } = Dimensions.get('window');
@@ -25,7 +19,7 @@ const { height, width } = Dimensions.get('window');
 const PopularBrands = ({ navigation }) => {
   const dispatch = useDispatch()
   const { token } = useSelector(state => state.auth);
-  const { location } = useContext(LocationContext);
+
 
   const { loading, error, popular } = useSelector(state => state?.restaurant)
 

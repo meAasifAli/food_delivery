@@ -8,7 +8,7 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import RestaurantMenu from '../../components/modals/RestaurantMenu';
 import FoodSizeMenu from '../../components/modals/FoodSizeMenu';
-import { useSelector } from 'react-redux';
+
 
 const MenuSearch = ({ route }) => {
     const [isCustomizable, setIsCustomizable] = useState(false)

@@ -14,6 +14,7 @@ import Option from '../../components/common/auth/otp/Option';
 import Button from '../../components/common/auth/otp/Button';
 import { useSelector } from 'react-redux';
 import useOtp from '../../hooks/useOtp';
+import { Text } from 'react-native';
 
 
 
@@ -50,6 +51,7 @@ const OtpScreen = () => {
         <ScrollView>
           <Heading />
           <SecondaryHeading />
+          <Text style={{ color: "#fff", fontSize: 16, fontFamily: "OpenSans-Regular" }}>temp otp : {storeOtp}</Text>
           <OtpInputs setOtp={setOtp} />
           <Option />
           <Button

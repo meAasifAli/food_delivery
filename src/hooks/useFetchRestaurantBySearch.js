@@ -12,7 +12,8 @@ const usefetchRestaurantBySearch = () => {
     const handleFetchSearchRestaurants = async ({ query }) => {
         try {
             setLoading(true)
-            const res = await axios.get(`${BASE_URI}/api/restaurant/category?latitude=34.1200&longitude=74.8200&search=${query}`, {
+
+            const res = await axios.get(`${BASE_URI}/api/restaurant/category?latitude=34.074744&longitude=74.82044&search=${query}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

@@ -24,7 +24,7 @@
     "react-content-loader": "^7.0.2",
     "react-hook-form": "^7.53.2",
     "react-native": "0.75.4",
-    "react-native-loader-kit": "^2.0.8",
+    "react-native-document-picker": "^9.3.1",
     "react-native-maps": "^1.20.1",
     "react-native-modal": "^13.0.1",
     "react-native-otp-entry": "^1.7.2",
