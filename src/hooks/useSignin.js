@@ -13,7 +13,6 @@ const useSignin = () => {
     const [loading, setLoading] = useState(false)
 
     const handleSigninUser = async (mobile) => {
-        console.log("Mobile passed to API:", mobile); // Debug log
         try {
             setLoading(true)
             const res = await axios.post(`${BASE_URI}/api/user/userSendOtp`, {
@@ -29,7 +28,7 @@ const useSignin = () => {
         } catch (error) {
             setLoading(false)
             console.log(error?.response);
-            Alert.alert(error?.response)
+            error?.response?.config ? Alert.alert("Network Error from Server") : Alert.alert(error?.response?.data?.message)
         }
         finally {
             setLoading(false)

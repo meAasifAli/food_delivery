@@ -9,37 +9,71 @@ import { useState } from 'react';
 import EditProfileModal from '../../../modals/EditProfileModal';
 import { useNavigation } from '@react-navigation/native';
 
-const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormData }) => {
-    const { token } = useSelector((state) => state.auth)
+
+
+const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormData, isPhone }) => {
+    const { token, file } = useSelector((state) => state.auth)
     const [isEditable, setIsEditable] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
     const navigation = useNavigation()
+    const [OTP, setOTP] = useState(null)
+
+
+
 
 
 
     const editProfile = async () => {
-        try {
-            const res = await axios.post(`${BASE_URI}/api/user/userEditProfileOTP`, {
-                phone_no: formData?.phone,
-                email: formData?.email,
-                name: formData?.name
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            console.log(res?.data);
 
-            if (res?.data) {
-                setIsOpen(pre => !pre)
+        try {
+            if (isPhone) {
+                const res = await axios.post(`${BASE_URI}/api/user/userEditProfileOTP`, {
+                    phone_no: formData?.phone,
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+
+                console.log(res?.data);
+
+                if (res?.data) {
+                    setOTP(res?.data?.OTP)
+                    setIsOpen(pre => !pre)
+                }
             }
+
+            else {
+                const data = new FormData()
+                data.append("profile", data.append("profile", {
+                    uri: file?.uri,
+                    type: file.type,
+                    name: file.name
+                }))
+                const res = await fetch(`${BASE_URI}/api/user/editProfile/${formData?.name}/${formData?.email}/${formData?.phone}`, {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data"
+                    },
+                    body: data
+                })
+
+                if (res?.ok) {
+                    Alert.alert("Profile Updated Successfully")
+                    navigation.goBack()
+                }
+            }
+
 
         } catch (error) {
             Alert.alert(error?.message)
-            console.log(error);
+            console.log(error?.response?.data?.message);
         }
 
     }
+
+
 
     const handleUpdate = () => {
         setIsEditable(pre => !pre)
@@ -62,7 +96,7 @@ const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormDa
                         </TouchableOpacity>}
                     </View>
                     {isEditable && <ActionButtons setIsEditable={setIsEditable} onPress={editProfile} />}
-                    <EditProfileModal isOpen={isOpen} setIsOpen={setIsOpen} formData={formData} />
+                    <EditProfileModal OTP={setOTP} isOpen={isOpen} setIsOpen={setIsOpen} formData={formData} />
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

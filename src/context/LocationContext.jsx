@@ -59,8 +59,9 @@ const LocationContextProvider = ({ children }) => {
     const [orderStatus, setOrderStatus] = useState("confirmed")
     const [deliveryBoyLocation, setDeliveryBoyLocation] = useState(null)
 
+
     return (
-        <LocationContext.Provider value={{ location, setLocation, mapRef, orderStatus, setOrderStatus, deliveryBoyLocation, setDeliveryBoyLocation }}>{children}</LocationContext.Provider>
+        <LocationContext.Provider value={{ location, setLocation, mapRef, orderStatus, setOrderStatus, deliveryBoyLocation, setDeliveryBoyLocation, }}>{children}</LocationContext.Provider>
     )
 }
 

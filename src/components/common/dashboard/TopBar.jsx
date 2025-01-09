@@ -12,11 +12,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { LocationContext } from '../../../context/LocationContext'
 import { setAddress } from '../../../store/addressSlice'
 import axios from 'axios'
+import { BASE_URI } from '../../../config/uri'
+import { setUser } from '../../../store/authSlice'
 
 
 const TopBar = () => {
     const dispatch = useDispatch()
     const { location } = useContext(LocationContext)
+    const { token } = useSelector((state) => state?.auth)
     const { postcode, suburb, city, } = useSelector(state => state?.address)
     const navigation = useNavigation()
     const [isOpen, setIsOpen] = useState(false)
@@ -27,6 +30,9 @@ const TopBar = () => {
         const fetchLocationName = async () => {
             try {
                 const res = await axios.get(`https://us1.locationiq.com/v1/reverse.php?key=pk.8f2a73d9ff72a2b8a7fc9626d06d6e12&lat=${location?.latitude}&lon=${location?.longitude}&format=json`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 })
                 dispatch(setAddress({
                     city: res.data.address.city ? res.data.address.city : res.data.address.state_district,
@@ -56,8 +62,22 @@ const TopBar = () => {
     }
 
     const { user } = useSelector(state => state?.auth)
-    // console.log(fullAddress);
 
+
+    useEffect(() => {
+        const getUser = async () => {
+            const res = await axios.get(`${BASE_URI}/api/user/getUserDetails`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            if (res?.data) {
+                dispatch(setUser(res?.data?.userData[0]))
+            }
+        }
+        getUser()
+    }, [])
 
     return (
         <>
@@ -85,7 +105,7 @@ const TopBar = () => {
                     </View>
                     <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
                         <Image
-                            source={require("../../../assets/images/profile.png")}
+                            source={user?.profile ? { uri: user?.profile } : require("../../../assets/images/profile.png")}
                             style={styles.profileAvatar} />
                     </TouchableOpacity>
                 </View>

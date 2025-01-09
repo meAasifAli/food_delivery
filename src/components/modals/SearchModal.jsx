@@ -111,6 +111,9 @@ const SearchModal = ({ isOpen, setIsOpen }) => {
                                             </View>
                                         </TouchableOpacity>
                                     ))}
+                                    {
+                                        searchRestaurants?.length === 0 && <Text>No item found.</Text>
+                                    }
                                 </ScrollView>
                             )
                         }

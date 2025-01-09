@@ -3,15 +3,19 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../components/Typography';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from '../../components/common/profile/Header';
 import SecondaryHeader from '../../components/common/profile/SecondaryHeader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SignoutModal from '../../components/modals/SignoutModal';
 import useGetPastOrders from '../../hooks/useGetPastOrders'
+import axios from 'axios';
+import { setUser } from '../../store/authSlice';
+import { BASE_URI } from '../../config/uri';
 
 const Profile = () => {
-    const { user } = useSelector(state => state?.auth)
+    const dispatch = useDispatch()
+    const { user, token } = useSelector(state => state?.auth)
     const [isOpen, setIsOpen] = useState(false)
     const navigation = useNavigation()
     const Items = [
@@ -37,6 +41,21 @@ const Profile = () => {
         },
     ]
 
+
+    useEffect(() => {
+        const getUser = async () => {
+            const res = await axios.get(`${BASE_URI}/api/user/getUserDetails`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            if (res?.data) {
+                dispatch(setUser(res?.data?.userData[0]))
+            }
+        }
+        getUser()
+    }, [])
     const { handleFetchPastOrders } = useGetPastOrders()
 
     return (

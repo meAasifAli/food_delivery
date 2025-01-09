@@ -8,24 +8,37 @@ import { widthPercentageToDP as wp, } from 'react-native-responsive-screen';
 import { BASE_URI } from '../../config/uri'
 import { useSelector } from 'react-redux'
 
-const EditProfileModal = ({ isOpen, setIsOpen, formData }) => {
+const EditProfileModal = ({ isOpen, setIsOpen, formData, OTP }) => {
+
+    const { token, file } = useSelector(state => state?.auth)
     const [otp, setOtp] = useState("")
-    const { token } = useSelector(state => state?.auth)
+
+
+
+
     const updateProfile = async () => {
+        const data = new FormData()
+        data.append("givenOTP", otp)
+        // data.append("profile", {
+        //     uri: file?.uri,
+        //     type: file?.type,
+        //     name: file?.name
+        // })
         try {
-            const res = await axios.patch(`${BASE_URI}/api/user/editProfile/${formData?.name}/${formData.email}/${formData?.phone}`, {
-                givenOTP: otp
-            }, {
+            const res = await fetch(`${BASE_URI}/api/user/editProfile/${formData?.name}/${formData.email}/${formData?.phone}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+                },
+                body: data,
+                method: "PATCH"
             })
-            if (res?.data) {
+            if (res?.ok) {
                 Alert.alert("Profile Updated Successfully")
                 setIsOpen(false)
             }
         } catch (error) {
-            console.log(error);
+            console.log(error?.response?.data?.message);
             Alert.alert(error)
 
         }

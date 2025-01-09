@@ -29,7 +29,7 @@ const UnAuthenticatedUserStack = () => {
                 options={{
                     headerShown: false,
                     presentation: "formSheet",
-                    animation: "slide_from_left",
+                    animation: "slide_from_bottom",
                     animationDuration: 400
                 }}
             />
@@ -40,7 +40,7 @@ const UnAuthenticatedUserStack = () => {
                 options={{
                     headerShown: false,
                     presentation: "formSheet",
-                    animation: "slide_from_right",
+                    animation: "slide_from_bottom",
                     animationDuration: 400
                 }}
             />
@@ -50,7 +50,7 @@ const UnAuthenticatedUserStack = () => {
                 options={{
                     headerShown: false,
                     presentation: "formSheet",
-                    animation: "slide_from_right",
+                    animation: "slide_from_bottom",
                     animationDuration: 400
                 }}
             />

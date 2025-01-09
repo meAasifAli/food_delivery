@@ -64,7 +64,7 @@ const Dining = () => {
     }, [token])
 
 
-    console.log("delivery Location: ", deliveryBoyLocation);
+    // console.log("delivery Location: ", deliveryBoyLocation);
 
 
     return (

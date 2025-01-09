@@ -4,8 +4,10 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Heading from '../../components/common/auth/login/Heading';
 import SecondaryHeading from '../../components/common/auth/login/SecondaryHeading';
 import Input from '../../components/common/auth/login/Input';
@@ -14,7 +16,7 @@ import GoogleNav from '../../components/common/auth/login/GoogleNav';
 import BottomNav from '../../components/common/auth/login/BottomNav';
 import useSignin from '../../hooks/useSignin';
 
-const { height, width } = Dimensions.get("window")
+const { height } = Dimensions.get("window")
 
 const SigninScreen = () => {
 
@@ -27,7 +29,7 @@ const SigninScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
       <View style={styles.imgWrapper}>
         <Image style={styles.img} source={require("../../assets/images/bg.png")} />
       </View>
@@ -44,7 +46,7 @@ const SigninScreen = () => {
           <BottomNav />
         </ScrollView>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
   },
   imgWrapper: {
     position: 'absolute',
-    top: "-6%",
+    top: height * -0.05,
     right: 0,
     zIndex: -10,
   },
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    marginTop: height * 0.3,
+    marginTop: height * 0.40,
     backgroundColor: '#202020',
     width: "100%",
     borderTopRightRadius: 50,

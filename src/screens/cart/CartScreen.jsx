@@ -16,7 +16,7 @@ import { Text } from 'react-native';
 import { Dimensions } from 'react-native';
 import { fetchCartItems } from '../../store/cartSlice';
 import { useEffect } from 'react';
-import { List } from 'react-content-loader/native';
+
 
 const { height } = Dimensions.get('window');
 
