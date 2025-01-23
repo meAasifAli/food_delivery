@@ -4,6 +4,8 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import FA from 'react-native-vector-icons/FontAwesome'
 
 const SavedAddress = ({ item }) => {
+    // console.log(item);
+
     return (
         <TouchableOpacity style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(4), borderWidth: wp(0.1), borderRadius: wp(3), borderColor: "#202020", padding: wp(3), marginVertical: 10 }}>
             <View>

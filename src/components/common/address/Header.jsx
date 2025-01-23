@@ -15,7 +15,7 @@ const Header = ({ isHidden }) => {
     return (
         <View style={{ backgroundColor: "#202020", borderBottomEndRadius: wp(10), borderBottomStartRadius: wp(10), paddingHorizontal: wp(5), paddingVertical: hp(4) }}>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(5) }}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => navigation.navigate("AddAddress")}>
                     <Ionicons name='arrow-back' color={"#fff"} size={hp(2.5)} />
                 </TouchableOpacity>
                 <Text style={{ color: "#fff", fontSize: hp(2.5), fontFamily: "OpenSans-Medium" }}>Search or Add new address</Text>

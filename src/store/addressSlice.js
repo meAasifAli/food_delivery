@@ -13,16 +13,7 @@ export const fetchSavedAddresses = createAsyncThunk("address/fetchSavedAddresses
 })
 
 const initial = {
-    city: "",
-    district: "",
-    state: "",
-    postcode: "",
-    country: "",
-    suburb: "",
-    fullAddress: "",
-    county: "",
-    place: "",
-    name: "",
+    address: null,
     loading: false,
     savedUserAddresses: [],
     deliveryBoy: null
@@ -33,16 +24,7 @@ const addressSlice = createSlice({
     initialState: initial,
     reducers: {
         setAddress: (state, action) => {
-            state.city = action.payload.city
-            state.district = action.payload.district
-            state.state = action.payload.state
-            state.postcode = action.payload.postcode
-            state.country = action.payload.country
-            state.suburb = action.payload.suburb
-            state.fullAddress = action.payload.fullAddress
-            state.county = action.payload.county
-            state.place = action.payload.place
-            state.name = action.payload.name
+            state.address = action.payload
         },
         setDeliveryBoy: (state, action) => {
             state.deliveryBoy = action.payload

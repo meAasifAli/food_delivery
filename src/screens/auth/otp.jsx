@@ -51,7 +51,7 @@ const OtpScreen = () => {
         <ScrollView>
           <Heading />
           <SecondaryHeading />
-          <Text style={{ color: "#fff", fontSize: 16, fontFamily: "OpenSans-Regular" }}>temp otp : {storeOtp}</Text>
+          <Text style={{ color: "#fff", fontSize: 16, fontFamily: "OpenSans-Regular", textAlign: "center" }}>temp otp : {storeOtp ? storeOtp : user?.otp}</Text>
           <OtpInputs setOtp={setOtp} />
           <Option />
           <Button

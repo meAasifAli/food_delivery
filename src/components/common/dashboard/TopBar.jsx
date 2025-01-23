@@ -1,63 +1,37 @@
-import { Alert, Image, Keyboard, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
-import Typography from '../../Typography'
+import { Alert, Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useContext, useEffect } from 'react'
 import Entypo from 'react-native-vector-icons/Entypo'
 import SearchInput from '../../SearchInput'
-
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native'
-import SearchModal from '../../modals/SearchModal'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useDispatch, useSelector } from 'react-redux'
-import { LocationContext } from '../../../context/LocationContext'
-import { setAddress } from '../../../store/addressSlice'
-import axios from 'axios'
-import { BASE_URI } from '../../../config/uri'
-import { setUser } from '../../../store/authSlice'
+import { fetchSavedAddresses } from '../../../store/addressSlice'
+import { getUser, } from '../../../store/authSlice'
+
 
 
 const TopBar = () => {
     const dispatch = useDispatch()
-    const { location } = useContext(LocationContext)
     const { token } = useSelector((state) => state?.auth)
-    const { postcode, suburb, city, } = useSelector(state => state?.address)
+    const { address, savedUserAddresses } = useSelector(state => state?.address)
     const navigation = useNavigation()
-    const [isOpen, setIsOpen] = useState(false)
 
-    // console.log(location);
+
+    // console.log("Address: ", address);
 
     useEffect(() => {
-        const fetchLocationName = async () => {
-            try {
-                const res = await axios.get(`https://us1.locationiq.com/v1/reverse.php?key=pk.8f2a73d9ff72a2b8a7fc9626d06d6e12&lat=${location?.latitude}&lon=${location?.longitude}&format=json`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                dispatch(setAddress({
-                    city: res.data.address.city ? res.data.address.city : res.data.address.state_district,
-                    district: res.data.address.state_district,
-                    state: res.data.address.state,
-                    postcode: res.data.address.postcode,
-                    country: res.data.address.country,
-                    suburb: res.data.address.suburb ? res.data.address.suburb : res.data.address.state,
-                    fullAddress: res?.data?.display_name,
-                    county: res.data.address.county,
-                    place: res?.data?.display_place
-                }))
+        dispatch(fetchSavedAddresses({ token }))
+    }, [])
 
-            } catch (error) {
-                // Alert.alert("Error in fetching the place api: ", error?.message)
-            }
-        }
-        if (location?.latitude !== 0 && location?.longitude !== 0) {
-            fetchLocationName()
-        }
-    }, [location?.longitude, location?.latitude])
+
+
+    const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
+    // console.log("selectedAddress: ", selectedAddress);
 
 
     const handleFocus = () => {
-        setIsOpen(prev => !prev)
+        navigation.navigate("SearchedRestaurants", { query: "" })
+        // setIsOpen(prev => !prev)
         Keyboard.dismiss()
     }
 
@@ -65,18 +39,7 @@ const TopBar = () => {
 
 
     useEffect(() => {
-        const getUser = async () => {
-            const res = await axios.get(`${BASE_URI}/api/user/getUserDetails`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-
-            if (res?.data) {
-                dispatch(setUser(res?.data?.userData[0]))
-            }
-        }
-        getUser()
+        dispatch(getUser({ token }))
     }, [])
 
     return (
@@ -87,32 +50,51 @@ const TopBar = () => {
                 {/* heading */}
                 <View style={styles.topBarHeading}>
                     <View style={styles.topBarHeadingLeft}>
-                        <Ionicons name='location' size={24} color={"#FA4A0C"} />
-                        <TouchableOpacity onPress={() => navigation.navigate("AddAddress")} style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            gap: wp(1),
-                            alignItems: "flex-start"
-                        }}>
+                        {/* <Ionicons name='location' size={24} color={"#FA4A0C"} /> */}
 
-                            <View>
-                                <Text style={{ fontSize: 14, fontFamily: "OpenSans-Medium", color: "#fff" }}>{`${suburb} ${city}`}</Text>
-                                <Text style={{ fontSize: 12, fontFamily: "OpenSans-Bold", color: "#fff" }}>{postcode}</Text>
+                        {
+                            savedUserAddresses?.length > 0 ? <TouchableOpacity onPress={() => navigation.navigate("AddAddress")}>
+                                <View>
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                                        <View>
+                                            <Image style={{ height: 25, width: 25 }} source={{ uri: "https://cdn-icons-png.flaticon.com/512/11202/11202939.png" }} />
+                                        </View>
+                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <Text style={{ fontSize: 14, fontFamily: "OpenSans-Medium", color: "#fff" }}>{`${selectedAddress?.type}`}</Text>
+                                            <Entypo name='chevron-small-down' size={16} color={"#fff"} />
+                                        </View>
+                                    </View>
+                                    <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#fff", marginTop: 5 }}>{`${selectedAddress?.house_no}, ${selectedAddress?.area}, ${selectedAddress?.state}`}</Text>
+                                </View>
 
-                            </View>
-                            <Entypo name='chevron-small-down' size={16} color={"#fff"} />
-                        </TouchableOpacity>
+                            </TouchableOpacity> : <TouchableOpacity onPress={() => navigation.navigate("AddAddress")}>
+                                <View>
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                                        <View>
+                                            <Image style={{ height: 25, width: 25 }} source={{ uri: "https://cdn-icons-png.flaticon.com/512/11202/11202939.png" }} />
+                                        </View>
+                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <Text style={{ fontSize: 14, fontFamily: "OpenSans-Medium", color: "#fff" }}>{address?.split(",")[0]}</Text>
+                                            <Entypo name='chevron-small-down' size={16} color={"#fff"} />
+                                        </View>
+                                    </View>
+                                    <View>
+                                        <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#fff", marginTop: 5, maxWidth: "90%" }}>{address?.split(",")?.slice(0, 5).join(",")}</Text>
+                                    </View>
+                                </View>
+
+                            </TouchableOpacity>
+                        }
                     </View>
                     <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
                         <Image
-                            source={user?.profile ? { uri: user?.profile } : require("../../../assets/images/profile.png")}
+                            source={{ uri: user?.profile ? user?.profile : "https://cdn-icons-png.flaticon.com/512/149/149071.png" }}
                             style={styles.profileAvatar} />
                     </TouchableOpacity>
                 </View>
                 {/* search input */}
                 <View style={{ marginBottom: 10 }}>
-                    <SearchInput isOpen={isOpen} handleFocus={handleFocus} placeholder={"Search for Biryani"} />
-                    <SearchModal isOpen={isOpen} setIsOpen={setIsOpen} />
+                    <SearchInput handleFocus={handleFocus} placeholder={"Search for Biryani"} />
                 </View>
             </View>
             <View style={{ padding: 15, marginTop: 10, display: "flex", gap: 5, flexDirection: "row", alignItems: "center" }}>
@@ -137,14 +119,12 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        marginHorizontal: 10
     },
     topBarHeadingLeft: {
         display: "flex",
         flexDirection: "row",
-        gap: "15%",
-        alignItems: "center",
-        flexWrap: "wrap"
     },
     profileAvatar: {
         height: hp(7),

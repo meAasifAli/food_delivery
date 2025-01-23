@@ -9,7 +9,7 @@ import { LocationContext } from "../../../../context/LocationContext";
 import { Alert } from "react-native";
 
 const CenterBox = () => {
-    const { setLocation } = useContext(LocationContext)
+    const { setLocation, setIsMyLocation } = useContext(LocationContext)
     const navigation = useNavigation()
     const handleCurrentLocation = () => {
         Geolocation.getCurrentPosition(
@@ -19,6 +19,7 @@ const CenterBox = () => {
                     longitude: position.coords.longitude,
                     latitude: position.coords.latitude,
                 });
+                setIsMyLocation(true)
                 navigation.navigate("AddressScreen");
             },
             (error) => {

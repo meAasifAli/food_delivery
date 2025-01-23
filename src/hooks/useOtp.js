@@ -38,13 +38,15 @@ const useOtp = () => {
                     dispatch(setAuthenticated());
                     dispatch(setUser(res?.data?.userData));
                     dispatch(setToken(res?.data?.token));
-
+                }
+                else {
+                    Alert.alert('Something went wrong in login')
                 }
             }
         } catch (error) {
-            console.log(error);
+            console.log(error?.response?.data?.message);
             setLoading(false);
-            Alert.alert(error?.message);
+            Alert.alert(error?.response?.data?.message);
         } finally {
             setLoading(false);
         }

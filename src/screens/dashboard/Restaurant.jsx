@@ -1,4 +1,4 @@
-import { Alert, Image, ScrollView, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Typography from '../../components/Typography';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -13,6 +13,7 @@ import RestaurantDetails from '../../components/common/restaurant/RestaurantDeta
 import Menus from '../../components/common/restaurant/Menus';
 import MenuItem from '../../components/common/restaurant/MenuItem';
 import { Keyboard } from 'react-native';
+import { Text } from 'react-native';
 
 
 
@@ -24,10 +25,20 @@ const Restaurant = ({ route, navigation }) => {
     const { restaurant } = useSelector((state) => state?.restaurant)
     const [selectedMenu, setSelectedMenu] = useState("Veg")
     const { restaurantId } = route.params;
-    // const [openfirstDrawer, setOpenFirstDrawer] = useState(false)
-    // const [openSecondDrawer, setOpenSecondDrawer] = useState(false)
     const [size, setSize] = useState("small")
+    const [expandedCategory, setExpandedCategory] = useState(null);
 
+    useEffect(() => {
+        if (restaurant?.menu) {
+            const firstCategory = Object.keys(restaurant.menu)[0];
+            setExpandedCategory(firstCategory);
+        }
+    }, [restaurant?.menu]);
+
+    // Function to toggle expansion
+    const toggleCategory = (category) => {
+        setExpandedCategory((prev) => (prev === category ? null : category));
+    };
 
     // console.log(restaurant);
 
@@ -36,14 +47,15 @@ const Restaurant = ({ route, navigation }) => {
         const fetchRestaurant = async () => {
             try {
                 setLoading(true)
-                const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/34.074744/74.820444 `, {
+                const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/34.074744/74.820444?type=veg&filter=rating`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
                 })
-                dispatch(setRestaurant(res?.data?.data))
 
-
+                if (res?.data) {
+                    dispatch(setRestaurant(res?.data?.data))
+                }
             } catch (error) {
                 Alert.alert("Error in fetching restaurant", error?.response?.data?.message);
                 setLoading(false)
@@ -60,11 +72,13 @@ const Restaurant = ({ route, navigation }) => {
         navigation.navigate("SearchMenu", { params: { restaurantName: restaurant?.restaurantName } })
     }
 
+    // console.log(restaurant);
+
 
     return loading ?
         (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <Image style={{ height: 100, width: 100, resizeMode: "contain" }} source={require("../../assets/images/loader.png")} />
+                <ActivityIndicator size="large" color="black" />
             </View>
         ) : (
             <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
@@ -79,16 +93,63 @@ const Restaurant = ({ route, navigation }) => {
                     <SearchMenu handleFocus={handleFocusSearch} />
                 </View>
                 <Menus selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
-                <Heading />
                 <View>
-                    {
-                        restaurant?.menu?.TopSeller?.map((item, id) => (
-                            item?.type === selectedMenu.toLowerCase() && (
-                                <MenuItem selectedMenu={selectedMenu} key={id} size={size} setSize={setSize} item={item} />
-                            )
-                        ))
-                    }
+                    {restaurant?.menu &&
+                        Object.entries(restaurant.menu).map(([category, items], categoryIndex) => (
+                            <View key={categoryIndex} style={{ marginBottom: 20 }}>
+                                {/* Display category name */}
+                                <TouchableOpacity
+                                    onPress={() => toggleCategory(category)}
+                                    style={styles.itemsContainer}
+                                >
+                                    <View style={styles.itemHeadingWrapper}>
+                                        <Typography
+                                            title={category}
+                                            color={"#202020"}
+                                            size={16}
+                                            lh={21}
+                                            ls={0.05}
+                                            fw={600}
+                                            ff={"OpenSans-Regular"}
+                                        />
+                                        <SimpleLineIcons
+                                            name={expandedCategory === category ? 'arrow-down' : 'arrow-up'}
+                                            size={20}
+                                            color={"#202020"}
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+
+                                {/* Display items only if the category is expanded */}
+                                {expandedCategory === category && (
+                                    <View style={styles.categoryItems}>
+                                        {Array.isArray(items) ? (
+                                            items.map((item, itemIndex) => (
+                                                <MenuItem
+                                                    selectedMenu={selectedMenu}
+                                                    key={itemIndex}
+                                                    size={size}
+                                                    setSize={setSize}
+                                                    item={item}
+                                                />
+                                            ))
+                                        ) : (
+                                            <Text
+                                                style={{
+                                                    color: 'gray',
+                                                    fontFamily: "OpenSans-Regular",
+                                                    textAlign: "center",
+                                                }}
+                                            >
+                                                {items?.message || 'No items found'}
+                                            </Text>
+                                        )}
+                                    </View>
+                                )}
+                            </View>
+                        ))}
                 </View>
+
             </ScrollView>
         )
 }
@@ -119,16 +180,6 @@ const styles = StyleSheet.create({
 })
 
 
-function Heading() {
-    return (
-        <View style={styles.itemsContainer}>
-            <View style={styles.itemHeadingWrapper}>
-                <Typography title={"Top Seller"} color={"#202020"} size={16} lh={21} ls={0.05} fw={600} ff={"OpenSans-Regular"} />
-                <SimpleLineIcons name='arrow-up' size={20} color={"#202020"} />
-            </View>
-        </View>
-    )
-}
 
 
 

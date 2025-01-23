@@ -4,16 +4,19 @@ import Fa5 from 'react-native-vector-icons/FontAwesome5'
 import Input from './Input'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useContext, useState } from 'react'
 import useAddAddress from '../../../hooks/useAddAddress'
 import { LocationContext } from '../../../context/LocationContext'
+import { fetchSavedAddresses } from '../../../store/addressSlice'
 
 
 const ModalComponent = ({ openModal, setOpenModal }) => {
+    const dispatch = useDispatch()
     const { location } = useContext(LocationContext)
     const { loading, handleAddAddress } = useAddAddress()
     const { state, fullAddress, city } = useSelector((state) => state.address)
+    const { token } = useSelector((state) => state.auth)
     const [inputs, setInputs] = useState({
         houseNo: "",
         area: "",
@@ -35,6 +38,7 @@ const ModalComponent = ({ openModal, setOpenModal }) => {
             lon: location?.longitude
         })
         setOpenModal((prev) => !prev)
+        dispatch(fetchSavedAddresses({ token }))
     }
     return (
         <Modal
@@ -80,9 +84,9 @@ const ModalComponent = ({ openModal, setOpenModal }) => {
                             <Entypo name="home" color={"#FA4A0C"} size={hp(2)} />
                             <Text style={{ color: "#000", fontFamily: "OpenSans-Medium", fontSize: hp(1.8) }}>Home</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setInputs({ ...inputs, type: "work" })} style={{ backgroundColor: "#fff", paddingVertical: hp(1.5), paddingHorizontal: wp(5), borderRadius: wp(2), display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
+                        <TouchableOpacity onPress={() => setInputs({ ...inputs, type: "office" })} style={{ backgroundColor: "#fff", paddingVertical: hp(1.5), paddingHorizontal: wp(5), borderRadius: wp(2), display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
                             <Fa5 name="building" color={"#FA4A0C"} size={hp(2)} />
-                            <Text style={{ color: "#000", fontFamily: "OpenSans-Medium", fontSize: hp(1.8) }}>Work</Text>
+                            <Text style={{ color: "#000", fontFamily: "OpenSans-Medium", fontSize: hp(1.8) }}>office</Text>
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={handlePress} style={{ backgroundColor: "#FA4A0C", paddingVertical: hp(2), paddingHorizontal: wp(5), borderRadius: wp(2), marginTop: hp(1) }}>

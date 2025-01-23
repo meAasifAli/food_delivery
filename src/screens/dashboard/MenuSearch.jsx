@@ -22,6 +22,9 @@ const MenuSearch = ({ route }) => {
 
     const { handleFetchSearchItems, loading, searchMenuItems } = usefetchMenuBySearch()
 
+    console.log(searchMenuItems);
+
+
     useEffect(() => {
         if (searchQuery.length > 0) {
             handleFetchSearchItems({ query: searchQuery })
@@ -73,7 +76,7 @@ const MenuSearch = ({ route }) => {
                                     </View>
                                     {/* right */}
                                     <View style={styles.rightWrapper}>
-                                        <Image style={{ width: 150, height: 150, resizeMode: "contain" }} source={require("../../assets/images/menu_img.png")} />
+                                        <Image style={{ width: 150, height: 150, resizeMode: "contain" }} source={item?.image ? { uri: item?.image } : require("../../assets/images/menu_img.png")} />
                                         <View style={{ position: "absolute", bottom: 8, right: 15 }}>
                                             <TouchableOpacity onPress={() => {
                                                 item?.customisation === 0 ? setIsNonCustomizable(prev => !prev) : setIsCustomizable(prev => !prev)

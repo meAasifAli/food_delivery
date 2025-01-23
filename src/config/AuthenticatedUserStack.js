@@ -113,6 +113,7 @@ const AuthenticatedUserStack = () => (
     />
     <Stack.Screen
       name="AddressScreen"
+
       component={Address}
       options={{
         headerShown: false,

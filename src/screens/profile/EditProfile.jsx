@@ -1,6 +1,6 @@
 import { Alert, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { useContext, useEffect, useState } from 'react';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../../components/common/profile/edit/Header';
@@ -8,8 +8,7 @@ import FormInput from '../../components/common/profile/edit/FormInput';
 import DocumentPicker, { types } from 'react-native-document-picker';
 import { BASE_URI } from '../../config/uri';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
-import { setFile, setUser } from '../../store/authSlice';
+import { getUser, setFile } from '../../store/authSlice';
 
 
 
@@ -27,19 +26,10 @@ const EditProfile = () => {
     });
 
 
-    useEffect(() => {
-        const getUser = async () => {
-            const res = await axios.get(`${BASE_URI}/api/user/getUserDetails`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
 
-            if (res?.data) {
-                dispatch(setUser(res?.data?.userData[0]))
-            }
-        }
-        getUser()
+
+    useEffect(() => {
+        dispatch(getUser({ token }))
     }, [])
 
 
@@ -99,11 +89,13 @@ const EditProfile = () => {
             <ScrollView>
                 <View style={{ paddingVertical: hp(2), justifyContent: "center", alignItems: "center", marginTop: 20, marginHorizontal: 20 }}>
                     <TouchableOpacity onPress={pickImage}>
-                        <Image style={{ height: 100, width: 100, resizeMode: "cover", borderRadius: 50 }} source={user ? { uri: user?.profile } : require("../../assets/images/profile.png")} />
+                        <Image style={{ height: 100, width: 100, resizeMode: "cover", borderRadius: 50 }} source={{ uri: user?.profile ? user?.profile : "https://img.favpng.com/17/24/10/computer-icons-user-profile-male-avatar-png-favpng-jhVtWQQbMdbcNCahLZztCF5wk.jpg" }} />
                     </TouchableOpacity>
 
 
                     <FormInput
+                        isName={true}
+                        isEmail={false}
                         isPhone={false}
                         inputName="name"
                         label="NAME"
@@ -113,6 +105,8 @@ const EditProfile = () => {
                         setFormData={setFormData}
                     />
                     <FormInput
+                        isName={false}
+                        isEmail={false}
                         isPhone={true}
                         inputName="phone"
                         label="PHONE NUMBER"
@@ -123,6 +117,8 @@ const EditProfile = () => {
                     />
 
                     <FormInput
+                        isName={false}
+                        isEmail={true}
                         isPhone={false}
                         inputName="email"
                         label="EMAIL ADDRESS"
