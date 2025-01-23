@@ -21,23 +21,6 @@ const AddAddress = () => {
         dispatch(fetchSavedAddresses({ token }))
     }, [])
 
-    // console.log(savedUserAddresses);
-
-    // console.log("searchVal: ", searchVal);
-
-    // useEffect(() => {
-    //     const fetchAdressByString = async () => {
-    //         try {
-    //             const res = await axios.get(`https://api.locationiq.com/v1/autocomplete?key=pk.8f2a73d9ff72a2b8a7fc9626d06d6e12&q=${searchVal}`)
-    //             console.log(res.data)
-
-    //         } catch (error) {
-    //             Alert.alert("Error: ", error?.message)
-    //         }
-    //     }
-    //     fetchAdressByString()
-
-    // }, [searchVal])
     return (
         <View style={styles.container}>
             <Header searchVal={searchVal} setSearchVal={setSearchVal} />
@@ -48,13 +31,17 @@ const AddAddress = () => {
                     <Text style={{ fontFamily: "OpenSans-Regular", color: "#000000", lineHeight: hp(3), fontSize: hp(2.5), letterSpacing: wp(0.2) }}>Saved Addresses</Text>
                     <View style={{ borderTopColor: "#D6D6D6", borderTopWidth: hp(0.15), flex: 1 }}></View>
                 </View>
-                <View style={{ width: wp(80), marginHorizontal: "auto", elevation: 1, backgroundColor: "#fff", borderRadius: wp(3), marginTop: hp(2), padding: wp(5) }}>
-                    {
-                        savedUserAddresses.map((item, id) => (
-                            <SavedAddress item={item} key={id} />
-                        ))
-                    }
-                </View>
+                {
+                    savedUserAddresses?.length === 0 ? <View>
+                        <Text style={{ fontFamily: "OpenSans-Regular", color: "#000000", lineHeight: hp(3), fontSize: hp(2), letterSpacing: wp(0.2), textAlign: "center" }}>You don't have any saved addresses</Text>
+                    </View> : <View style={{ width: wp(80), marginHorizontal: "auto", elevation: 1, backgroundColor: "#fff", borderRadius: wp(3), marginTop: hp(2), padding: wp(5) }}>
+                        {
+                            savedUserAddresses?.length > 0 && savedUserAddresses?.map((item, id) => (
+                                <SavedAddress item={item} key={id} />
+                            ))
+                        }
+                    </View>
+                }
             </ScrollView>
         </View>
     )

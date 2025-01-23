@@ -1,15 +1,21 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Typography from '../../components/Typography'
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { fetchSavedAddresses } from '../../store/addressSlice';
 import AddressCard from '../../components/common/profile/addresses/AddressCard';
 import Header from '../../components/common/profile/addresses/Header';
+import { LocationContext } from '../../context/LocationContext';
 
 
 
 const Addresses = () => {
+
+
+
+
+
 
     const dispatch = useDispatch()
     const { savedUserAddresses } = useSelector((state) => state?.address)
@@ -21,6 +27,7 @@ const Addresses = () => {
     }, [])
 
 
+    // console.log(savedUserAddresses, "savedUserAddresses");
 
 
     return (
@@ -28,6 +35,11 @@ const Addresses = () => {
             <Header />
             <View style={{ padding: wp(5) }}>
                 <Typography title={"Saved Addresses"} ff={"OpenSans-Regular"} color={"#000000"} fw={300} size={hp(2.3)} />
+            </View>
+            <View>
+                {
+                    savedUserAddresses?.length === 0 && <Text>You don't have any saved adddress</Text>
+                }
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 {

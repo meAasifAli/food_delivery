@@ -18,7 +18,7 @@ const useDeleteAddress = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            if (res?.data) {
+            if (res?.data && token) {
                 Alert.alert("Address Deleted Successfully")
                 dispatch(fetchSavedAddresses({ token }))
             }

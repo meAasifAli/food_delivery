@@ -9,9 +9,8 @@ import SecondaryHeader from '../../components/common/profile/SecondaryHeader';
 import { useEffect, useState } from 'react';
 import SignoutModal from '../../components/modals/SignoutModal';
 import useGetPastOrders from '../../hooks/useGetPastOrders'
-import axios from 'axios';
-import { setUser } from '../../store/authSlice';
-import { BASE_URI } from '../../config/uri';
+import { getUser, } from '../../store/authSlice';
+
 
 const Profile = () => {
     const dispatch = useDispatch()
@@ -41,20 +40,10 @@ const Profile = () => {
         },
     ]
 
+    // console.log(token);
 
     useEffect(() => {
-        const getUser = async () => {
-            const res = await axios.get(`${BASE_URI}/api/user/getUserDetails`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-
-            if (res?.data) {
-                dispatch(setUser(res?.data?.userData[0]))
-            }
-        }
-        getUser()
+        dispatch(getUser({ token }))
     }, [])
     const { handleFetchPastOrders } = useGetPastOrders()
 

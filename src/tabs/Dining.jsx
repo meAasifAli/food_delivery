@@ -1,6 +1,6 @@
 
 
-import { Image, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import TopBar from '../components/common/dashboard/TopBar';
 import Categories from '../components/common/dashboard/Categories';
 import Nearest from '../components/common/dashboard/Nearest';
@@ -12,22 +12,58 @@ import { useContext, useEffect } from 'react';
 import { fetchCartItems } from '../store/cartSlice';
 import { initialiseSocket } from '../config/socket';
 import { LocationContext } from '../context/LocationContext';
+import { getUser } from '../store/authSlice';
+import { setAddress } from '../store/addressSlice';
+import { API_KEY } from '../config/uri';
+import axios from 'axios';
 
 
 
 
 
 const Dining = () => {
+    const { location } = useContext(LocationContext)
     const { setOrderStatus, setDeliveryBoyLocation, deliveryBoyLocation } = useContext(LocationContext)
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const { token } = useSelector((state) => state?.auth)
     const { cart } = useSelector((state) => state?.cart)
-
+    const { address } = useSelector((state) => state?.address)
 
     useEffect(() => {
-        dispatch(fetchCartItems({ token }))
-    }, [])
+        if (token) {
+            dispatch(getUser({ token }))
+            dispatch(fetchCartItems({ token }))
+        }
+    }, [token])
+
+    useEffect(() => {
+        const fetchLocationName = async () => {
+            try {
+                const res = await axios.get(
+                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}&key=${API_KEY}`
+                );
+
+                if (res?.data?.results?.length > 0) {
+                    const fetchedAddress = res.data.results[0].formatted_address;
+                    if (!address) {
+                        dispatch(setAddress(fetchedAddress));
+                    }
+
+                } else {
+                    Alert.alert('No address found for the given coordinates.');
+                }
+            } catch (error) {
+                console.log("Error: ", error?.response?.data?.message);
+
+                // Alert.alert('Error fetching the place API:', error?.message);
+            }
+        };
+
+        if (location?.latitude && location?.longitude) {
+            fetchLocationName();
+        }
+    }, [location?.latitude, location?.longitude, address, dispatch]);
 
     // console.log(cart);
     const itemTotal = cart?.reduce((acc, item) => acc + parseFloat(item?.item_total), 0)
@@ -39,9 +75,8 @@ const Dining = () => {
             console.log("user Connected");
             socket.emit("userConnect")
             socket.on("orderStatus", (orderStatus) => {
-                // console.log(orderStatus);
                 setOrderStatus(orderStatus?.status)
-                if (orderStatus?.status === 'confirmed') {
+                if (orderStatus?.status === 'accepted') {
                     navigation.navigate("Tracking")
                 }
             })

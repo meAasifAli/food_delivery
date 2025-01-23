@@ -5,6 +5,7 @@ import UnAuthenticatedUserStack from "./UnAuthenticatedUserStack"
 import { useSelector } from "react-redux"
 import { StatusBar } from "react-native"
 
+
 const AppNavigator = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
     return (

@@ -28,7 +28,7 @@ const useSignin = () => {
         } catch (error) {
             setLoading(false)
             console.log(error?.response);
-            error?.response?.config ? Alert.alert("Network Error from Server") : Alert.alert(error?.response?.data?.message)
+            Alert.alert(error?.response?.data?.message)
         }
         finally {
             setLoading(false)

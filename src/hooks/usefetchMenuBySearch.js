@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import axios from 'axios'
 import { BASE_URI } from '../config/uri'

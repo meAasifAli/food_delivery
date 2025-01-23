@@ -4,13 +4,16 @@ import Header from '../../components/common/address/Header';
 import Map from '../../components/common/address/Map';
 import Bottom from '../../components/common/address/Bottom';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAddress } from '../../store/addressSlice';
 import { LocationContext } from '../../context/LocationContext';
+import { API_KEY } from '../../config/uri';
 
 
 const Address = () => {
 
+
+    const { isMyLocation } = useContext(LocationContext)
 
 
     const { setLocation, location } = useContext(LocationContext)
@@ -26,32 +29,39 @@ const Address = () => {
         })
     }
 
+
+
+
     useEffect(() => {
         const fetchLocationName = async () => {
             try {
-                const res = await axios.get(`https://us1.locationiq.com/v1/reverse.php?key=pk.8f2a73d9ff72a2b8a7fc9626d06d6e12&lat=${location?.latitude}&lon=${location?.longitude}&format=json`, {
-                })
-                dispatch(setAddress({
-                    city: res.data.address.city ? res.data.address.city : res.data.address.state_district,
-                    district: res.data.address.state_district,
-                    state: res.data.address.state,
-                    postcode: res.data.address.postcode,
-                    country: res.data.address.country,
-                    suburb: res.data.address.suburb ? res.data.address.suburb : res.data.address.state,
-                    fullAddress: res?.data?.display_name,
-                    county: res.data.address.county,
-                    place: res?.data?.display_place
-                }))
+                const res = await axios.get(
+                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}&key=${API_KEY}`
+                );
 
+                if (res?.data?.results?.length > 0) {
+                    const fetchedAddress = res.data.results[0].formatted_address;
+
+                    // Only update Redux state if address is not already set
+
+                    if (isMyLocation && location) {
+                        dispatch(setAddress(fetchedAddress));
+                    }
+                } else {
+                    Alert.alert('No address found for the given coordinates.');
+                }
             } catch (error) {
-                Alert.alert("Error in fetching the place api: ", error?.message)
+                Alert.alert('Error fetching the place API:', error?.message);
             }
-        }
+        };
+
         if (location?.latitude !== 0 && location?.longitude !== 0) {
-            fetchLocationName()
+            fetchLocationName();
         }
-    }, [location?.longitude, location?.latitude])
-    // console.log(address);
+    }, [location?.latitude, location?.longitude, isMyLocation]);
+
+
+
     return (
         <KeyboardAvoidingView style={{ flex: 1, position: "relative" }}>
             <Header isHidden={openModal} />

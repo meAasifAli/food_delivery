@@ -8,10 +8,7 @@ import customizationReducer from './customizationSlice'
 import { persistStore, persistReducer } from 'redux-persist'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const persistConfig = {
-    key: "root",
-    storage: AsyncStorage
-}
+
 
 const persistAuthConfig = {
     key: "auth",
@@ -19,13 +16,13 @@ const persistAuthConfig = {
 }
 
 const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer)
-const persistedAddressReducer = persistReducer(persistConfig, addressReducer)
+
 const store = configureStore({
     reducer: {
         cart: cartReducer,
         auth: persistedAuthReducer,
         restaurant: restaurantReducer,
-        address: persistedAddressReducer,
+        address: addressReducer,
         customization: customizationReducer
 
     },

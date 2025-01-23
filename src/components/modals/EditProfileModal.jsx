@@ -6,40 +6,41 @@ import Modal from 'react-native-modal'
 import { OtpInput } from 'react-native-otp-entry'
 import { widthPercentageToDP as wp, } from 'react-native-responsive-screen';
 import { BASE_URI } from '../../config/uri'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setToken } from '../../store/authSlice'
 
-const EditProfileModal = ({ isOpen, setIsOpen, formData, OTP }) => {
-
-    const { token, file } = useSelector(state => state?.auth)
+const EditProfileModal = ({ isOpen, setIsOpen, phone }) => {
+    const dispatch = useDispatch()
+    const { token } = useSelector(state => state?.auth)
     const [otp, setOtp] = useState("")
 
+
+    //
 
 
 
     const updateProfile = async () => {
-        const data = new FormData()
-        data.append("givenOTP", otp)
-        // data.append("profile", {
-        //     uri: file?.uri,
-        //     type: file?.type,
-        //     name: file?.name
-        // })
+
         try {
-            const res = await fetch(`${BASE_URI}/api/user/editProfile/${formData?.name}/${formData.email}/${formData?.phone}`, {
+            const res = await axios.patch(`${BASE_URI}/api/user/editProfile/phone`, {
+                phone_no: phone,
+                givenOTP: otp
+            }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data"
                 },
-                body: data,
-                method: "PATCH"
             })
-            if (res?.ok) {
+
+
+            if (res?.data) {
                 Alert.alert("Profile Updated Successfully")
-                setIsOpen(false)
+                dispatch(setToken(res?.data?.token))
+                setIsOpen(pre => !pre)
             }
+
         } catch (error) {
             console.log(error?.response?.data?.message);
-            Alert.alert(error)
+            Alert.alert(error?.response?.data?.message)
 
         }
     }

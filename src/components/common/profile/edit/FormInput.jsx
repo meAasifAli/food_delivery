@@ -4,23 +4,20 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import ActionButtons from './ActionButtons';
 import axios from 'axios';
 import { BASE_URI } from '../../../../config/uri';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import EditProfileModal from '../../../modals/EditProfileModal';
 import { useNavigation } from '@react-navigation/native';
+import { getUser } from '../../../../store/authSlice';
 
 
 
-const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormData, isPhone }) => {
-    const { token, file } = useSelector((state) => state.auth)
+const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormData, isPhone, isName, isEmail }) => {
+    const dispatch = useDispatch()
+    const { token, file, setToken } = useSelector((state) => state.auth)
     const [isEditable, setIsEditable] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
     const navigation = useNavigation()
-    const [OTP, setOTP] = useState(null)
-
-
-
-
 
 
     const editProfile = async () => {
@@ -38,11 +35,40 @@ const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormDa
                 console.log(res?.data);
 
                 if (res?.data) {
-                    setOTP(res?.data?.OTP)
                     setIsOpen(pre => !pre)
                 }
             }
 
+            else if (isName) {
+                const res = await axios.patch(`${BASE_URI}/api/user/editProfile/name`, {
+                    name: formData?.name
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+
+                if (res?.data) {
+                    Alert.alert("Name Updated Successfully")
+                    dispatch(getUser({ token }))
+                    navigation.goBack()
+                }
+            }
+            else if (isEmail) {
+                const res = await axios.patch(`${BASE_URI}/api/user/editProfile/email`, {
+                    name: formData?.email
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+
+                if (res?.data) {
+                    Alert.alert("Email Updated Successfully")
+                    dispatch(getUser({ token }))
+                    navigation.goBack()
+                }
+            }
             else {
                 const data = new FormData()
                 data.append("profile", data.append("profile", {
@@ -50,7 +76,7 @@ const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormDa
                     type: file.type,
                     name: file.name
                 }))
-                const res = await fetch(`${BASE_URI}/api/user/editProfile/${formData?.name}/${formData?.email}/${formData?.phone}`, {
+                const res = await fetch(`${BASE_URI}/api/user/editProfile/profile`, {
                     method: "PATCH",
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -61,6 +87,7 @@ const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormDa
 
                 if (res?.ok) {
                     Alert.alert("Profile Updated Successfully")
+                    dispatch(getUser({ token }))
                     navigation.goBack()
                 }
             }
@@ -96,7 +123,7 @@ const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormDa
                         </TouchableOpacity>}
                     </View>
                     {isEditable && <ActionButtons setIsEditable={setIsEditable} onPress={editProfile} />}
-                    <EditProfileModal OTP={setOTP} isOpen={isOpen} setIsOpen={setIsOpen} formData={formData} />
+                    <EditProfileModal isOpen={isOpen} setIsOpen={setIsOpen} phone={formData?.phone} />
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

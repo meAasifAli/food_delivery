@@ -16,6 +16,8 @@ const LocationContextProvider = ({ children }) => {
         getLocation()
     }, []);
 
+
+
     const requestLocationPermission = async () => {
         if (Platform.OS === 'android') {
             const granted = await PermissionsAndroid.request(
@@ -58,10 +60,10 @@ const LocationContextProvider = ({ children }) => {
 
     const [orderStatus, setOrderStatus] = useState("confirmed")
     const [deliveryBoyLocation, setDeliveryBoyLocation] = useState(null)
-
+    const [isMyLocation, setIsMyLocation] = useState(false)
 
     return (
-        <LocationContext.Provider value={{ location, setLocation, mapRef, orderStatus, setOrderStatus, deliveryBoyLocation, setDeliveryBoyLocation, }}>{children}</LocationContext.Provider>
+        <LocationContext.Provider value={{ isMyLocation, setIsMyLocation, location, setLocation, mapRef, orderStatus, setOrderStatus, deliveryBoyLocation, setDeliveryBoyLocation, }}>{children}</LocationContext.Provider>
     )
 }
 
