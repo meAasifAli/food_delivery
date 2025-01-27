@@ -10,8 +10,12 @@ import { initialiseSocket } from '../../../config/socket';
 
 const Map = () => {
     const mapRef = useRef(null);
+    const { location } = useContext(LocationContext)
     const { orderStatus, setDeliveryBoyLocation, deliveryBoyLocation } = useContext(LocationContext);
 
+    console.log("user location: ", location);
+
+    console.log("deliveryBoyLocation", deliveryBoyLocation);
 
     useEffect(() => {
         const socket = initialiseSocket();
@@ -23,7 +27,19 @@ const Map = () => {
             // Listen for delivery boy location updates
             socket.on("deliveryBoyLocationUpdate", (data) => {
                 console.log("Updated Delivery Boy Location: ", data);
-                setDeliveryBoyLocation(data?.location);
+                const location = data?.location
+                if (location) {
+                    setDeliveryBoyLocation(location);
+                    if (mapRef.current) {
+                        mapRef.current.animateCamera({
+                            center: {
+                                latitude: location.lat,
+                                longitude: location.lng,
+                            },
+                            zoom: 15,
+                        }, { duration: 1000 });
+                    }
+                }
             });
         });
 
@@ -37,13 +53,6 @@ const Map = () => {
             socket.disconnect();
         };
     }, []);
-
-
-
-
-
-
-
 
     return (
         <View>
@@ -70,8 +79,8 @@ const Map = () => {
 
                 <Marker
                     coordinate={{
-                        latitude: 34.12000000,
-                        longitude: 74.82000000,
+                        latitude: location?.latitude,
+                        longitude: location?.longitude,
                         // latitude: location?.latitude || 34.0694,
                         // longitude: location?.longitude || 74.8250,
                     }}
@@ -79,34 +88,36 @@ const Map = () => {
                 />
 
                 {
-                    deliveryBoyLocation && <MapViewDirections
-                        strokeWidth={10}
-                        origin={{
-                            latitude: deliveryBoyLocation?.lat || 34.074744,
-                            longitude: deliveryBoyLocation?.lng || 74.820444,
-                        }}
-                        destination={{
-                            latitude: 34.12000000,
-                            longitude: 74.82000000,
-                            // latitude: location?.latitude || 34.0694,
-                            // longitude: location?.longitude || 74.8250,
-                        }}
-                        apikey={API_KEY}
-                        onReady={(result) => {
-                            if (mapRef.current) {
-                                mapRef.current.fitToCoordinates(result.coordinates, {
-                                    edgePadding: {
-                                        top: 50,
-                                        right: 50,
-                                        bottom: 50,
-                                        left: 50,
-                                    },
-                                    animated: true,
-                                });
-                            }
-                        }}
-                    />
+                    deliveryBoyLocation && (
+                        <MapViewDirections
+                            strokeWidth={10}
+                            strokeColor="blue"
+                            origin={{
+                                latitude: deliveryBoyLocation.lat,
+                                longitude: deliveryBoyLocation.lng,
+                            }}
+                            destination={{
+                                latitude: location?.latitude,
+                                longitude: location?.longitude,
+                            }}
+                            apikey={API_KEY}
+                            onReady={(result) => {
+                                if (mapRef.current) {
+                                    mapRef.current.fitToCoordinates(result.coordinates, {
+                                        edgePadding: {
+                                            top: 50,
+                                            right: 50,
+                                            bottom: 50,
+                                            left: 50,
+                                        },
+                                        animated: true,
+                                    });
+                                }
+                            }}
+                        />
+                    )
                 }
+
             </MapView>
 
             <View style={{
