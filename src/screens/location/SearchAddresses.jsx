@@ -1,11 +1,11 @@
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import { useContext } from 'react'
 import { LocationContext } from '../../context/LocationContext'
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setAddress } from '../../store/addressSlice'
-import Geolocation from '../../config/locationConfig'
+import GetLocation from 'react-native-get-location'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import 'react-native-get-random-values';
 import { API_KEY } from '../../config/uri'
@@ -15,33 +15,29 @@ const SearchAddresses = () => {
     const { setIsMyLocation } = useContext(LocationContext)
     const dispatch = useDispatch()
     const { setLocation, } = useContext(LocationContext)
-    // const { address } = useSelector((state) => state?.address)
-
-    // console.log("got an address : ", address?.address);
-
-
 
     const navigation = useNavigation()
 
 
 
     const handleCurrentLocation = () => {
-        Geolocation.getCurrentPosition(
-            (position) => {
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 60000,
+        })
+            .then(location => {
                 setLocation({
-                    longitude: position.coords.longitude,
-                    latitude: position.coords.latitude,
+                    longitude: location?.longitude,
+                    latitude: location?.latitude,
                 })
                 setIsMyLocation(true)
                 navigation.navigate("AddressScreen");
+            })
+            .catch(error => {
+                const { code, message } = error;
+                console.warn(code, message);
+            })
 
-            },
-            (error) => {
-                console.error('Location error:', error);
-                Alert.alert('Error', 'Failed to fetch current location');
-            },
-            { enableHighAccuracy: false, timeout: 20000 }
-        );
     };
 
     return (
@@ -57,10 +53,10 @@ const SearchAddresses = () => {
                     setLocation({
                         longitude: details?.geometry.location.lng,
                         latitude: details?.geometry.location.lat,
-                    })
-                    dispatch(setAddress(details?.formatted_address))
-                    setIsMyLocation(false)
-                    navigation.navigate("AddressScreen")
+                    });
+                    dispatch(setAddress(details?.formatted_address));
+                    setIsMyLocation(false);
+                    navigation.navigate("AddressScreen");
                 }}
                 query={{
                     key: API_KEY,
@@ -86,23 +82,24 @@ const SearchAddresses = () => {
                         borderStyle: 'dashed',
                     },
                     listView: {
-                        backgroundColor: 'transparent',
+                        backgroundColor: '#fff', // ✅ Make list background white
                     },
                     row: {
-                        backgroundColor: 'transparent',
+                        backgroundColor: '#fff', // ✅ Ensure row background is white
                         padding: 10,
                         borderBottomColor: '#6D6D6D',
                         borderBottomWidth: 0.5,
                     },
                     description: {
-                        color: '#fff',
+                        color: '#000',  // ✅ Ensure text is visible (changed from `#fff` to `#000`)
                         fontFamily: 'OpenSans-Regular',
                     },
                     predefinedPlacesDescription: {
-                        color: '#fff',
+                        color: '#000',  // ✅ Make predefined place text visible
                     },
                 }}
             />
+
 
         </View>
     )

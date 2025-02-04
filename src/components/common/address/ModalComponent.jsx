@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import Fa5 from 'react-native-vector-icons/FontAwesome5'
 import Input from './Input'
@@ -24,6 +24,8 @@ const ModalComponent = ({ openModal, setOpenModal }) => {
         number: "",
         type: "home"
     })
+
+
 
     const handlePress = async () => {
         await handleAddAddress({
@@ -102,4 +104,3 @@ const ModalComponent = ({ openModal, setOpenModal }) => {
 
 export default ModalComponent
 
-const styles = StyleSheet.create({})

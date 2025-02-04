@@ -1,7 +1,5 @@
-import { Alert, Dimensions, Image, Pressable, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, View } from 'react-native'
 import React, { useState } from 'react'
-import Typography from '../../Typography'
-import IonIcons from 'react-native-vector-icons/Ionicons'
 import Entypo from 'react-native-vector-icons/Entypo'
 
 const { height } = Dimensions.get("window")
@@ -15,7 +13,7 @@ import SwipeButton from 'rn-swipe-button';
 import PaymentSuccess from '../../modals/PaymentSuccess'
 
 
-const GpayBox = () => {
+const Payment = () => {
     const [isPaymentSuccess, setIsPaymentSuccess] = useState(false)
     const { user, token } = useSelector((state) => state.auth)
     const navigation = useNavigation()
@@ -33,16 +31,14 @@ const GpayBox = () => {
             })
 
             if (res?.data) {
-
-
                 var options = {
                     description: 'Credits towards consultation',
                     image: 'https://i.imgur.com/3g7nmJC.png',
                     currency: 'INR',
-                    key: 'rzp_test_TUB0CIJ5ZVOxE2', // Your api key
+                    key: 'rzp_test_TUB0CIJ5ZVOxE2',
                     amount: res?.data?.order?.amount,
                     order_id: res?.data?.order?.id,
-                    name: user?.username, // Replace this with an order_id created using Orders API.
+                    name: user?.username,
                     prefill: {
                         email: 'void@razorpay.com',
                         contact: '9191919191',
@@ -71,33 +67,17 @@ const GpayBox = () => {
             }
         } catch (error) {
             console.log(error?.message);
-
             Alert.alert("Error in initiating the order: ", error?.response.data?.message)
         }
     }
     return (
-        <View style={{ padding: 20, width: "95%", marginHorizontal: "auto", height: height * 0.25, borderRadius: 10, backgroundColor: "#FFFFFF", marginHorizontal: "auto", elevation: 1, }}>
-            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20 }}>
-                    <View>
-                        <Image style={{ height: 50, width: 50, resizeMode: "contain" }} source={require("../../../assets/images/gpay.webp")} />
-                    </View>
-                    <View>
-                        <Typography title={"Pay using"} ff={"OpenSans-Regular"} color={"#000"} size={14} lh={19} fw={400} />
-                        <Typography title={"Google Pay"} ff={"OpenSans-Bold"} color={"#202020"} size={14} lh={21} fw={600} />
-                    </View>
-                </View>
-                <Pressable onPress={() => navigation.navigate("PaymentOptions")} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
-                    <Typography title={"Change"} ff={"OpenSans-Regular"} color={"#FA4A0C"} size={hp(2)} lh={hp(2.5)} fw={400} />
-                    <IonIcons name='chevron-forward' size={hp(2.5)} color={"#FA4A0C"} />
-                </Pressable>
-            </View>
-            <View style={{ borderStyle: "dashed", borderColor: "#000", borderWidth: 0.50, flex: 1, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0 }}></View>
+        <View style={{ padding: 20, width: "95%", marginHorizontal: "auto", borderRadius: 10, backgroundColor: "#FFFFFF", marginHorizontal: "auto", elevation: 1, }}>
+
 
 
             <SwipeButton
-                containerStyles={{ borderRadius: 25, marginTop: 20 }}
-                height={50}
+                containerStyles={{ borderRadius: 30 }}
+                height={60}
                 // onSwipeFail={() => updateSwipeStatusMessage('Incomplete swipe!')}
                 // onSwipeStart={() => updateSwipeStatusMessage('Swipe started!')}
                 onSwipeSuccess={() => {
@@ -109,7 +89,7 @@ const GpayBox = () => {
                 // thumbIconImageSource={arrowRight}
                 // thumbIconStyles={{ borderRadius: 5 }}
                 // thumbIconWidth={100}
-                title="Continue with Gpay"
+                title="Continue to Checkout"
                 titleColor='#fff'
                 titleStyles={{ fontFamily: "OpenSans-Semibold" }}
 
@@ -119,9 +99,8 @@ const GpayBox = () => {
     )
 }
 
-export default GpayBox
+export default Payment
 
-const styles = StyleSheet.create({})
 
 const CheckoutButton = () => {
     return (

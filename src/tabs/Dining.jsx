@@ -10,20 +10,22 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useContext, useEffect } from 'react';
 import { fetchCartItems } from '../store/cartSlice';
-import { initialiseSocket } from '../config/socket';
 import { LocationContext } from '../context/LocationContext';
 import { getUser } from '../store/authSlice';
 import { setAddress } from '../store/addressSlice';
 import { API_KEY } from '../config/uri';
 import axios from 'axios';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
+import { useSocket } from '../context/SocketContext';
 
 
 
 
 
 const Dining = () => {
+    const socket = useSocket()
     const { location } = useContext(LocationContext)
-    const { setOrderStatus, setDeliveryBoyLocation, deliveryBoyLocation } = useContext(LocationContext)
+    const { setOrderStatus, setDeliveryBoyLocation, setRestaurantLocation } = useContext(LocationContext)
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const { token } = useSelector((state) => state?.auth)
@@ -55,8 +57,6 @@ const Dining = () => {
                 }
             } catch (error) {
                 console.log("Error: ", error?.response?.data?.message);
-
-                // Alert.alert('Error fetching the place API:', error?.message);
             }
         };
 
@@ -65,41 +65,57 @@ const Dining = () => {
         }
     }, [location?.latitude, location?.longitude, address, dispatch]);
 
-    // console.log(cart);
+
     const itemTotal = cart?.reduce((acc, item) => acc + parseFloat(item?.item_total), 0)
-    // console.log(itemTotal);
+
 
     useEffect(() => {
-        const socket = initialiseSocket(token)
-        socket.on("connect", () => {
-            console.log("user Connected");
-            socket.emit("userConnect")
-            socket.on("orderStatus", (orderStatus) => {
-                setOrderStatus(orderStatus?.status)
-                if (orderStatus?.status === 'accepted') {
-                    navigation.navigate("Tracking")
-                }
-            })
-            socket.on("deliveryBoyLocationUpdate", (data) => {
-                // console.log("Received location: ", data);
+        if (!socket) return;
 
-                setDeliveryBoyLocation(data?.location)
-                // dispatch(setDeliveryBoy(data))
-            })
-        })
-        socket.on("disconnect", (reason) => {
-            console.log("User disconnected", reason);
-        })
+        const handleConnect = () => {
+            console.log("✅ User Connected");
+            socket.emit("userConnect");
+        };
 
+        const handleOrderStatus = (orderStatus) => {
+            setOrderStatus(orderStatus?.status);
+            if (orderStatus?.status === "accepted") {
+                navigation.navigate("Tracking");
+            }
+        };
+
+        const handleDeliveryBoyLocationUpdate = (data) => {
+            console.log("📍 Delivery Boy Location Update:", data);
+            setDeliveryBoyLocation(data?.location);
+            setRestaurantLocation({
+                latitude: parseFloat(data?.restaurantLat),
+                longitude: parseFloat(data?.restaurantLon)
+            })
+        };
+
+        const handleDisconnect = (reason) => {
+            console.log("⚠️ User disconnected:", reason);
+        };
+
+
+        socket.on("connect", handleConnect);
+        socket.on("orderStatus", handleOrderStatus);
+        socket.on("deliveryBoyLocationUpdate", handleDeliveryBoyLocationUpdate);
+        socket.on("disconnect", handleDisconnect);
 
         return () => {
-            socket.off('connect');
-            socket.off('disconnect');
-        }
-    }, [token])
+            console.log("🔌 Cleaning up socket listeners...");
+            socket.off("connect", handleConnect);
+            socket.off("orderStatus", handleOrderStatus);
+            socket.off("deliveryBoyLocationUpdate", handleDeliveryBoyLocationUpdate);
+            socket.off("disconnect", handleDisconnect);
+        };
+    }, [socket]); // Add socket as a dependency
 
 
-    // console.log("delivery Location: ", deliveryBoyLocation);
+
+
+
 
 
     return (
@@ -121,7 +137,7 @@ const Dining = () => {
             <View>
                 {
                     cart?.length > 0 &&
-                    <View style={{ position: "absolute", bottom: 60, padding: 10, height: 100, width: "100%", backgroundColor: "#fff", zIndex: 10, elevation: 5 }}>
+                    <View style={{ position: "absolute", bottom: 60, padding: 10, height: heightPercentageToDP('13%'), width: "100%", backgroundColor: "#fff", zIndex: 10, elevation: 5 }}>
                         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", }}>
                             <Image source={require("../assets/images/karims.png")} style={{ height: 40, width: 40, borderRadius: 20 }} />
                             <View>

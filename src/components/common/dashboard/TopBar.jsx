@@ -1,5 +1,5 @@
-import { Alert, Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useContext, useEffect } from 'react'
+import { Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect } from 'react'
 import Entypo from 'react-native-vector-icons/Entypo'
 import SearchInput from '../../SearchInput'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -21,7 +21,7 @@ const TopBar = () => {
 
     useEffect(() => {
         dispatch(fetchSavedAddresses({ token }))
-    }, [])
+    }, [dispatch])
 
 
 
@@ -53,10 +53,11 @@ const TopBar = () => {
                         {/* <Ionicons name='location' size={24} color={"#FA4A0C"} /> */}
 
                         {
-                            savedUserAddresses?.length > 0 ? <TouchableOpacity onPress={() => navigation.navigate("AddAddress")}>
-                                <View>
+                            savedUserAddresses?.length > 0 ?
+                                <TouchableOpacity style={{ width: "90%" }} onPress={() => navigation.navigate("AddAddress")}>
+
                                     <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                                        <View>
+                                        <View >
                                             <Image style={{ height: 25, width: 25 }} source={{ uri: "https://cdn-icons-png.flaticon.com/512/11202/11202939.png" }} />
                                         </View>
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -64,11 +65,16 @@ const TopBar = () => {
                                             <Entypo name='chevron-small-down' size={16} color={"#fff"} />
                                         </View>
                                     </View>
-                                    <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#fff", marginTop: 5 }}>{`${selectedAddress?.house_no}, ${selectedAddress?.area}, ${selectedAddress?.state}`}</Text>
-                                </View>
+                                    <View>
+                                        <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#fff", marginTop: 5, maxWidth: "100%" }}>{`${selectedAddress?.house_no}, ${selectedAddress?.area}, ${selectedAddress?.state ? selectedAddress?.state : ""}`}</Text>
+                                    </View>
 
-                            </TouchableOpacity> : <TouchableOpacity onPress={() => navigation.navigate("AddAddress")}>
-                                <View>
+                                </TouchableOpacity>
+
+                                :
+
+                                <TouchableOpacity onPress={() => navigation.navigate("AddAddress")}>
+
                                     <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                                         <View>
                                             <Image style={{ height: 25, width: 25 }} source={{ uri: "https://cdn-icons-png.flaticon.com/512/11202/11202939.png" }} />
@@ -79,11 +85,10 @@ const TopBar = () => {
                                         </View>
                                     </View>
                                     <View>
-                                        <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#fff", marginTop: 5, maxWidth: "90%" }}>{address?.split(",")?.slice(0, 5).join(",")}</Text>
+                                        <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#fff", marginTop: 5, maxWidth: "100%" }}>{address?.split(",")?.slice(0, 3).join(",")}</Text>
                                     </View>
-                                </View>
 
-                            </TouchableOpacity>
+                                </TouchableOpacity>
                         }
                     </View>
                     <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
@@ -97,7 +102,7 @@ const TopBar = () => {
                     <SearchInput handleFocus={handleFocus} placeholder={"Search for Biryani"} />
                 </View>
             </View>
-            <View style={{ padding: 15, marginTop: 10, display: "flex", gap: 5, flexDirection: "row", alignItems: "center" }}>
+            <View style={{ padding: 15, display: "flex", gap: 5, flexDirection: "row", alignItems: "center" }}>
                 <Text style={{ color: "#000", textTransform: "uppercase", fontFamily: "OpenSans-Regular", fontSize: 12 }}>{user?.username}, What&apos;s on your mind?</Text>
                 <View style={{ borderColor: "#ccc", borderWidth: 0.2, flex: 1 }}></View>
             </View>
@@ -120,19 +125,21 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginHorizontal: 10
+        // paddingRight: 10
+
     },
     topBarHeadingLeft: {
         display: "flex",
         flexDirection: "row",
     },
     profileAvatar: {
-        height: hp(7),
-        width: hp(7),
+        height: hp(6),
+        width: hp(6),
         borderRadius: wp(10),
         borderColor: "#fff",
         borderWidth: 1,
-        resizeMode: "cover"
+        resizeMode: "cover",
+
     },
     contentWrapper: {
         marginTop: hp(3),

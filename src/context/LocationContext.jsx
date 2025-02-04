@@ -1,14 +1,14 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { Alert, PermissionsAndroid } from "react-native";
-import Geolocation from "../config/locationConfig";
+import GetLocation from 'react-native-get-location'
 
 export const LocationContext = createContext();
 
 const LocationContextProvider = ({ children }) => {
     const mapRef = useRef(null)
     const [location, setLocation] = useState({
-        longitude: null,
-        latitude: null
+        longitude: 0,
+        latitude: 0
     })
 
     useEffect(() => {
@@ -42,28 +42,35 @@ const LocationContextProvider = ({ children }) => {
         const hasPermission = await requestLocationPermission();
         if (!hasPermission) return;
 
-        Geolocation.getCurrentPosition(
-            (position) => {
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 60000,
+        })
+            .then(location => {
                 setLocation({
-                    longitude: position.coords.longitude,
-                    latitude: position.coords.latitude
+                    longitude: location?.longitude,
+                    latitude: location?.latitude
                 })
-            },
-            (error) => {
-                console.error("Error getting location:", error);
-            },
-            {
-                enableHighAccuracy: true,
-            }
-        );
+            })
+            .catch(error => {
+                const { code, message } = error;
+                console.warn(code, message);
+            })
     };
 
     const [orderStatus, setOrderStatus] = useState("confirmed")
     const [deliveryBoyLocation, setDeliveryBoyLocation] = useState(null)
+    const [restaurantLocation, setRestaurantLocation] = useState({
+        latitude: 0,
+        longitude: 0
+    })
     const [isMyLocation, setIsMyLocation] = useState(false)
 
+
+
+
     return (
-        <LocationContext.Provider value={{ isMyLocation, setIsMyLocation, location, setLocation, mapRef, orderStatus, setOrderStatus, deliveryBoyLocation, setDeliveryBoyLocation, }}>{children}</LocationContext.Provider>
+        <LocationContext.Provider value={{ isMyLocation, setIsMyLocation, location, setLocation, mapRef, orderStatus, setOrderStatus, deliveryBoyLocation, setDeliveryBoyLocation, restaurantLocation, setRestaurantLocation }}>{children}</LocationContext.Provider>
     )
 }
 

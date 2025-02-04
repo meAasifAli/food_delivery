@@ -18,8 +18,6 @@ const Billing = () => {
         handleGetBill(tipAmt)
     }, [tipAmt])
 
-    // console.log("Bill data: ", billData);
-
 
     return loading ? <ActivityIndicator color={"#fff"} size={"large"} /> : (
         <View style={{ marginBottom: 10 }}>

@@ -9,7 +9,7 @@ import CartItems from '../../components/common/cart/CartItems';
 import SimilarItems from '../../components/common/cart/SimilarItems';
 import Offers from '../../components/common/cart/Offers';
 import Billing from '../../components/common/cart/Billing';
-import GpayBox from '../../components/common/cart/GpayBox';
+import Payment from '../../components/common/cart/Payment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text } from 'react-native';
 
@@ -65,7 +65,7 @@ const CartScreen = ({ navigation }) => {
                                     <Typography title={"Note: A complete refund will be provided if you cancel your order within 60 seconds of placing it. After sixty seconds, there will be no refunds for cancellations"} ff={"OpenSans-Regular"} color={"#000"} size={16} lh={21} fw={400} />
                                 </View>
                                 {/* Gpay Box */}
-                                <GpayBox />
+                                <Payment />
                             </View>
                         </ScrollView>
                 }

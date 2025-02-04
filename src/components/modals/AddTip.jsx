@@ -1,5 +1,4 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
 import Modal from 'react-native-modal'
 
 const AddTip = ({ isOpen, setIsOpen, tipAmt, setTipAmt }) => {
@@ -11,7 +10,7 @@ const AddTip = ({ isOpen, setIsOpen, tipAmt, setTipAmt }) => {
         <Modal
             isVisible={isOpen}
             onBackdropPress={() => setIsOpen(false)}
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }} // Center modal on screen
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
             animationIn="fadeInUp"
             animationInTiming={1000}
             animationOut={"fadeOutDown"}

@@ -1,14 +1,12 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import Modal from 'react-native-modal'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { Text } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+
 
 
 const PaymentSuccess = ({ isOpen, setIsOpen }) => {
-
-    const navigation = useNavigation()
     return (
         <Modal
             isVisible={isOpen}
@@ -29,9 +27,7 @@ const PaymentSuccess = ({ isOpen, setIsOpen }) => {
             }}>
                 <AntDesign name='checkcircle' size={100} color={"green"} />
                 <Text style={{ textAlign: "center", fontSize: 16, fontFamily: "OpenSans-Bold", color: "#000", marginTop: 10 }}>Payment Successful</Text>
-                <TouchableOpacity onPress={() => navigation.navigate("Tracking")} style={{ height: 50, backgroundColor: "#FA4A0C", justifyContent: "center", alignItems: "center", paddingHorizontal: 10, marginTop: 20, borderRadius: 15 }}>
-                    <Text style={{ textAlign: "center", fontSize: 14, fontFamily: "OpenSans-Medium", color: "#fff" }}>Track Your order</Text>
-                </TouchableOpacity>
+
             </View>
         </Modal>
     )
