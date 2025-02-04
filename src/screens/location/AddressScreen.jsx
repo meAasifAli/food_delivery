@@ -4,21 +4,15 @@ import Header from '../../components/common/address/Header';
 import Map from '../../components/common/address/Map';
 import Bottom from '../../components/common/address/Bottom';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, } from 'react-redux';
 import { setAddress } from '../../store/addressSlice';
 import { LocationContext } from '../../context/LocationContext';
 import { API_KEY } from '../../config/uri';
 
 
 const Address = () => {
-
-
     const { isMyLocation } = useContext(LocationContext)
-
-
     const { setLocation, location } = useContext(LocationContext)
-
-
     const dispatch = useDispatch()
     const [openModal, setOpenModal] = useState(false)
 
@@ -28,10 +22,6 @@ const Address = () => {
             latitude, longitude
         })
     }
-
-
-
-
     useEffect(() => {
         const fetchLocationName = async () => {
             try {

@@ -5,29 +5,29 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RestaurantCard from '../../shared/RestaurantCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../../../store/restaurantSlice';
 import { List } from 'react-content-loader/native'
+import { LocationContext } from '../../../context/LocationContext';
 
 
 const { height, width } = Dimensions.get('window');
 
 const PopularBrands = ({ navigation }) => {
   const dispatch = useDispatch()
-  const { token } = useSelector(state => state.auth);
-
+  const { location } = useContext(LocationContext)
 
   const { loading, error, popular } = useSelector(state => state?.restaurant)
 
-
-
   useEffect(() => {
-    dispatch(fetchRestaurants({ type: "popular" }))
-  }, [token])
+    if (location) {
+      dispatch(fetchRestaurants({ type: "popular", location }))
+    }
+  }, [dispatch, location])
 
 
 

@@ -2,25 +2,27 @@ import { ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View } from 
 import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RestaurantCard from '../../shared/RestaurantCard';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import ContentLoader, { Rect, Circle, List } from 'react-content-loader/native'
 
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../../../store/restaurantSlice';
+import { LocationContext } from '../../../context/LocationContext';
 
 const Nearest = ({ navigation }) => {
+  const { location } = useContext(LocationContext)
   const dispatch = useDispatch()
-
-  const { token } = useSelector(state => state?.auth)
   const { nearest, loading } = useSelector(state => state?.restaurant)
 
   // console.log('nearest: ', nearest);
 
 
   useEffect(() => {
-    dispatch(fetchRestaurants({ type: "nearest" }))
-  }, [token])
+    if (location) {
+      dispatch(fetchRestaurants({ type: "nearest", location }))
+    }
+  }, [location, dispatch])
 
   // console.log("Nearest  restaurants", nearest)
 

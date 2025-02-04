@@ -8,10 +8,9 @@ import Payments from "../screens/profile/Payments";
 import Refunds from "../screens/profile/Refunds";
 import AddAddress from "../screens/location/AddAddress";
 import Address from "../screens/location/AddressScreen";
-import PaymentOptions from "../screens/payments/PaymentOptions";
+
 import AddCard from "../screens/payments/AddCard";
 import AddUpi from "../screens/payments/AddUpi";
-import NetBanking from "../screens/payments/NetBanking";
 import Tracking from "../screens/order/Tracking";
 import SearchedRestaurants from "../screens/dashboard/SearchedRestaurants";
 import SearchAddresses from "../screens/location/SearchAddresses";
@@ -113,7 +112,6 @@ const AuthenticatedUserStack = () => (
     />
     <Stack.Screen
       name="AddressScreen"
-
       component={Address}
       options={{
         headerShown: false,
@@ -132,11 +130,6 @@ const AuthenticatedUserStack = () => (
       }}
     />
     <Stack.Screen
-      name="PaymentOptions"
-      component={PaymentOptions}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
       name="AddCard"
       component={AddCard}
       options={{ headerShown: false }}
@@ -144,11 +137,6 @@ const AuthenticatedUserStack = () => (
     <Stack.Screen
       name="AddUpi"
       component={AddUpi}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="NetBanking"
-      component={NetBanking}
       options={{ headerShown: false }}
     />
     <Stack.Screen

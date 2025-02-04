@@ -1,5 +1,5 @@
-export const BASE_URI = "https://c447-122-161-243-203.ngrok-free.app";
-export const API_KEY = "AIzaSyCfdv9Fo_Mxst5ASKrWXGh74YTskTlsHZ4"
+export const BASE_URI = "https://7c22-122-161-242-218.ngrok-free.app";
+export const API_KEY = "AIzaSyCJMzd_v5eIHoxWttFPxhue0Fj6xebZkzw"
 
 
 //'http://192.168.100.31:5050'

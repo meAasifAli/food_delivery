@@ -13,15 +13,15 @@ const useDeleteAddress = () => {
     const handleDeleteAddress = async (addressId) => {
         try {
             setLoading(true)
-            const res = await axios.delete(`${BASE_URI}/api/user/deleteAddress/${addressId}`, {
+            await axios.delete(`${BASE_URI}/api/user/deleteAddress/${addressId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
-            if (res?.data && token) {
-                Alert.alert("Address Deleted Successfully")
-                dispatch(fetchSavedAddresses({ token }))
-            }
+
+            Alert.alert("Address Deleted Successfully")
+            dispatch(fetchSavedAddresses({ token }))
+
         } catch (error) {
             setLoading(false)
             Alert.alert("Error in Deleting the Address: ", error?.response?.data?.message)

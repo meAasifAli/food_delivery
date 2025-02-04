@@ -5,23 +5,27 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RestaurantCard from '../../shared/RestaurantCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../../../store/restaurantSlice';
-import ContentLoader, { Rect, Circle, List } from 'react-content-loader/native'
+import { LocationContext } from '../../../context/LocationContext';
+import { List } from 'react-content-loader';
+
 
 
 const TopRated = ({ navigation }) => {
   const dispatch = useDispatch()
-  const { token } = useSelector((state) => state?.auth)
+  const { location } = useContext(LocationContext)
   const { topRated, loading } = useSelector(state => state?.restaurant)
 
   useEffect(() => {
-    dispatch(fetchRestaurants({ type: "topRated" }))
-  }, [])
+    if (location) {
+      dispatch(fetchRestaurants({ type: "topRated", location }))
+    }
+  }, [dispatch, location])
 
 
 
@@ -63,9 +67,8 @@ const TopRated = ({ navigation }) => {
           data={topRated}
           keyExtractor={item => item?.restaurant_id}
           renderItem={({ item }) => (
-            loading ?
-              <List color={"#ccc"} /> :
-              <RestaurantCard item={item} navigation={navigation} />
+
+            <RestaurantCard item={item} navigation={navigation} />
           )}
         />
 
