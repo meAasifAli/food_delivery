@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -8,8 +8,8 @@ import { fetchCartItems, } from '../../../store/cartSlice'
 import axios from 'axios';
 import { BASE_URI } from '../../../config/uri';
 import Entypo from 'react-native-vector-icons/Entypo'
-import ItemCustomizationModal from '../../modals/ItemCustomizationModal';
-import SetUserCustomization from '../../modals/SetUserCustomization';
+import ItemCustomizationModal from '../../../modals/ItemCustomizationModal';
+import SetUserCustomization from '../../../modals/SetUserCustomization';
 
 
 
@@ -17,13 +17,14 @@ const CartItems = () => {
     const [isOpenCustomization, setIsOpenCustomization] = useState(false)
     const [isOpen, setIsOpen] = useState(null)
     const dispatch = useDispatch()
+    const [refreshing, setRefreshing] = useState(false)
     const { cart, loading } = useSelector((state) => state?.cart)
     const { token } = useSelector((state) => state?.auth)
     const [incrementLoader, setIncrementLoader] = useState(false)
     const [decrementLoader, setDecrementLoader] = useState({});
 
 
-    // console.log(cart);
+
 
 
 
@@ -98,53 +99,61 @@ const CartItems = () => {
     }
 
 
+    const handleRefresh = () => {
+        setRefreshing(true)
+        dispatch(fetchCartItems({ token }))
+        setRefreshing(false)
+    }
+
     return (
         <View style={styles.ItemContainer}>
-            {
-                cart && cart?.map((item, id) => (
-                    <View key={id} style={styles.ItemWrapper}>
-                        <View style={styles.ItemLeftWrapper}>
-                            <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
-                                <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
-                            </View>
-                            <View>
-                                <Typography title={item?.item_name} ff={"OpenSans-Regular"} size={12} lh={16} fw={300} color={"#000000"} />
-                                {
-                                    Object.keys(item?.customizations)?.length > 0 && <TouchableOpacity onPress={() => toggleModal(item?.cart_item_id)} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                                        <Text style={{ fontSize: 13, fontFamily: "OpenSans-Regular", color: "#ccc" }}>customize</Text>
-                                        <Entypo name='chevron-down' size={16} color={"#ccc"} />
-                                    </TouchableOpacity>
-                                }
-                                <ItemCustomizationModal isOpen={isOpen === item?.cart_item_id} setIsOpen={() => toggleModal(item?.item_id)} item={item} />
-                            </View>
-                        </View>
-                        <View style={styles.ItemRightWrapper}>
-                            <View style={styles.ItemRightLeftWrapper}>
-                                <TouchableOpacity onPress={() => handleIncrement(item?.cart_item_id, item?.quantity, item?.customizations)}>
-                                    <Text style={styles.actionTextPlus}>{
-                                        incrementLoader[item?.cart_item_id] ? <ActivityIndicator size={15} color={"#FA4A0C"} /> : '+'
-                                    }</Text>
-                                </TouchableOpacity>
-                                <SetUserCustomization setIsCustomization={() => toggleModal(item?.cart_item_id)} cartItemId={item?.cart_item_id} quantity={item?.quantity} title={item?.item_name} price={item?.item_price} isOpen={isOpenCustomization === item?.cart_item_id} setIsOpen={setIsOpenCustomization} />
-                                <View>
-                                    <Typography title={item?.quantity} ff={"OpenSans-Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
+            <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />} showsVerticalScrollIndicator={false}>
+                {
+                    cart && cart?.map((item, id) => (
+                        <View key={id} style={styles.ItemWrapper}>
+                            <View style={styles.ItemLeftWrapper}>
+                                <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
+                                    <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
                                 </View>
-                                <TouchableOpacity onPress={() => handleDecrement(item?.cart_item_id, item?.quantity)}>
-
-                                    <Text style={styles.actionTextMinus}>{
-                                        decrementLoader[item?.cart_item_id] ? <ActivityIndicator size={15} color={"#FA4A0C"} /> : '-'
-                                    }</Text>
-
-                                </TouchableOpacity>
+                                <View>
+                                    <Typography title={item?.item_name} ff={"OpenSans-Regular"} size={12} lh={16} fw={300} color={"#000000"} />
+                                    {
+                                        Object.keys(item?.customizations)?.length > 0 && <TouchableOpacity onPress={() => toggleModal(item?.cart_item_id)} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                                            <Text style={{ fontSize: 13, fontFamily: "OpenSans-Regular", color: "#ccc" }}>customize</Text>
+                                            <Entypo name='chevron-down' size={16} color={"#ccc"} />
+                                        </TouchableOpacity>
+                                    }
+                                    <ItemCustomizationModal isOpen={isOpen === item?.cart_item_id} setIsOpen={() => toggleModal(item?.item_id)} item={item} />
+                                </View>
                             </View>
-                            <View>
-                                <Typography title={`Rs: ${item?.item_total}`} ff={"OpenSans-Regular"} size={12} lh={16} fw={400} color={"#202020"} />
-                            </View>
+                            <View style={styles.ItemRightWrapper}>
+                                <View style={styles.ItemRightLeftWrapper}>
+                                    <TouchableOpacity onPress={() => handleIncrement(item?.cart_item_id, item?.quantity, item?.customizations)}>
+                                        <Text style={styles.actionTextPlus}>{
+                                            incrementLoader[item?.cart_item_id] ? <ActivityIndicator size={15} color={"#FA4A0C"} /> : '+'
+                                        }</Text>
+                                    </TouchableOpacity>
+                                    <SetUserCustomization setIsCustomization={() => toggleModal(item?.cart_item_id)} cartItemId={item?.cart_item_id} quantity={item?.quantity} title={item?.item_name} price={item?.item_price} isOpen={isOpenCustomization === item?.cart_item_id} setIsOpen={setIsOpenCustomization} />
+                                    <View>
+                                        <Typography title={item?.quantity} ff={"OpenSans-Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
+                                    </View>
+                                    <TouchableOpacity onPress={() => handleDecrement(item?.cart_item_id, item?.quantity)}>
 
+                                        <Text style={styles.actionTextMinus}>{
+                                            decrementLoader[item?.cart_item_id] ? <ActivityIndicator size={15} color={"#FA4A0C"} /> : '-'
+                                        }</Text>
+
+                                    </TouchableOpacity>
+                                </View>
+                                <View>
+                                    <Typography title={`Rs: ${item?.item_total}`} ff={"OpenSans-Regular"} size={12} lh={16} fw={400} color={"#202020"} />
+                                </View>
+
+                            </View>
                         </View>
-                    </View>
-                ))
-            }
+                    ))
+                }
+            </ScrollView>
         </View>
     )
 }

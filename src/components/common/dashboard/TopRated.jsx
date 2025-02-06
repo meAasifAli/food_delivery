@@ -12,7 +12,8 @@ import RestaurantCard from '../../shared/RestaurantCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../../../store/restaurantSlice';
 import { LocationContext } from '../../../context/LocationContext';
-import { List } from 'react-content-loader';
+import { List } from 'react-content-loader/native'
+import { Text } from 'react-native';
 
 
 
@@ -20,12 +21,14 @@ const TopRated = ({ navigation }) => {
   const dispatch = useDispatch()
   const { location } = useContext(LocationContext)
   const { topRated, loading } = useSelector(state => state?.restaurant)
+  const { savedUserAddresses } = useSelector(state => state?.address)
+  const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
 
   useEffect(() => {
     if (location) {
-      dispatch(fetchRestaurants({ type: "topRated", location }))
+      dispatch(fetchRestaurants({ type: "topRated", latitude: selectedAddress ? parseFloat(selectedAddress?.lat) : location?.latitude, longitude: selectedAddress ? parseFloat(selectedAddress?.lon) : location?.longitude }))
     }
-  }, [dispatch, location])
+  }, [dispatch, location, selectedAddress])
 
 
 
@@ -34,29 +37,14 @@ const TopRated = ({ navigation }) => {
       <View style={styles.headingContainer}>
         {/* right */}
         <View>
-          <Typography
-            title={'Top Rated'}
-            color={'#000000'}
-            ff={'OpenSans_regular'}
-            size={20}
-            lh={27}
-            ls={0.05}
-            fw={600}
-          />
+          <Text style={{ color: "#000", fontSize: 20, lineHeight: 27, fontWeight: "600", fontFamily: "OpenSans-SemiBold", letterSpacing: 0.05 }}>Top Rated</Text>
+
         </View>
         {/* left */}
         <TouchableOpacity
           onPress={() => navigation.navigate('TopRated')}
           style={styles.headingLeftWrapper}>
-          <Typography
-            title={'View All'}
-            color={'#000000'}
-            ff={'OpenSans_regular'}
-            size={16}
-            lh={21}
-            ls={0.05}
-            fw={300}
-          />
+          <Text style={{ color: "#000", fontSize: 16, lineHeight: 21, fontWeight: "300", fontFamily: "OpenSans-Regular", letterSpacing: 0.05 }}>View All</Text>
           <Entypo name="chevron-small-down" size={16} color={'#000'} />
         </TouchableOpacity>
       </View>
@@ -67,8 +55,8 @@ const TopRated = ({ navigation }) => {
           data={topRated}
           keyExtractor={item => item?.restaurant_id}
           renderItem={({ item }) => (
-
-            <RestaurantCard item={item} navigation={navigation} />
+            loading ? <List height={300} /> :
+              <RestaurantCard item={item} navigation={navigation} />
           )}
         />
 

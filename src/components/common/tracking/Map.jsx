@@ -9,9 +9,8 @@ import polyline from '@mapbox/polyline';
 import { useSocket } from '../../../context/SocketContext';
 
 const Map = () => {
-    const socket = useSocket()
     const mapRef = useRef(null);
-    const { location, orderStatus, setDeliveryBoyLocation, deliveryBoyLocation, restaurantLocation } = useContext(LocationContext);
+    const { location, orderStatus, deliveryBoyLocation, restaurantLocation } = useContext(LocationContext);
     const [routeCoordinates, setRouteCoordinates] = useState([]);
     const [routeCalculated, setRouteCalculated] = useState(false);
 
@@ -53,38 +52,10 @@ const Map = () => {
 
     useEffect(() => {
         fetchRoute();
-    }, [fetchRoute]); // Only fetch route when dependencies change
-
-    useEffect(() => {
+    }, [fetchRoute]);
 
 
-        socket.on("connect", () => {
-            console.log("User Connected to Socket");
-            socket.emit("userConnect");
 
-            socket.on("deliveryBoyLocationUpdate", (data) => {
-                // console.log("Updated Delivery Boy Location: ", data);
-                const loc = data?.location;
-                if (loc) {
-                    setDeliveryBoyLocation(loc);
-                    if (mapRef.current) {
-                        mapRef.current.animateCamera(
-                            { center: { latitude: loc.lat, longitude: loc.lng }, zoom: 15 },
-                            { duration: 1000 }
-                        );
-                    }
-                }
-            });
-        });
-
-        socket.on("connect_error", (error) => console.error("Socket connection error:", error));
-
-        return () => {
-            socket.off("connect");
-            socket.off("deliveryBoyLocationUpdate");
-            socket.disconnect();
-        };
-    }, []);
 
     return (
         <View>

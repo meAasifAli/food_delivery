@@ -1,19 +1,22 @@
-import { Alert, } from 'react-native'
+
 import { useState } from 'react'
 import axios from 'axios'
 import { BASE_URI } from '../config/uri'
 import { useSelector } from 'react-redux'
 
+
 const usefetchRestaurantBySearch = () => {
+    // const {location} = useContext(LocationContext)
     const [loading, setLoading] = useState(false)
     const { token } = useSelector((state) => state?.auth)
     const [searchRestaurants, setSearchRestaurants] = useState([])
 
-    const handleFetchSearchRestaurants = async ({ query }) => {
+
+    const handleFetchSearchRestaurants = async ({ query, latitude, longitude }) => {
         try {
             setLoading(true)
 
-            const res = await axios.get(`${BASE_URI}/api/restaurant/category?latitude=34.074744&longitude=74.82044&search=${query}`, {
+            const res = await axios.get(`${BASE_URI}/api/restaurant/category?latitude=${latitude}&longitude=${longitude}&search=${query}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

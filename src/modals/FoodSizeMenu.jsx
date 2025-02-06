@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import Modal from 'react-native-modal'
-import Typography from '../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import RadioButton from 'react-native-radio-button'
 import { useNavigation } from '@react-navigation/native'
@@ -8,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { BASE_URI } from '../../config/uri'
+import { BASE_URI } from '../config/uri'
 import CheckBox from '@react-native-community/checkbox'
-import { fetchCartItems } from '../../store/cartSlice'
+import { fetchCartItems } from '../store/cartSlice'
 
 
 
@@ -220,19 +219,16 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
                     <View style={{ borderStyle: "dashed", borderColor: "#fff", borderWidth: 0.50, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0, paddingTop: hp(2) }}></View>
                     {
                         Object.entries(customizations || {})?.map(([key, customization]) => {
-                            // console.log(key);
-                            // console.log(customization);
                             return (
                                 <View key={key}>
                                     <View style={{ display: "flex", flexDirection: "column", gap: 5, justifyContent: "flex-start", paddingTop: hp(2) }}>
-                                        <Typography title={key} color={"#fff"} ff={"OpenSans-Regular"} fw={600} lh={23} ls={0.05} size={16} />
-                                        <Typography title={customization?.selection_type === "one" ? "Select any One" : "Select more than one"} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
+                                        <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16, fontWeight: "600", lineHeight: 23, letterSpacing: 0.05 }}>{key}</Text>
+                                        <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16, fontWeight: "300", lineHeight: 23, letterSpacing: 0.05 }}>{customization?.selection_type === "one" ? "Select any One" : "Select more than one"}</Text>
                                     </View>
                                     <View style={styles.extraContainer}>
                                         {
                                             customization?.options?.map((data, id) => {
                                                 // console.log("data: ", data);
-
                                                 return (
                                                     <View key={id} style={styles.sizeItem}>
                                                         {
@@ -241,7 +237,7 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
                                                                     <View style={styles.sizeItemLeftWrapper}>
                                                                         <Image
                                                                             style={{ resizeMode: "contain", height: 10, width: 10 }}
-                                                                            source={require("../../assets/images/arrow_up_box.png")}
+                                                                            source={require("../assets/images/arrow_up_box.png")}
                                                                         />
                                                                         <Text style={{
                                                                             color: "#fff",
@@ -271,17 +267,15 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
                                                                         <View style={styles.sizeItemLeftWrapper}>
                                                                             <Image
                                                                                 style={{ resizeMode: "contain", height: 10, width: 10 }}
-                                                                                source={require("../../assets/images/arrow_up_box.png")}
+                                                                                source={require("../assets/images/arrow_up_box.png")}
                                                                             />
-                                                                            <Typography
-                                                                                title={data?.option_name}
-                                                                                color={"#fff"}
-                                                                                ff={"OpenSans-Regular"}
-                                                                                fw={300}
-                                                                                lh={23}
-                                                                                ls={0.05}
-                                                                                size={16}
-                                                                            />
+                                                                            <Text style={{
+                                                                                color: "#fff",
+                                                                                fontFamily: "OpenSans-Regular",
+                                                                                fontSize: 16,
+                                                                                lineHeight: 23,
+
+                                                                            }}>{data?.option_name}</Text>
                                                                         </View>
                                                                         <View>
                                                                             <CheckBox
@@ -310,7 +304,7 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
                                 <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>+</Text>
                             </TouchableOpacity>
                             <View >
-                                <Typography title={itemQuantity} color={'#FA4A0C'} ff={'OpenSans_regular'} fw={800} lh={60} ls={0.05} size={30} />
+                                <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium", lineHeight: 60, letterSpacing: 0.05, }}>{itemQuantity}</Text>
                             </View>
                             <TouchableOpacity onPress={handleDecrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
                                 <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>-</Text>
@@ -343,7 +337,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#000',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        height: hp(72),
         width: "100%",
         padding: wp(4)
     },
@@ -415,7 +408,7 @@ const Header = ({ setIsCustomizable, item }) => {
     return (
         <View style={styles.modal2HeadingWrapper}>
             <View>
-                <Typography title={item?.name} color={"#fff"} ff={"OpenSans-Regular"} fw={300} lh={23} ls={0.05} size={16} />
+                <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontWeight: "300", lineHeight: 23, letterSpacing: 0.05, fontSize: 16 }}>{item?.name}</Text>
             </View>
             <TouchableOpacity onPress={() => setIsCustomizable(prev => !prev)}>
                 <Entypo name='circle-with-cross' size={20} color={"#fff"} />

@@ -25,18 +25,9 @@ const EditProfile = () => {
         profile: user?.profile
     });
 
-
-
-
     useEffect(() => {
         dispatch(getUser({ token }))
     }, [])
-
-
-
-
-
-
 
     const pickImage = async () => {
         try {

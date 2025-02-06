@@ -1,20 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import usefetchRestaurantBySearch from '../../hooks/useFetchRestaurantBySearch';
+import { useSelector } from 'react-redux';
+import { LocationContext } from '../../context/LocationContext';
 
 const SearchedRestaurants = ({ route }) => {
     const navigation = useNavigation()
     const { query } = route.params;
     const [searchVal, setSearchVal] = useState(query)
+    const { savedUserAddresses } = useSelector(state => state?.address)
+    const { location } = useContext(LocationContext)
+    const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
     const { loading, handleFetchSearchRestaurants, searchRestaurants } = usefetchRestaurantBySearch()
     // console.log(query);
     useEffect(() => {
         setSearchVal(query)
     }, [])
     useEffect(() => {
-        handleFetchSearchRestaurants({ query: searchVal })
+        handleFetchSearchRestaurants({ query: searchVal, longitude: selectedAddress ? selectedAddress?.lon : location?.longitude, latitude: selectedAddress ? selectedAddress?.lat : location?.latitude })
     }, [])
     // console.log(searchVal);
 
@@ -89,7 +94,7 @@ const SearchedRestaurants = ({ route }) => {
                                     key={id}
                                     style={styles.restaurantCard}>
                                     <Image
-                                        source={require("../../assets/images/burger.png")}
+                                        source={{ uri: item?.profile }}
                                         style={styles.restaurantImage}
                                     />
                                     <View>

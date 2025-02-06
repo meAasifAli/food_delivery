@@ -1,32 +1,11 @@
-import { Alert, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Image, ScrollView, StyleSheet, TouchableOpacity, } from 'react-native'
 import Typography from '../../Typography'
-import axios from 'axios'
-import { BASE_URI } from '../../../config/uri'
-import { useSelector } from 'react-redux'
-
-const Categories = ({ navigation }) => {
-    const { token } = useSelector((state) => state?.auth)
-    const [categories, setcategories] = useState([])
-    useEffect(() => {
-        const fetchMainCategories = async () => {
-            try {
-                const res = await axios.get(`${BASE_URI}/api/category/getMainCategories`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                if (res?.data) {
-                    setcategories(res?.data?.data)
-                }
-            } catch (error) {
-                // Alert.alert("Error in Getting the categories: ", error?.response?.data?.message)
-            }
-        }
-        fetchMainCategories()
-    }, [])
+import { Dimensions } from 'react-native'
+import { Circle } from 'react-content-loader/native'
 
 
+const { height, width } = Dimensions.get("window")
+const Categories = ({ navigation, categories, loading }) => {
     return (
         <ScrollView
             style={styles.scrollContainer}
@@ -66,7 +45,7 @@ export default Categories
 
 const styles = StyleSheet.create({
     scrollContainer: {
-
+        marginTop: 20,
         marginHorizontal: 10
     },
     categoryWrapper: {
@@ -76,8 +55,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     categoryImg: {
-        height: 60,
-        width: 117,
+        height: height * (92 / height),
+        width: (117 / width) * width,
         objectFit: "contain",
 
     }

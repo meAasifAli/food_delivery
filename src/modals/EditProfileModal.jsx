@@ -5,9 +5,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { OtpInput } from 'react-native-otp-entry'
 import { widthPercentageToDP as wp, } from 'react-native-responsive-screen';
-import { BASE_URI } from '../../config/uri'
+import { BASE_URI } from '../config/uri'
 import { useDispatch, useSelector } from 'react-redux'
-import { setToken } from '../../store/authSlice'
+import { setToken } from '../store/authSlice'
 
 const EditProfileModal = ({ isOpen, setIsOpen, phone }) => {
     const dispatch = useDispatch()

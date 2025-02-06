@@ -1,5 +1,5 @@
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, Alert, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
 import Typography from '../../components/Typography';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import SearchMenu from '../../components/SearchMenu';
@@ -14,6 +14,7 @@ import Menus from '../../components/common/restaurant/Menus';
 import MenuItem from '../../components/common/restaurant/MenuItem';
 import { Keyboard } from 'react-native';
 import { Text } from 'react-native';
+import { LocationContext } from '../../context/LocationContext';
 
 
 
@@ -23,10 +24,16 @@ const Restaurant = ({ route, navigation }) => {
     const dispatch = useDispatch()
     const { token } = useSelector((state) => state?.auth)
     const { restaurant } = useSelector((state) => state?.restaurant)
-    const [selectedMenu, setSelectedMenu] = useState("Veg")
+    const [selectedMenu, setSelectedMenu] = useState("veg")
     const { restaurantId } = route.params;
     const [size, setSize] = useState("small")
     const [expandedCategory, setExpandedCategory] = useState(null);
+    const [refreshing, setRefreshing] = useState(false)
+    const { location } = useContext(LocationContext)
+
+    const { savedUserAddresses } = useSelector(state => state?.address)
+
+    const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
 
     useEffect(() => {
         if (restaurant?.menu) {
@@ -35,19 +42,19 @@ const Restaurant = ({ route, navigation }) => {
         }
     }, [restaurant?.menu]);
 
-    // Function to toggle expansion
     const toggleCategory = (category) => {
         setExpandedCategory((prev) => (prev === category ? null : category));
     };
 
-    // console.log(restaurant);
+
+
 
 
     useEffect(() => {
         const fetchRestaurant = async () => {
             try {
                 setLoading(true)
-                const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/34.074744/74.820444?type=veg&filter=rating`, {
+                const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/${selectedAddress ? selectedAddress?.lat : location?.latitude}/${selectedAddress ? selectedAddress?.lon : location?.longitude}?type=${selectedMenu}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -65,23 +72,44 @@ const Restaurant = ({ route, navigation }) => {
             }
         }
         fetchRestaurant()
-    }, [restaurantId])
+    }, [restaurantId, selectedMenu])
+
+
+
 
     const handleFocusSearch = () => {
         Keyboard.dismiss()
-        navigation.navigate("SearchMenu", { params: { restaurantName: restaurant?.restaurantName } })
+        navigation.navigate("SearchMenu", { params: { restaurantName: restaurant?.restaurantName, restaurantId: restaurantId } })
     }
 
-    // console.log(restaurant);
 
+    const handleRefresh = async () => {
+        try {
+            setRefreshing(true)
+            const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/${selectedAddress ? selectedAddress?.lat : location?.latitude}/${selectedAddress ? selectedAddress?.lon : location?.longitude}?type=${selectedMenu}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
 
+            if (res?.data) {
+                dispatch(setRestaurant(res?.data?.data))
+            }
+        } catch (error) {
+            Alert.alert("Error in fetching restaurant", error?.response?.data?.message);
+            setRefreshing(false)
+        }
+        finally {
+            setRefreshing(false)
+        }
+    }
     return loading ?
         (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                 <ActivityIndicator size="large" color="black" />
             </View>
         ) : (
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+            <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />} showsVerticalScrollIndicator={false} style={styles.container}>
                 {/* header */}
                 <Header />
                 {/* Restaurant Details */}
@@ -119,8 +147,6 @@ const Restaurant = ({ route, navigation }) => {
                                         />
                                     </View>
                                 </TouchableOpacity>
-
-                                {/* Display items only if the category is expanded */}
                                 {expandedCategory === category && (
                                     <View style={styles.categoryItems}>
                                         {Array.isArray(items) ? (

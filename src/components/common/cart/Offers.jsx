@@ -40,4 +40,3 @@ const Offers = () => {
 
 export default Offers
 
-const styles = StyleSheet.create({})

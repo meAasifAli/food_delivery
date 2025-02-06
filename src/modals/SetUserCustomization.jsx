@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { BASE_URI } from '../../config/uri'
+import { BASE_URI } from '../config/uri'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCartItems } from '../../store/cartSlice'
+import { fetchCartItems } from '../store/cartSlice'
 
 const SetUserCustomization = ({ isOpen, setIsOpen, title, price, cartItemId, quantity, setIsCustomization }) => {
-    // console.log(cartItemId);
+
 
     const dispatch = useDispatch()
 
@@ -91,8 +91,6 @@ const SetUserCustomization = ({ isOpen, setIsOpen, title, price, cartItemId, qua
         <Modal
             isVisible={isOpen}
             onBackdropPress={() => setIsOpen(prev => !prev)}
-            // swipeDirection="down"
-            // onSwipeComplete={toggleSecondDrawer}
             style={styles.modal2}
             backdropColor='transparent'
             backdropOpacity={0.50}
@@ -131,8 +129,8 @@ export default SetUserCustomization
 const styles = StyleSheet.create({
     modal2: {
         flex: 1,
-        justifyContent: 'flex-end', // Align modal at the bottom
-        margin: 0, // Removes default margin from modal
+        justifyContent: 'flex-end',
+        margin: 0,
     }
     ,
     drawer2: {

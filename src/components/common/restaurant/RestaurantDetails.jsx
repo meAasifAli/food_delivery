@@ -6,11 +6,16 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 const RestaurantDetails = ({ item }) => {
 
-
     return (
         <View style={styles.restaurantWrapper}>
             <Typography title={item?.restaurantName} color={"#fff"} size={32} lh={43} ls={0.07} fw={600} ff={"OpenSans-Regular"} />
-            <Typography title={item?.categories?.join(", ")} lines={1} color={"#fff"} size={14} lh={18} ls={0.07} fw={300} ff={"OpenSans-Regular"} />
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                {
+                    item?.categoriesRows?.map((cat, id) => (
+                        <Typography key={id} title={`${cat?.category}${id !== item?.categoriesRows?.length - 1 ? ',' : ''}`} color={"#fff"} size={14} lh={18} ls={0.07} fw={300} ff={"OpenSans-Regular"} />
+                    ))
+                }
+            </View>
             <View style={{ borderStyle: "dashed", borderColor: "#fff", borderWidth: 0.50, borderTopWidth: 0, borderLeftWidth: 0, borderRightWidth: 0, height: 0, width: wp(100), marginTop: hp(2) }}></View>
             <View style={styles.ratingWrapper}>
                 <View style={styles.ratingLeftWrapper}>

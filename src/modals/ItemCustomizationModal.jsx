@@ -2,15 +2,14 @@
 import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import Typography from '../Typography'
+
 import RadioButton from 'react-native-radio-button'
 import { useEffect, useState } from 'react'
 import CheckBox from '@react-native-community/checkbox'
 import axios from 'axios'
-import { BASE_URI } from '../../config/uri'
+import { BASE_URI } from '../config/uri'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCustomizations, getSelectedCustomizations } from '../../store/customizationSlice'
+import { getCustomizations, getSelectedCustomizations } from '../store/customizationSlice'
 
 const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
     const dispatch = useDispatch()
@@ -215,7 +214,7 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
                                                                         <View style={styles.sizeItemLeftWrapper}>
                                                                             <Image
                                                                                 style={{ resizeMode: "contain", height: 10, width: 10 }}
-                                                                                source={require("../../assets/images/arrow_up_box.png")}
+                                                                                source={require("../assets/images/arrow_up_box.png")}
                                                                             />
                                                                             <Text style={{
                                                                                 color: "#fff",
@@ -245,17 +244,10 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
                                                                             <View style={styles.sizeItemLeftWrapper}>
                                                                                 <Image
                                                                                     style={{ resizeMode: "contain", height: 10, width: 10 }}
-                                                                                    source={require("../../assets/images/arrow_up_box.png")}
+                                                                                    source={require("../assets/images/arrow_up_box.png")}
                                                                                 />
-                                                                                <Typography
-                                                                                    title={data?.option_name}
-                                                                                    color={"#fff"}
-                                                                                    ff={"OpenSans-Regular"}
-                                                                                    fw={300}
-                                                                                    lh={23}
-                                                                                    ls={0.05}
-                                                                                    size={16}
-                                                                                />
+                                                                                <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontWeight: 300, lineHeight: 21, fontSize: 16 }}>{data?.option_name}</Text>
+
                                                                             </View>
                                                                             <View>
                                                                                 <CheckBox
@@ -314,24 +306,24 @@ const styles = StyleSheet.create({
         marginHorizontal: "auto",
         borderColor: "#D6D6D680",
         borderWidth: 1,
-        borderRadius: wp(5),
-        marginTop: hp(4),
-        padding: wp(4)
+        borderRadius: 15,
+        marginTop: 10,
+        padding: 20
     },
     sizeItem: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: wp(4),
-        marginBottom: hp(2)
+        gap: 10,
+        marginBottom: 10
 
     },
     sizeItemLeftWrapper: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: wp(2)
+        gap: 5
     },
     extraContainer: {
         display: "flex",
@@ -340,26 +332,24 @@ const styles = StyleSheet.create({
         marginHorizontal: "auto",
         borderColor: "#D6D6D680",
         borderWidth: 1,
-        borderRadius: wp(3),
-        marginTop: hp(4),
-        paddingHorizontal: wp(5),
-        paddingTop: hp(2)
+        borderRadius: 15,
+        marginTop: 10,
+        paddingHorizontal: 10,
+        paddingTop: 10
     },
     actionWrapper: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        // borderTopColor: "#D6D6D6",
-        // borderTopWidth: 1,
-        marginTop: hp(5)
+        marginTop: 10
     },
     qtyWrapper: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        gap: wp(3),
+        gap: 15,
     }
 })
 

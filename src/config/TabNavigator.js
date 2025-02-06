@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Dining from "../tabs/Dining";
 import Reorder from "../tabs/Reorder";
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import { View, StyleSheet, Easing } from "react-native";
+import Cart from "../tabs/Cart";
+import { Image } from "react-native";
 
 const Tab = createBottomTabNavigator()
 
@@ -13,14 +13,16 @@ export const TabNavigator = () => {
             initialRouteName="Dining"
             screenOptions={{
                 tabBarActiveTintColor: '#FA4A0C',
-                tabBarInactiveTintColor: '#202020',
+                tabBarInactiveTintColor: '#888080',
                 headerShown: false,
                 tabBarStyle: {
-                    height: "12%",
+                    height: "10%",
                     paddingBottom: 10,
                     position: "absolute",
                     zIndex: 50,
-                    backgroundColor: "#fff"
+                    backgroundColor: "#fff",
+                    borderTopWidth: 1,
+                    borderTopColor: "#E0E0E0",
                 },
                 tabBarLabelStyle: {
                     fontFamily: 'OpenSans-Regular',
@@ -40,15 +42,11 @@ export const TabNavigator = () => {
                 options={{
                     title: 'Dining',
                     headerShown: false,
-                    tabBarIcon: ({ color, size, focused }) => (
-                        <View
-                            style={[
-                                styles.activeTab,
-                                {
-                                    backgroundColor: focused ? '#E8DEF8' : '#fff',
-                                },
-                            ]}>
-                            <MaterialIcon name="local-dining" size={size} color={color} />
+                    tabBarIcon: ({ focused }) => (
+                        <View>
+                            {
+                                focused ? <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require("../assets/images/dining_on.png")} /> : <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require("../assets/images/dining_off.png")} />
+                            }
                         </View>
                     ),
                     transitionSpec: {
@@ -63,23 +61,15 @@ export const TabNavigator = () => {
             />
 
             <Tab.Screen
-                name="Reorder"
-                component={Reorder}
+                name="Cart"
+                component={Cart}
                 options={{
-                    title: 'Reorder',
-                    tabBarIcon: ({ color, size, focused }) => (
-                        <View
-                            style={[
-                                styles.activeTab,
-                                {
-                                    backgroundColor: focused ? '#E8DEF8' : '#fff',
-                                },
-                            ]}>
-                            <Fontisto
-                                name="spinner-rotate-forward"
-                                size={size}
-                                color={color}
-                            />
+                    title: 'Cart',
+                    tabBarIcon: ({ focused }) => (
+                        <View>
+                            {
+                                focused ? <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require("../assets/images/cart_on.png")} /> : <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require("../assets/images/cart_off.png")} />
+                            }
                         </View>
                     ),
                     transitionSpec: {
@@ -91,6 +81,30 @@ export const TabNavigator = () => {
                     },
                 }}
             />
+
+            <Tab.Screen
+                name="Reorder"
+                component={Reorder}
+                options={{
+                    title: 'Reorder',
+                    tabBarIcon: ({ focused }) => (
+                        <View>
+                            {
+                                focused ? <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require("../assets/images/reorder_on.png")} /> : <Image style={{ width: 24, height: 24, resizeMode: "contain" }} source={require("../assets/images/reorder_off.png")} />
+                            }
+                        </View>
+                    ),
+                    transitionSpec: {
+                        animation: 'timing',
+                        config: {
+                            duration: 150,
+                            easing: Easing.inOut(Easing.ease),
+                        },
+                    },
+                }}
+            />
+
+
         </Tab.Navigator>
     );
 };

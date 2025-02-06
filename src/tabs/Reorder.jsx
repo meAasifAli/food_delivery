@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { BASE_URI } from '../config/uri'
 import { useSelector } from 'react-redux'
-import PaymentSuccess from '../components/modals/PaymentSuccess'
+import PaymentSuccess from '../modals/PaymentSuccess'
 import RazorpayCheckout from 'react-native-razorpay'
 
 
@@ -37,7 +37,7 @@ const Reorder = () => {
                     key: 'rzp_test_TUB0CIJ5ZVOxE2', // Your api key
                     amount: res?.data?.order?.amount,
                     order_id: res?.data?.order?.id,
-                    name: user?.username, // Replace this with an order_id created using Orders API.
+                    name: user?.username,
                     prefill: {
                         email: 'void@razorpay.com',
                         contact: '9191919191',
@@ -77,6 +77,11 @@ const Reorder = () => {
             <FlatList
                 data={orders}
                 keyExtractor={order => order.order_id.toString()}
+                ListEmptyComponent={() => (
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                        <Text style={{ fontSize: 16, color: "#202020", fontFamily: "OpenSans-Bold" }}>No orders found</Text>
+                    </View>
+                )}
                 renderItem={({ item }) => (
                     <View style={{
                         display: "flex",

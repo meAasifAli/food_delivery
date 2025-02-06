@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from '../../components/common/profile/Header';
 import SecondaryHeader from '../../components/common/profile/SecondaryHeader';
 import { useEffect, useState } from 'react';
-import SignoutModal from '../../components/modals/SignoutModal';
+import SignoutModal from '../../modals/SignoutModal';
 import useGetPastOrders from '../../hooks/useGetPastOrders'
 import { getUser, } from '../../store/authSlice';
 
