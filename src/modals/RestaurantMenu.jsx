@@ -1,14 +1,13 @@
 import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
-import Typography from '../Typography'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { BASE_URI } from '../../config/uri';
-import { fetchCartItems } from '../../store/cartSlice';
+import { BASE_URI } from '../config/uri';
+import { fetchCartItems } from '../store/cartSlice';
 
 
 const RestaurantMenu = ({ item, isNonCustomizable, setIsNonCustomizable }) => {
@@ -17,8 +16,6 @@ const RestaurantMenu = ({ item, isNonCustomizable, setIsNonCustomizable }) => {
     const [quantity, setQuanitity] = useState(1)
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
-    // console.log("menu: ", item);
-
     const handlePress = () => {
         item?.customisation === 0 ? handleAddToCart() : toggleSecondDrawer()
     };
@@ -76,13 +73,13 @@ const RestaurantMenu = ({ item, isNonCustomizable, setIsNonCustomizable }) => {
                     <Image style={{
                         width: "100%", borderTopLeftRadius: 20,
                         borderTopRightRadius: 20, height: hp(30), resizeMode: "cover"
-                    }} source={require("../../assets/images/modal_img.png")} />
+                    }} source={{ uri: item?.image }} />
                     <View style={styles.headingModal}>
-                        <Typography title={item?.name} ff={"OpenSans-Medium"} size={24} color={"#fff"} ls={0.05} lh={29} fw={600} maxW={188} />
+                        <Text style={{ fontFamily: "OpenSans-Medium", fontSize: 24, color: "#fff", letterSpacing: 0.05, lineHeight: 29, fontWeight: 600, maxWidth: 188 }}>{item?.name}</Text>
                     </View>
                     <View style={styles.ratingModalWrapper}>
                         <View style={styles.ratingModalLeftWrapper}>
-                            <Typography title={"4.4"} color={"#fff"} ff={"OpenSans-Regular"} size={13} lh={27.02} ls={0.05} fw={400} ta={"center"} />
+                            <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 13, color: "#fff", letterSpacing: 0.05, lineHeight: 27, fontWeight: 400, textAlign: "center" }}>{item?.avg_rating}</Text>
                             <Entypo name='star-outlined' size={12} color={"#fff"} />
                         </View>
                         {
@@ -91,7 +88,7 @@ const RestaurantMenu = ({ item, isNonCustomizable, setIsNonCustomizable }) => {
                                     <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>+</Text>
                                 </TouchableOpacity>
                                 <View >
-                                    <Typography title={quantity} color={'#FA4A0C'} ff={'OpenSans_regular'} fw={800} lh={60} ls={0.05} size={30} />
+                                    <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "800", fontFamily: "OpenSans-Medium", lineHeight: 60, letterSpacing: 0.05 }}>{quantity}</Text>
                                 </View>
                                 <TouchableOpacity onPress={handleDecrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
                                     <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>-</Text>
@@ -101,7 +98,7 @@ const RestaurantMenu = ({ item, isNonCustomizable, setIsNonCustomizable }) => {
 
                     </View>
                     <View style={styles.modalBottomWrapper}>
-                        <Typography title={item?.description} color={"#fff"} ff={"OpenSans-Regular"} size={18} lh={24.32} ls={0.07} fw={300} />
+                        <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 18, letterSpacing: 0.07, lineHeight: 24.32, fontWeight: 300 }}>{item?.description}</Text>
                     </View>
                     <View style={{ flex: 1, alignItems: "flex-end", marginRight: 20, marginVertical: 20 }}>
                         <TouchableOpacity style={styles.btnWrapper} onPress={() => handlePress()}>

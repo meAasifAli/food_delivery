@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URI } from "../config/uri";
-import { Alert } from "react-native";
+
 
 const initialState = {
     topRated: [],
@@ -15,13 +15,13 @@ const initialState = {
 // Fix: Pass location as an argument instead of using useContext
 export const fetchRestaurants = createAsyncThunk(
     "restaurant/fetchRestaurants",
-    async ({ type, location }, thunkAPI) => {
+    async ({ type, latitude, longitude }, thunkAPI) => {
         const state = thunkAPI.getState();
         const token = state.auth.token;
 
         try {
             const response = await axios.get(
-                `${BASE_URI}/api/restaurant/${type}/34.074744/74.820444`,
+                `${BASE_URI}/api/restaurant/${type}/${latitude}/${longitude}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -30,12 +30,12 @@ export const fetchRestaurants = createAsyncThunk(
             );
             return { type, data: response.data };
         } catch (error) {
-            console.error("Error in getting restaurants:", error?.response?.data?.message);
+            // console.error("Error in getting restaurants:", error?.response?.data?.message);
             // Alert.alert("Error in getting restaurants:", error?.response?.data?.message);
             // Fix: Improved error handling
-            return thunkAPI.rejectWithValue(
-                error.message || "Something went wrong while fetching restaurants."
-            );
+            // return thunkAPI.rejectWithValue(
+            //     error.message || "Something went wrong while fetching restaurants."
+            // );
         }
     }
 );
@@ -55,6 +55,7 @@ const restaurantSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchRestaurants.fulfilled, (state, action) => {
+                if (!action.payload) return;
                 const { type, data } = action.payload;
                 state[type] = data.data;
                 state.loading = false;

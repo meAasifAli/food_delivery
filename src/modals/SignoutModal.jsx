@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { useDispatch } from 'react-redux'
-import { setAuthenticated, setOtp, setUser, setToken } from '../../store/authSlice'
+import { setAuthenticated, setOtp, setUser, setToken } from '../store/authSlice'
 
 const SignoutModal = ({ isOpen, setIsOpen }) => {
     const dispatch = useDispatch()

@@ -6,13 +6,13 @@ import {
   View,
 } from 'react-native';
 import React, { useContext, useEffect } from 'react';
-import Typography from '../../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RestaurantCard from '../../shared/RestaurantCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../../../store/restaurantSlice';
 import { List } from 'react-content-loader/native'
 import { LocationContext } from '../../../context/LocationContext';
+import { Text } from 'react-native';
 
 
 const { height, width } = Dimensions.get('window');
@@ -21,13 +21,15 @@ const PopularBrands = ({ navigation }) => {
   const dispatch = useDispatch()
   const { location } = useContext(LocationContext)
 
-  const { loading, error, popular } = useSelector(state => state?.restaurant)
+  const { loading, popular } = useSelector(state => state?.restaurant)
+  const { savedUserAddresses } = useSelector(state => state?.address)
+  const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
 
   useEffect(() => {
     if (location) {
-      dispatch(fetchRestaurants({ type: "popular", location }))
+      dispatch(fetchRestaurants({ type: "popular", latitude: selectedAddress ? parseFloat(selectedAddress?.lat) : location?.latitude, longitude: selectedAddress ? parseFloat(selectedAddress?.lon) : location?.longitude }))
     }
-  }, [dispatch, location])
+  }, [dispatch, location, selectedAddress])
 
 
 
@@ -35,32 +37,21 @@ const PopularBrands = ({ navigation }) => {
     <>
       <View style={styles.headingContainer}>
         {/* right */}
-        <View>
-          <Typography
-            title={'Popular Brands'}
-            color={'#000000'}
-            ff={'OpenSans_regular'}
-            size={20}
-            lh={27}
-            ls={0.05}
-            fw={600}
-          />
+        <View style={styles.headingContainer}>
+          {/* right */}
+          <View>
+            <Text style={{ color: "#000", fontSize: 20, lineHeight: 27, fontWeight: "600", fontFamily: "OpenSans-SemiBold", letterSpacing: 0.05 }}>Popular Brands</Text>
+
+          </View>
+          {/* left */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('TopRated')}
+            style={styles.headingLeftWrapper}>
+            <Text style={{ color: "#000", fontSize: 16, lineHeight: 21, fontWeight: "300", fontFamily: "OpenSans-Regular", letterSpacing: 0.05 }}>View All</Text>
+            <Entypo name="chevron-small-down" size={16} color={'#000'} />
+          </TouchableOpacity>
         </View>
-        {/* left */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('PopularBrands')}
-          style={styles.headingLeftWrapper}>
-          <Typography
-            title={'View All'}
-            color={'#000000'}
-            ff={'OpenSans_regular'}
-            size={16}
-            lh={21}
-            ls={0.05}
-            fw={300}
-          />
-          <Entypo name="chevron-small-down" size={16} color={'#000'} />
-        </TouchableOpacity>
+
       </View>
       <View
         style={{
@@ -74,7 +65,7 @@ const PopularBrands = ({ navigation }) => {
           data={popular}
           keyExtractor={item => item?.restaurant_id}
           renderItem={({ item }) => (
-            loading ? <List color={"#ccc"} />
+            loading ? <List color={"#ccc"} height={300} />
               :
               <RestaurantCard
                 item={item}
@@ -98,7 +89,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     paddingVertical: 20,
   },
   headingLeftWrapper: {

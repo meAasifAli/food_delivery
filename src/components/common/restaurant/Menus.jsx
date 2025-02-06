@@ -1,9 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { restaurantMenus } from '../../../static/data'
 import Typography from '../../Typography'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, } from 'react-native-responsive-screen';
 
 const Menus = ({ selectedMenu, setSelectedMenu }) => {
+    // console.log("selectedMenu: ", selectedMenu);
     return (
         <View style={styles.menus}>
             {

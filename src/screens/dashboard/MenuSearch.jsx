@@ -6,8 +6,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../components/Typography';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import RestaurantMenu from '../../components/modals/RestaurantMenu';
-import FoodSizeMenu from '../../components/modals/FoodSizeMenu';
+import RestaurantMenu from '../../modals/RestaurantMenu';
+import FoodSizeMenu from '../../modals/FoodSizeMenu';
 
 
 const MenuSearch = ({ route }) => {
@@ -16,18 +16,20 @@ const MenuSearch = ({ route }) => {
 
 
     const { params } = route.params;
+    // console.log(params);
+
     // console.log(params?.restaurantName);
     const [searchQuery, setSearchQuery] = useState("")
     // console.log(searchQuery);
 
-    const { handleFetchSearchItems, loading, searchMenuItems } = usefetchMenuBySearch()
+    const { handleFetchSearchItems, searchMenuItems } = usefetchMenuBySearch()
 
-    console.log(searchMenuItems);
+
 
 
     useEffect(() => {
         if (searchQuery.length > 0) {
-            handleFetchSearchItems({ query: searchQuery })
+            handleFetchSearchItems({ query: searchQuery, restaurantId: params?.restaurantId })
         }
     }, [searchQuery])
 
@@ -49,6 +51,7 @@ const MenuSearch = ({ route }) => {
                                 borderBottomWidth: 1,
                                 width: "90%",
                                 marginHorizontal: "auto",
+                                marginVertical: 10
                             }}>
                                 <View style={styles.menuContainer}>
                                     {/* left */}
@@ -61,22 +64,23 @@ const MenuSearch = ({ route }) => {
                                                 <AntDesign name='caretup' size={hp(0.8)} color={"#FA4A0C"} />
                                             </View>
                                         </View>
+                                        <View>
+                                            <Typography title={item?.description?.slice(0, 130)} color={"#000"} ff={"OpenSans-Regular"} size={12} lh={16} ls={0.07} fw={300} maxW={wp(40)} />
+                                        </View>
                                         <View style={styles.ratingWrapper}>
                                             <View style={styles.ratingLeftWrapper}>
-                                                <Typography title={item?.rating} color={"#fff"} ff={"OpenSans_regular"} size={wp(3.5)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
+                                                <Typography title={item?.avg_rating} color={"#fff"} ff={"OpenSans-Regular"} size={wp(3.5)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
                                                 <Entypo name='star-outlined' size={12} color={"#fff"} />
                                             </View>
                                             <View>
-                                                <Typography title={`(${item?.order_count})`} color={"#20202080"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
+                                                <Typography title={`(${item?.order_count})`} color={"#20202080"} ff={"OpenSans-Regular"} size={16} lh={21} ls={0.05} fw={300} />
                                             </View>
                                         </View>
-                                        <View>
-                                            <Typography title={item?.description} color={"#000"} ff={"OpenSans_regular"} size={12} lh={16} ls={0.07} fw={300} maxW={wp(40)} />
-                                        </View>
+
                                     </View>
                                     {/* right */}
                                     <View style={styles.rightWrapper}>
-                                        <Image style={{ width: 150, height: 150, resizeMode: "contain" }} source={item?.image ? { uri: item?.image } : require("../../assets/images/menu_img.png")} />
+                                        <Image style={{ width: 150, height: 150, resizeMode: "cover", borderRadius: 15 }} source={item?.image ? { uri: item?.image } : require("../../assets/images/menu_img.png")} />
                                         <View style={{ position: "absolute", bottom: 8, right: 15 }}>
                                             <TouchableOpacity onPress={() => {
                                                 item?.customisation === 0 ? setIsNonCustomizable(prev => !prev) : setIsCustomizable(prev => !prev)

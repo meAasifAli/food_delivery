@@ -1,28 +1,33 @@
-import { ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import Typography from '../../../components/Typography';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RestaurantCard from '../../shared/RestaurantCard';
 import { useContext, useEffect } from 'react';
-import ContentLoader, { Rect, Circle, List } from 'react-content-loader/native'
+import { List } from 'react-content-loader/native'
 
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../../../store/restaurantSlice';
 import { LocationContext } from '../../../context/LocationContext';
+import { Text } from 'react-native';
 
 const Nearest = ({ navigation }) => {
   const { location } = useContext(LocationContext)
   const dispatch = useDispatch()
   const { nearest, loading } = useSelector(state => state?.restaurant)
+  const { savedUserAddresses } = useSelector(state => state?.address)
 
-  // console.log('nearest: ', nearest);
+  const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
+
+  // console.log("selected user address: ", selectedAddress);
+
+
 
 
   useEffect(() => {
     if (location) {
-      dispatch(fetchRestaurants({ type: "nearest", location }))
+      dispatch(fetchRestaurants({ type: "nearest", latitude: selectedAddress ? parseFloat(selectedAddress?.lat) : location?.latitude, longitude: selectedAddress ? parseFloat(selectedAddress?.lon) : location?.longitude }))
     }
-  }, [location, dispatch])
+  }, [location, dispatch, selectedAddress])
 
   // console.log("Nearest  restaurants", nearest)
 
@@ -31,29 +36,13 @@ const Nearest = ({ navigation }) => {
       <View style={styles.headingContainer}>
         {/* right */}
         <View>
-          <Typography
-            title={'Nearest'}
-            color={'#000000'}
-            ff={'OpenSans_regular'}
-            size={20}
-            lh={27}
-            ls={0.05}
-            fw={600}
-          />
+          <Text style={{ color: "#000", fontFamily: "OpenSans-SemiBold", fontSize: 20, lineHeight: 27, fontWeight: "600" }}>Nearest</Text>
         </View>
         {/* left */}
         <TouchableOpacity
           onPress={() => navigation.navigate('Nearest')}
           style={styles.headingLeftWrapper}>
-          <Typography
-            title={'View All'}
-            color={'#000000'}
-            ff={'OpenSans_regular'}
-            size={16}
-            lh={21}
-            ls={0.05}
-            fw={300}
-          />
+          <Text style={{ color: "#000", fontFamily: "OpenSans-Regular", fontSize: 16, lineHeight: 21, fontWeight: 300 }}>View All</Text>
           <Entypo name="chevron-small-down" size={16} color={'#000'} />
         </TouchableOpacity>
       </View>
@@ -64,7 +53,7 @@ const Nearest = ({ navigation }) => {
         keyExtractor={item => item?.restaurant_id}
         renderItem={({ item }) => (
           loading ?
-            <List color={"#ccc"} />
+            <List color={"#ccc"} height={300} />
             : <RestaurantCard item={item} navigation={navigation} />
         )}
       />

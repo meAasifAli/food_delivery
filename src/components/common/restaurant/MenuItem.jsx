@@ -1,18 +1,19 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
-import { useNavigation } from '@react-navigation/native'
 import Typography from '../../Typography'
-import RestaurantMenu from '../../modals/RestaurantMenu'
-import FoodSizeMenu from '../../modals/FoodSizeMenu'
+import RestaurantMenu from '../../../modals/RestaurantMenu'
+import FoodSizeMenu from '../../../modals/FoodSizeMenu'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useState } from 'react'
 
 const MenuItem = ({ item, size, setSize, }) => {
     const [isCustomizable, setIsCustomizable] = useState(false)
     const [isNonCustomizable, setIsNonCustomizable] = useState(false)
-    const navigation = useNavigation()
-    // console.log(item);
+
+
+    // console.log('menu item: ', item);
+
 
     return (
         <View style={{
@@ -32,6 +33,9 @@ const MenuItem = ({ item, size, setSize, }) => {
                             <AntDesign name='caretup' size={hp(0.8)} color={"#FA4A0C"} />
                         </View>
                     </View>
+                    <View>
+                        <Typography title={item?.description?.slice(0, 130)} color={"#000"} ff={"OpenSans_regular"} size={12} lh={16} ls={0.07} fw={300} maxW={wp(40)} />
+                    </View>
                     <View style={styles.ratingWrapper}>
                         <View style={styles.ratingLeftWrapper}>
                             <Typography title={item?.avg_rating} color={"#fff"} ff={"OpenSans_regular"} size={wp(3.5)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
@@ -41,13 +45,13 @@ const MenuItem = ({ item, size, setSize, }) => {
                             <Typography title={`(${item?.order_count})`} color={"#20202080"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
                         </View>
                     </View>
-                    <View>
-                        <Typography title={item?.description} color={"#000"} ff={"OpenSans_regular"} size={12} lh={16} ls={0.07} fw={300} maxW={wp(40)} />
-                    </View>
+
                 </View>
                 {/* right */}
                 <View style={styles.rightWrapper}>
-                    <Image style={{ width: 150, height: 150, resizeMode: "contain" }} source={require("../../../assets/images/menu_img.png")} />
+
+                    <Image style={{ width: 150, height: 150, borderRadius: 25, resizeMode: "cover" }} source={{ uri: item?.image }} />
+
                     <View style={{ position: "absolute", bottom: 8, right: 15 }}>
                         <TouchableOpacity onPress={() => {
                             item?.customisation === 0 ? setIsNonCustomizable(prev => !prev) : setIsCustomizable(prev => !prev)
@@ -55,7 +59,6 @@ const MenuItem = ({ item, size, setSize, }) => {
                             <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Add </Text>
                         </TouchableOpacity>
                     </View>
-                    {/* Restaurant Menu  modal */}
                     {
                         item?.customisation === 0 && <RestaurantMenu item={item} isNonCustomizable={isNonCustomizable} setIsNonCustomizable={setIsNonCustomizable} />
                     }

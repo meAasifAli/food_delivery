@@ -11,12 +11,15 @@ const { height, width } = Dimensions.get("window")
 
 const RestaurantCard = ({ navigation, item, isPopular }) => {
 
+    // console.log("Item", item);
+
+
     return (
         <TouchableOpacity onPress={() => navigation.navigate("Restaurant", { restaurantId: item?.restaurant_id })} style={[styles.restaurantsContainer, {
             elevation: 4,
             backgroundColor: isPopular ? "#000" : "#fff",
         }]}>
-            <Image source={require("../../assets/images/karims.png")} style={styles.restaurantImg} />
+            <Image source={{ uri: item?.profile }} style={styles.restaurantImg} />
             <View style={styles.restaurantContentWrapper}>
                 <Typography title={item?.restaurant_name} color={isPopular ? "#fff" : "#000000"} ff={"OpenSans_regular"} size={hp(2.7)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
                 <View style={styles.divider}></View>
@@ -26,7 +29,7 @@ const RestaurantCard = ({ navigation, item, isPopular }) => {
                         <Entypo name='star-outlined' size={12} color={"#fff"} />
                     </View>
                     <View>
-                        <Typography title={item?.delivery_time} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
+                        <Typography title={`${item?.delivery_time} ${item?.delivery_time >= 60 ? "hours" : "minutes"}`} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
                     </View>
                 </View>
                 <View style={styles.desWrapper}>
@@ -49,17 +52,15 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginBottom: 10,
         marginTop: 40,
-
-
     },
     restaurantImg: {
-        height: height * 0.15,
-        width: width * 0.50,
+        height: height * 0.13,
+        width: width * 0.40,
         position: "absolute",
-        top: -40,
-        left: "12%",
+        top: -30,
+        left: "20%",
         borderRadius: 10,
-        resizeMode: "contain"
+        resizeMode: "cover"
     },
     restaurantContentWrapper: {
         display: "flex",

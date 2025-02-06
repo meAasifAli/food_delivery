@@ -1,16 +1,13 @@
-import { Alert, Dimensions, View } from 'react-native'
+import { Alert, View } from 'react-native'
 import React, { useState } from 'react'
 import Entypo from 'react-native-vector-icons/Entypo'
-
-const { height } = Dimensions.get("window")
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native'
 import RazorpayCheckout from 'react-native-razorpay'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { BASE_URI } from '../../../config/uri'
 import SwipeButton from 'rn-swipe-button';
-import PaymentSuccess from '../../modals/PaymentSuccess'
+import PaymentSuccess from '../../../modals/PaymentSuccess'
 
 
 const Payment = () => {

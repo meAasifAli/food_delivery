@@ -14,7 +14,7 @@ const SearchBar = ({ restaurantName, searchQuery, setSearchQuery }) => {
                     <TouchableOpacity onPress={() => navigation.goBack(1)} style={{ position: "absolute", zIndex: 1, top: 10, left: 5 }}>
                         <Entypo name='chevron-left' color={"#fff"} size={25} />
                     </TouchableOpacity>
-                    <TextInput value={searchQuery} onChangeText={(text) => setSearchQuery(text)} style={{ backgroundColor: "#ccc", color: "#FA4A0C", paddingLeft: 35, borderRadius: 10, fontFamily: "OpenSans-Regular", fontSize: 16 }} placeholderTextColor={"#FA4A0C"} placeholder={`Search in ${restaurantName}`} />
+                    <TextInput value={searchQuery} onChangeText={(text) => setSearchQuery(text)} style={{ backgroundColor: "#000", color: "#FA4A0C", paddingLeft: 35, borderRadius: 10, fontFamily: "OpenSans-Regular", fontSize: 16 }} placeholderTextColor={"#FA4A0C"} placeholder={`Search in ${restaurantName}`} />
                     <TouchableOpacity style={{ position: "absolute", zIndex: 1, top: 15, right: 10 }}>
                         <AntDesign name='search1' size={20} color={"#fff"} />
                     </TouchableOpacity>

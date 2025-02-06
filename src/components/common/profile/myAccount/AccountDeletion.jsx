@@ -3,7 +3,7 @@ import Modal from 'react-native-modal'
 import Typography from '../../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useState } from 'react';
-import MyAccountModal from '../../../modals/MyAccountModal';
+import MyAccountModal from '../../../../modals/MyAccountModal';
 
 
 const AccountDeletion = () => {

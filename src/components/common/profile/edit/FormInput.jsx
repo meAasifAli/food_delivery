@@ -6,7 +6,7 @@ import axios from 'axios';
 import { BASE_URI } from '../../../../config/uri';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import EditProfileModal from '../../../modals/EditProfileModal';
+import EditProfileModal from '../../../../modals/EditProfileModal';
 import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../../../../store/authSlice';
 

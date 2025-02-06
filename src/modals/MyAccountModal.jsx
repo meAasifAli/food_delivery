@@ -1,7 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Modal from 'react-native-modal'
-import Typography from '../Typography'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const MyAccountModal = ({ openModal, toggleDrawer }) => {
@@ -27,10 +26,11 @@ const MyAccountModal = ({ openModal, toggleDrawer }) => {
                 alignItems: "center"
             }}>
                 <View>
-                    <Typography ta={"center"} size={hp(2.5)} color={"black"} lh={hp(4)} fw={700} ff={"OpenSans-Regular"} title={"Are you sure to delete account?"} />
+                    <Text style={{ fontFamily: "OpenSans-Regular", color: "black", fontWeight: "700", fontSize: hp(2.5), lineHeight: hp(4), textAlign: "center" }}>Are you sure to delete account?</Text>
                 </View>
                 <View style={{ marginTop: hp(0.5) }}>
-                    <Typography ta={"center"} size={hp(2)} color={"black"} fw={400} ff={"OpenSans-Regular"} lh={hp(3)} title={"Once deleted, this account will lose access to Food Kart"} />
+                    <Text style={{ fontFamily: "OpenSans-Regular", color: "black", fontWeight: "700", fontSize: hp(2.5), lineHeight: hp(4), textAlign: "center" }}>Once deleted, this account will lose access to Food Kart</Text>
+
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginHorizontal: wp(6), marginTop: hp(6), gap: wp(6) }}>
                     <TouchableOpacity style={{ backgroundColor: "#fff", height: hp(6), borderColor: "#D6D6D6", borderWidth: hp(0.2), width: wp(30), borderRadius: hp(1), alignItems: "center", justifyContent: "center" }}>
