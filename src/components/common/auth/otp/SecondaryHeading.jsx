@@ -9,9 +9,9 @@ const SecondaryHeading = () => {
             }}
         >
             <Text style={{
-                fontFamily: "OpenSans-Medium",
+                fontFamily: "OpenSans-Regular",
                 color: "#fff",
-                fontSize: 14,
+                fontSize: 16,
                 lineHeight: 25,
                 textAlign: "center",
                 maxWidth: "70%",
@@ -20,13 +20,14 @@ const SecondaryHeading = () => {
                 OTP sent!
             </Text>
             <Text style={{
-                fontFamily: "OpenSans-Medium",
+                fontFamily: "OpenSans-Regular",
                 color: "#fff",
-                fontSize: 12,
+                fontSize: 16,
                 lineHeight: 25,
                 textAlign: "center",
-                maxWidth: "80%",
-                marginHorizontal: "auto"
+                maxWidth: "70%",
+                marginHorizontal: "auto",
+                fontWeight: "300"
             }}
             >
                 Secure your taste journey,

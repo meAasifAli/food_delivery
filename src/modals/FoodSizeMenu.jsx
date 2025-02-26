@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Alert, ToastAndroid } from 'react-native'
 import Modal from 'react-native-modal'
 import Entypo from 'react-native-vector-icons/Entypo'
 import RadioButton from 'react-native-radio-button'
@@ -10,12 +10,16 @@ import axios from 'axios'
 import { BASE_URI } from '../config/uri'
 import CheckBox from '@react-native-community/checkbox'
 import { fetchCartItems } from '../store/cartSlice'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 
 
 
 const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
-    // console.log("item: ", item);
+
+    // console.log(item);
+
+
 
     const navigation = useNavigation()
     const dispatch = useDispatch()
@@ -23,30 +27,20 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
     const { token } = useSelector(state => state.auth)
     const [selectedItems, setSelectedItems] = useState({});
     const [itemQuantity, setItemQuantity] = useState(1)
-    const [inputCustomizations, setInputCustomizations] = useState([
-        {
-            title_id: null,
-            option_ids: []
-        }
-    ])
+    const [inputCustomizations, setInputCustomizations] = useState([])
     const [loading, setLoading] = useState(false)
     const [additionalPrice, setAdditionalPrice] = useState(0.00);
 
 
-    // console.log('inputCustomizations: ', inputCustomizations);
-
-
     const handleSelection = (key, optionId, titleId, optionAdditionalPrice) => {
-        // Parse the additional price to ensure it's a valid number
         const parsedAdditionalPrice = parseFloat(optionAdditionalPrice || 0);
 
-        // Update selected items for the key
         setSelectedItems((prev) => ({
             ...prev,
             [key]: optionId,
         }));
 
-        // Update customizations to reflect the selected option
+
         setInputCustomizations((prev) => {
             // Remove existing customization for this titleId
             const updatedCustomizations = prev.filter((item) => item.title_id !== titleId);
@@ -63,7 +57,6 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
 
         // Update the additional price
         setAdditionalPrice((prev) => {
-            // Identify the currently selected option's additional price
             const currentOptionId = selectedItems[key];
             const currentAdditionalPrice = currentOptionId
                 ? parseFloat(
@@ -72,14 +65,12 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
                     )?.additional_price || 0
                 )
                 : 0;
-
-            // Calculate the new total additional price
             const newPrice = prev - currentAdditionalPrice + parsedAdditionalPrice;
 
-            // Return the price rounded to two decimals
             return parseFloat(newPrice.toFixed(2));
         });
     };
+
 
 
 
@@ -88,7 +79,6 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
         const parsedAdditionalPrice = parseFloat(optionAdditionalPrice || 0);
 
         setSelectedItems((prev) => {
-            // Toggle the checkbox selection
             const updatedSelections = prev[key] || [];
             const isAlreadySelected = updatedSelections.includes(optionId);
 
@@ -96,48 +86,33 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
             return {
                 ...prev,
                 [key]: isAlreadySelected
-                    ? updatedSelections.filter((id) => id !== optionId) // Remove the option if already selected
-                    : [...updatedSelections, optionId], // Add the option if not selected
+                    ? updatedSelections.filter((id) => id !== optionId)
+                    : [...updatedSelections, optionId],
             };
         });
-
-        // Update the additional price
         setAdditionalPrice((prev) => {
             const isAlreadySelected = selectedItems[key]?.includes(optionId);
-
-            // Add or subtract the price based on the selection state
             const newPrice = isAlreadySelected
-                ? prev - parsedAdditionalPrice // Subtract the price if unselected
-                : prev + parsedAdditionalPrice; // Add the price if selected
+                ? prev - parsedAdditionalPrice
+                : prev + parsedAdditionalPrice;
 
-            // Return the price rounded to two decimals
             return parseFloat(newPrice.toFixed(2));
         });
-
-        // Update customizations (optional, if needed for your use case)
         setInputCustomizations((prev) => {
-            // Ensure customization state reflects the toggle action
             const updatedCustomizations = [...prev];
             const existingIndex = updatedCustomizations.findIndex(
                 (item) => item.title_id === titleId && item.option_ids.includes(optionId)
             );
 
             if (existingIndex >= 0) {
-                // Remove the customization if the checkbox is being unchecked
                 updatedCustomizations.splice(existingIndex, 1);
             } else {
-                // Add the customization if the checkbox is being checked
                 updatedCustomizations.push({ title_id: titleId, option_ids: [optionId] });
             }
 
             return updatedCustomizations;
         });
     };
-
-
-
-
-    // console.log(item);
 
     const handleIncrease = () => {
         setItemQuantity(prev => prev + 1)
@@ -149,7 +124,7 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
     useEffect(() => {
         const getCustomization = async () => {
             try {
-                const res = await axios.get(`${BASE_URI}/api/items/customisation/getCustomisation/${item?.id}`, {
+                const res = await axios.get(`${BASE_URI}/api/items/customisation/getCustomisation/${item?.id === undefined ? item?.item_id : item?.id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -159,7 +134,8 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
                 }
             } catch (error) {
                 console.log("get customization error: ", error?.response?.data?.message);
-                Alert.alert(error?.response?.data?.message)
+                ToastAndroid.showWithGravity(error?.response?.data?.message, ToastAndroid.SHORT, ToastAndroid.TOP)
+                setIsCustomizable(false)
 
             }
         }
@@ -168,33 +144,78 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
         }
     }, [isCustomizable])
 
+    // console.log(item);
+
+
+
+    useEffect(() => {
+        if (Object.entries(customizations || {})?.length > 0) {
+            Object.entries(customizations)?.map(([key, item]) => {
+
+                setSelectedItems((prev) => ({
+                    ...prev,
+                    [key]: item?.options[0]?.option_id,
+                }));
+                setInputCustomizations((prev) => {
+
+                    const updatedCustomizations = prev.filter((item) => item.title_id !== item?.title_id);
+
+                    // Add the new customization
+                    return [
+                        ...updatedCustomizations,
+                        {
+                            title_id: item?.title_id,
+                            option_ids: [item?.options[0]?.option_id],
+                        },
+                    ];
+                });
+
+                // console.log(item);
+
+                const currentAdditionalPrice = parseFloat(item?.options[0]?.additional_price);
+                setAdditionalPrice(currentAdditionalPrice);
+            })
+        }
+    }, [customizations])
+
+
+
+
+
     const handleSetCustomization = async () => {
         setLoading(true)
+        console.log(inputCustomizations);
+
         try {
             const res = await axios.post(`${BASE_URI}/api/items/customisation/setUserCustomisation/${item?.id}`, {
                 quantity: itemQuantity,
-                customizations: inputCustomizations.slice(1)
+                customizations: inputCustomizations
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             if (res?.data) {
-                // setIsCustomizable(prev => !prev)
-                Alert.alert("Customization added successfully")
-                navigation.navigate("CartScreen")
+                navigation.navigate("Cart", { screen: "CartScreen" })
                 dispatch(fetchCartItems({ token }))
+                setItemQuantity(1)
             }
         } catch (error) {
             setLoading(false)
+            setIsCustomizable(false)
             console.error(error?.response?.data?.message);
-            Alert.alert(error?.message)
-
+            ToastAndroid.showWithGravity(error?.response?.data?.message, ToastAndroid.LONG, ToastAndroid.TOP)
+            // Alert.alert(error?.message)
         }
         finally {
             setLoading(false)
         }
     }
+
+
+
+
+
 
     return (
         <Modal
@@ -203,12 +224,10 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
             // swipeDirection="down"
             // onSwipeComplete={toggleSecondDrawer}
             style={styles.modal2}
-            backdropColor='transparent'
-            backdropOpacity={0.50}
-            animationIn={"slideInUp"}
-            animationInTiming={1000}
-            animationOut={"slideOutDown"}
-            animationOutTiming={1000}
+            backdropColor='#000'
+            backdropOpacity={0.80}
+        // animationIn={"slideInUp"}
+        // animationOut={"slideOutDown"}
         >
             <View style={styles.drawer2}>
 
@@ -236,8 +255,8 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
                                                                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
                                                                     <View style={styles.sizeItemLeftWrapper}>
                                                                         <Image
-                                                                            style={{ resizeMode: "contain", height: 10, width: 10 }}
-                                                                            source={require("../assets/images/arrow_up_box.png")}
+                                                                            style={{ resizeMode: "cover", height: 13, width: 13 }}
+                                                                            source={require("../assets/images/arrow_up.png")}
                                                                         />
                                                                         <Text style={{
                                                                             color: "#fff",
@@ -267,7 +286,7 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
                                                                         <View style={styles.sizeItemLeftWrapper}>
                                                                             <Image
                                                                                 style={{ resizeMode: "contain", height: 10, width: 10 }}
-                                                                                source={require("../assets/images/arrow_up_box.png")}
+                                                                                source={require("../assets/images/arrow_up.png")}
                                                                             />
                                                                             <Text style={{
                                                                                 color: "#fff",
@@ -300,20 +319,20 @@ const FoodSizeMenu = ({ item, isCustomizable, setIsCustomizable }) => {
 
                     <View style={styles.actionWrapper}>
                         <View style={styles.qtyWrapper}>
-                            <TouchableOpacity onPress={handleIncrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
-                                <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>+</Text>
+                            <TouchableOpacity onPress={handleIncrease} style={{ borderRadius: wp(3), alignItems: "center" }}>
+                                <AntDesign name='plus' color={"#FA4A0C"} size={14} />
                             </TouchableOpacity>
                             <View >
-                                <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium", lineHeight: 60, letterSpacing: 0.05, }}>{itemQuantity}</Text>
+                                <Text style={{ color: "#FA4A0C", fontSize: 14, fontWeight: "500", fontFamily: "OpenSans-Bold", letterSpacing: 0.05, }}>{itemQuantity}</Text>
                             </View>
-                            <TouchableOpacity onPress={handleDecrease} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: wp(10), alignItems: "center" }}>
-                                <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>-</Text>
+                            <TouchableOpacity onPress={handleDecrease} style={{ borderRadius: wp(3), alignItems: "center" }}>
+                                <AntDesign name='minus' color={"#FA4A0C"} size={14} />
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <TouchableOpacity onPress={handleSetCustomization} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), alignItems: "center", }}>
+                            <TouchableOpacity onPress={handleSetCustomization} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: 8, alignItems: "center", }}>
                                 {
-                                    loading ? <ActivityIndicator size={"small"} color={"#fff"} /> : <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>{`Add | Rs: ${Number(item?.price) + Number(additionalPrice)}`}</Text>
+                                    loading ? <Text style={{ color: "#FA4A0C", fontSize: 14, fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Adding...</Text> : <Text style={{ color: "#FA4A0C", fontSize: 14, fontWeight: "500", fontFamily: "OpenSans-Medium" }}>{`Add | Rs: ${(Number(additionalPrice)) * itemQuantity} `}</Text>
                                 }
                             </TouchableOpacity>
                         </View>
@@ -381,7 +400,7 @@ const styles = StyleSheet.create({
         marginHorizontal: "auto",
         borderColor: "#D6D6D680",
         borderWidth: 1,
-        borderRadius: wp(5),
+        borderRadius: 10,
         marginTop: hp(4),
         paddingHorizontal: wp(5),
         paddingTop: hp(2)
@@ -393,18 +412,22 @@ const styles = StyleSheet.create({
         alignItems: "center",
         // borderTopColor: "#D6D6D6",
         // borderTopWidth: 1,
-        marginTop: hp(5)
+        marginTop: 20
     },
     qtyWrapper: {
-        display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center",
-        gap: wp(3),
+        backgroundColor: "#fff",
+        gap: 10,
+        paddingVertical: 8,
+        paddingHorizontal: 10,
+        borderRadius: 8
     }
 })
 
 const Header = ({ setIsCustomizable, item }) => {
+
+
     return (
         <View style={styles.modal2HeadingWrapper}>
             <View>

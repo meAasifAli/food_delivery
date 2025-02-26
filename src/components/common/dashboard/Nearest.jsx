@@ -27,23 +27,23 @@ const Nearest = ({ navigation }) => {
     if (location) {
       dispatch(fetchRestaurants({ type: "nearest", latitude: selectedAddress ? parseFloat(selectedAddress?.lat) : location?.latitude, longitude: selectedAddress ? parseFloat(selectedAddress?.lon) : location?.longitude }))
     }
-  }, [location, dispatch, selectedAddress])
+  }, [location, selectedAddress])
 
-  // console.log("Nearest  restaurants", nearest)
+
 
   return (
     <>
       <View style={styles.headingContainer}>
         {/* right */}
         <View>
-          <Text style={{ color: "#000", fontFamily: "OpenSans-SemiBold", fontSize: 20, lineHeight: 27, fontWeight: "600" }}>Nearest</Text>
+          <Text style={{ color: "#000", fontFamily: "OpenSans-Bold", fontSize: 16, fontWeight: "600" }}>Nearest</Text>
         </View>
         {/* left */}
         <TouchableOpacity
           onPress={() => navigation.navigate('Nearest')}
           style={styles.headingLeftWrapper}>
-          <Text style={{ color: "#000", fontFamily: "OpenSans-Regular", fontSize: 16, lineHeight: 21, fontWeight: 300 }}>View All</Text>
-          <Entypo name="chevron-small-down" size={16} color={'#000'} />
+          <Text style={{ color: "#000", fontFamily: "OpenSans-Regular", fontSize: 14, fontWeight: "300" }}>View All</Text>
+          <Entypo name="chevron-small-down" size={14} color={'#000'} />
         </TouchableOpacity>
       </View>
       <FlatList

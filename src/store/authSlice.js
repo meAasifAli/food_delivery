@@ -3,13 +3,18 @@ import axios from "axios";
 import { BASE_URI } from "../config/uri";
 
 export const getUser = createAsyncThunk('auth/getUser', async ({ token }) => {
-    const response = await axios.get(`${BASE_URI}/api/user/getUserDetails`, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
+    try {
+        const response = await axios.get(`${BASE_URI}/api/user/getUserDetails`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return response.data?.userData[0]
+    } catch (error) {
+        console.log("error in getting user: ", error?.response?.data?.message);
+    }
 
-    return response.data?.userData[0]
+
 })
 
 export const authSlice = createSlice({
@@ -22,7 +27,8 @@ export const authSlice = createSlice({
         otp: null,
         token: null,
         userData: null,
-        file: null
+        file: null,
+        loading: false
     },
     reducers: {
         setUser(state, action) {
@@ -53,12 +59,15 @@ export const authSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(getUser.fulfilled, (state, action) => {
             state.user = action.payload
+            state.loading = false
         })
             .addCase(getUser.rejected, (state, action) => {
                 state.user = null
+                state.loading = false;
             })
             .addCase(getUser.pending, (state, action) => {
-                state.user = null
+                state.user = null;
+                state.loading = true
             })
     }
 })

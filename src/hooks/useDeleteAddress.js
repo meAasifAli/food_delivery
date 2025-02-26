@@ -1,4 +1,4 @@
-import { Alert } from 'react-native'
+import { Alert, ToastAndroid } from 'react-native'
 import { useState } from 'react'
 import axios from 'axios'
 import { BASE_URI } from '../config/uri'
@@ -19,7 +19,7 @@ const useDeleteAddress = () => {
                 }
             })
 
-            Alert.alert("Address Deleted Successfully")
+            ToastAndroid.show("Address Deleted Successfully", ToastAndroid.LONG)
             dispatch(fetchSavedAddresses({ token }))
 
         } catch (error) {

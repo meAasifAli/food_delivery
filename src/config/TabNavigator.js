@@ -5,9 +5,11 @@ import { View, StyleSheet, Easing } from "react-native";
 import Cart from "../tabs/Cart";
 import { Image } from "react-native";
 
+
 const Tab = createBottomTabNavigator()
 
 export const TabNavigator = () => {
+
     return (
         <Tab.Navigator
             initialRouteName="Dining"
@@ -35,6 +37,7 @@ export const TabNavigator = () => {
                     show: true,
                 },
             }}>
+
             <Tab.Screen
                 name="Dining"
                 component={Dining}

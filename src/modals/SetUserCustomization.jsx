@@ -1,22 +1,23 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { useContext, useEffect, useState } from 'react'
+import { Alert, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { BASE_URI } from '../config/uri'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCartItems } from '../store/cartSlice'
+import { fetchBill, fetchCartItems } from '../store/cartSlice'
+import ChooseCustomization from './ChooseCustomization'
+import { LocationContext } from '../context/LocationContext'
 
-const SetUserCustomization = ({ isOpen, setIsOpen, title, price, cartItemId, quantity, setIsCustomization }) => {
+const SetUserCustomization = ({ isOpen, setIsOpen, title, price, cartItemId, quantity, item }) => {
+
+    const { tipAmt, offerCode } = useContext(LocationContext)
 
 
     const dispatch = useDispatch()
-
+    const [isChooseOpen, setIsChooseOpen] = useState(false)
     const { token } = useSelector((state) => state.auth)
-    const [customizations, setCustomizations] = useState([{
-        title_id: null,
-        option_ids: []
-    }])
+    const [customizations, setCustomizations] = useState([])
 
     useEffect(() => {
         const fetchSelectedCustomizations = async () => {
@@ -61,43 +62,39 @@ const SetUserCustomization = ({ isOpen, setIsOpen, title, price, cartItemId, qua
 
 
 
+
     const handleRepeatlast = async (cartItemId) => {
         try {
             const res = await axios.patch(`${BASE_URI}/api/items/customisation/updateSelectedCustomisation/${cartItemId}`, {
                 quantity: quantity + 1,
-                customizations: customizations.slice(1),
+                customizations: customizations,
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             if (res?.data) {
-                Alert.alert("Success", "Customization updated successfully");
+                ToastAndroid.showWithGravity("Customization updated successfully", ToastAndroid.LONG, ToastAndroid.CENTER);
+                await dispatch(fetchCartItems({ token }));
+                await dispatch(fetchBill({ token, tip: tipAmt, code: offerCode }))
                 setIsOpen(prev => !prev);
-                dispatch(fetchCartItems({ token }));
             }
         } catch (error) {
             console.error(error?.message);
         }
     };
 
-    const handleSetIsCustomization = () => {
-        setIsCustomization()
-        setIsOpen(prev => !prev)
-        dispatch(fetchCartItems({ token }))
+    const handleChoose = () => {
+        setIsChooseOpen(true)
     }
 
     return (
         <Modal
             isVisible={isOpen}
-            onBackdropPress={() => setIsOpen(prev => !prev)}
+            onBackdropPress={() => setIsOpen(false)}
             style={styles.modal2}
-            backdropColor='transparent'
-            backdropOpacity={0.50}
-            animationIn={"slideInUp"}
-            animationInTiming={1000}
-            animationOut={"slideOutDown"}
-            animationOutTiming={1000}
+            backdropColor='black'
+            backdropOpacity={0.80}
         >
             <View style={styles.drawer2}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -112,9 +109,10 @@ const SetUserCustomization = ({ isOpen, setIsOpen, title, price, cartItemId, qua
                 <View style={{ width: "100%", backgroundColor: "#ccc", height: 0.5, marginTop: 10, marginBottom: 20 }} />
 
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 20 }}>
-                    <TouchableOpacity onPress={handleSetIsCustomization} style={{ backgroundColor: "#fff", padding: 10, borderRadius: 10, flex: 1 }}>
+                    <TouchableOpacity onPress={handleChoose} style={{ backgroundColor: "#fff", padding: 10, borderRadius: 10, flex: 1 }}>
                         <Text style={{ color: "#000", fontSize: 14, fontFamily: "OpenSans-Regular", textAlign: "center" }}>i&apos;ll choose</Text>
                     </TouchableOpacity>
+                    <ChooseCustomization item={item} isOpen={isChooseOpen} setIsOpen={() => setIsChooseOpen(false)} />
                     <TouchableOpacity onPress={() => handleRepeatlast(cartItemId)} style={{ backgroundColor: "#FA4A0C", padding: 10, borderRadius: 10, flex: 1 }}>
                         <Text style={{ color: "#fff", fontSize: 14, fontFamily: "OpenSans-Regular", textAlign: "center" }}>Repeat last</Text>
                     </TouchableOpacity>

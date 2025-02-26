@@ -12,6 +12,10 @@ const usefetchRestaurantBySearch = () => {
     const [searchRestaurants, setSearchRestaurants] = useState([])
 
 
+
+
+
+
     const handleFetchSearchRestaurants = async ({ query, latitude, longitude }) => {
         try {
             setLoading(true)

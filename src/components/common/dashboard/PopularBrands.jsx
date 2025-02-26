@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Text
 } from 'react-native';
 import React, { useContext, useEffect } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -12,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchRestaurants } from '../../../store/restaurantSlice';
 import { List } from 'react-content-loader/native'
 import { LocationContext } from '../../../context/LocationContext';
-import { Text } from 'react-native';
+
 
 
 const { height, width } = Dimensions.get('window');
@@ -20,7 +21,6 @@ const { height, width } = Dimensions.get('window');
 const PopularBrands = ({ navigation }) => {
   const dispatch = useDispatch()
   const { location } = useContext(LocationContext)
-
   const { loading, popular } = useSelector(state => state?.restaurant)
   const { savedUserAddresses } = useSelector(state => state?.address)
   const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
@@ -40,15 +40,14 @@ const PopularBrands = ({ navigation }) => {
         <View style={styles.headingContainer}>
           {/* right */}
           <View>
-            <Text style={{ color: "#000", fontSize: 20, lineHeight: 27, fontWeight: "600", fontFamily: "OpenSans-SemiBold", letterSpacing: 0.05 }}>Popular Brands</Text>
-
+            <Text style={{ color: "#000", fontFamily: "OpenSans-Bold", fontSize: 16, fontWeight: "600" }}>Popular Brands</Text>
           </View>
           {/* left */}
           <TouchableOpacity
-            onPress={() => navigation.navigate('TopRated')}
+            onPress={() => navigation.navigate('PopularBrands')}
             style={styles.headingLeftWrapper}>
-            <Text style={{ color: "#000", fontSize: 16, lineHeight: 21, fontWeight: "300", fontFamily: "OpenSans-Regular", letterSpacing: 0.05 }}>View All</Text>
-            <Entypo name="chevron-small-down" size={16} color={'#000'} />
+            <Text style={{ color: "#000", fontFamily: "OpenSans-Regular", fontSize: 14, fontWeight: "300" }}>View All</Text>
+            <Entypo name="chevron-small-down" size={14} color={'#000'} />
           </TouchableOpacity>
         </View>
 
@@ -58,6 +57,7 @@ const PopularBrands = ({ navigation }) => {
           marginHorizontal: 10,
           backgroundColor: '#000',
           borderRadius: 10,
+          marginTop: 30
         }}>
         <FlatList
           horizontal={true}
@@ -90,7 +90,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 5,
-    paddingVertical: 20,
+    paddingTop: 10
+
   },
   headingLeftWrapper: {
     display: 'flex',

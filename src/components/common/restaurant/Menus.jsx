@@ -1,23 +1,43 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { restaurantMenus } from '../../../static/data'
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Typography from '../../Typography'
 import { widthPercentageToDP as wp, } from 'react-native-responsive-screen';
 
-const Menus = ({ selectedMenu, setSelectedMenu }) => {
-    // console.log("selectedMenu: ", selectedMenu);
+
+
+const Menus = ({ selectedMenu, setSelectedMenu, filter, setFilter }) => {
+
+
     return (
         <View style={styles.menus}>
+            <TouchableOpacity onPress={() => setSelectedMenu("veg")} style={[styles.menuItemWrapper,
             {
-                restaurantMenus.map((item, id) => (
-                    <TouchableOpacity onPress={() => setSelectedMenu(item?.name)} key={id} style={[styles.menuItemWrapper,
-                    {
-                        backgroundColor: selectedMenu === item?.name ? "#FA4A0C" : "#fff"
-                    }
-                    ]}>
-                        <Typography title={item?.name} color={selectedMenu === item?.name ? "#fff" : "#202020"} size={12} lh={16} ls={0.05} fw={300} ff={"OpenSans-Regular"} />
-                    </TouchableOpacity>
-                ))
+                backgroundColor: selectedMenu === "veg" ? "#FA4A0C" : "#fff"
             }
+            ]}>
+                <Typography title={"Veg"} color={selectedMenu === "veg" ? "#fff" : "#202020"} size={12} lh={16} ls={0.05} fw={300} ff={"OpenSans-Regular"} />
+
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setSelectedMenu("non-veg")} style={[styles.menuItemWrapper,
+            {
+                backgroundColor: selectedMenu === "non-veg" ? "#FA4A0C" : "#fff"
+            }
+            ]}>
+                <Typography title={"Non-Veg"} color={selectedMenu === "non-veg" ? "#fff" : "#202020"} size={12} lh={16} ls={0.05} fw={300} ff={"OpenSans-Regular"} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => filter === "rating" ? setFilter("") : setFilter("rating")} style={[styles.menuItemWrapper,
+            {
+                borderColor: filter === "rating" ? "#FA4A0C" : "#D6D6D6",
+            }
+            ]}>
+                <Typography title={"Rating 4+"} color={"#202020"} size={12} lh={16} ls={0.05} fw={300} ff={"OpenSans-Regular"} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => filter === "best_sellers" ? setFilter("") : setFilter("best_sellers")} style={[styles.menuItemWrapper,
+            {
+                borderColor: filter === "best_sellers" ? "#FA4A0C" : "#D6D6D6",
+            }
+            ]}>
+                <Typography title={"BestSeller"} color={"#202020"} size={12} lh={16} ls={0.05} fw={300} ff={"OpenSans-Regular"} />
+            </TouchableOpacity>
         </View>
     )
 }
@@ -29,7 +49,6 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         gap: 15,
-        alignItems: "center",
         borderStyle: "dashed",
         borderWidth: 1,
         borderColor: "#D6D6D6",
@@ -45,8 +64,9 @@ const styles = StyleSheet.create({
         padding: wp(2),
         flex: 1,
         display: "flex",
+        flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: wp(1)
+        borderRadius: 8
     },
 })

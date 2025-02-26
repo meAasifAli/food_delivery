@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
-import { Alert } from 'react-native'
+import { Alert, ToastAndroid } from 'react-native'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { OtpInput } from 'react-native-otp-entry'
@@ -33,7 +33,7 @@ const EditProfileModal = ({ isOpen, setIsOpen, phone }) => {
 
 
             if (res?.data) {
-                Alert.alert("Profile Updated Successfully")
+                ToastAndroid.show("Profile Updated Successfully", ToastAndroid.LONG)
                 dispatch(setToken(res?.data?.token))
                 setIsOpen(pre => !pre)
             }

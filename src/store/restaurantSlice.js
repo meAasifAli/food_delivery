@@ -12,7 +12,7 @@ const initialState = {
     restaurant: null
 };
 
-// Fix: Pass location as an argument instead of using useContext
+
 export const fetchRestaurants = createAsyncThunk(
     "restaurant/fetchRestaurants",
     async ({ type, latitude, longitude }, thunkAPI) => {
@@ -28,7 +28,7 @@ export const fetchRestaurants = createAsyncThunk(
                     },
                 }
             );
-            return { type, data: response.data };
+            return { type, data: response?.data?.data };
         } catch (error) {
             // console.error("Error in getting restaurants:", error?.response?.data?.message);
             // Alert.alert("Error in getting restaurants:", error?.response?.data?.message);
@@ -57,7 +57,7 @@ const restaurantSlice = createSlice({
             .addCase(fetchRestaurants.fulfilled, (state, action) => {
                 if (!action.payload) return;
                 const { type, data } = action.payload;
-                state[type] = data.data;
+                state[type] = data;
                 state.loading = false;
             })
             .addCase(fetchRestaurants.rejected, (state, action) => {

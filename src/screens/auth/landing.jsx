@@ -1,7 +1,9 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useSelector } from 'react-redux';
+
+const { width, height } = Dimensions.get('window');
 
 
 const LandingPage = () => {
@@ -22,7 +24,7 @@ const LandingPage = () => {
         <Image
           style={styles.bgImg}
           source={require("../../assets/images/bg.png")}
-          resizeMode="contain" // Ensures the image scales without cutting corners
+          resizeMode="contain"
         />
       </View>
       <View style={styles.contentContainer}>
@@ -30,8 +32,8 @@ const LandingPage = () => {
         <Text style={styles.secondaryHeading}>Satisfy your cravings with just a tap. Order, Eat, Repeat!</Text>
       </View>
       <View style={styles.bottomContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("signup")} style={{ backgroundColor: "#FA4A0C", padding: wp(4), borderRadius: wp(3), width: wp(80), alignItems: "center" }}>
-          <Text style={{ color: "#fff", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Get started</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("signup")} style={{ backgroundColor: "#FA4A0C", height: height * (64 / height), borderRadius: 10, width: width * (280 / width), alignItems: "center", justifyContent: "center" }}>
+          <Text style={{ color: "#fff", fontSize: 24, lineHeight: 43.58, fontWeight: "500", fontFamily: "OpenSans-Regular" }}>Get started</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -50,12 +52,12 @@ const styles = StyleSheet.create({
   },
   bgImgContainer: {
     position: 'absolute',
-    top: 0,
+    top: hp(-3),
     right: wp(-10),
-    width: wp(55), // Adjust width for fitting the right side properly
-    height: hp(20), // Adjust the height proportionally
-    overflow: 'hidden', // Ensure no overflow issues
-    zIndex: -1, // Ensure it's behind other components
+    width: wp(55),
+    height: hp(30),
+    overflow: 'hidden',
+    zIndex: -1,
   },
   bgImg: {
     width: '100%', // Make sure the image fits the container fully

@@ -1,4 +1,4 @@
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import Typography from '../../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import ActionButtons from './ActionButtons';
@@ -49,9 +49,9 @@ const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormDa
                 })
 
                 if (res?.data) {
-                    Alert.alert("Name Updated Successfully")
+                    ToastAndroid.show("Your Name has been Updated Successfully", ToastAndroid.LONG)
+                    setIsEditable(false)
                     dispatch(getUser({ token }))
-                    navigation.goBack()
                 }
             }
             else if (isEmail) {
@@ -64,7 +64,7 @@ const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormDa
                 })
 
                 if (res?.data) {
-                    Alert.alert("Email Updated Successfully")
+                    ToastAndroid.show("Email Address Updated Successfully", ToastAndroid.LONG)
                     dispatch(getUser({ token }))
                     navigation.goBack()
                 }
@@ -86,9 +86,8 @@ const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormDa
                 })
 
                 if (res?.ok) {
-                    Alert.alert("Profile Updated Successfully")
+                    ToastAndroid.show("Profile Updated Successfully", ToastAndroid.LONG)
                     dispatch(getUser({ token }))
-                    navigation.goBack()
                 }
             }
 
@@ -117,7 +116,7 @@ const FormInput = ({ label, placeholder, btnText, inputName, formData, setFormDa
                             editable={isEditable}
                             value={formData[inputName]} // Access the value dynamically
                             onChangeText={(text) => setFormData({ ...formData, [inputName]: text })} // Update the correct field dynamically
-                            placeholderTextColor={"#000000"} placeholder={placeholder} style={{ borderBottomWidth: wp(0.5), borderTopWidth: 0, borderLeftWidth: 0, borderWidth: 0, color: "#000000", fontFamily: "OpenSans-Regular", fontSize: wp(5) }} />
+                            placeholderTextColor={"#000000"} placeholder={placeholder} style={{ borderBottomWidth: wp(0.5), borderTopWidth: 0, borderLeftWidth: 0, borderWidth: 0, borderBottomColor: isEditable ? "#FA4A0C" : "#ccc", color: "#202020", fontFamily: "OpenSans-Regular", fontSize: wp(5) }} />
                         {!isEditable && <TouchableOpacity onPress={handleUpdate} style={{ position: "absolute", right: 0, top: hp(2.5) }}>
                             <Text style={{ color: "#FA4A0C", fontWeight: "400", fontSize: hp(2) }}>{btnText}</Text>
                         </TouchableOpacity>}

@@ -1,18 +1,19 @@
-import { ActivityIndicator, Text, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, Dimensions, Text, TouchableOpacity } from 'react-native'
 
-
+const { height, width } = Dimensions.get("window")
 const Button = ({ handlePress, loading }) => {
     return (
         <TouchableOpacity
             onPress={handlePress}
             style={{
                 backgroundColor: '#FA4A0C',
-                padding: 15,
+                height: height * (54 / height),
                 borderRadius: 15,
-                width: "90%",
+                width: "80%",
                 alignItems: 'center',
                 marginHorizontal: 'auto',
-                marginTop: 10
+                marginTop: 10,
+                justifyContent: "center"
             }}>
             {loading ? (
                 <ActivityIndicator color={'#fff'} size={'small'} />
@@ -23,6 +24,7 @@ const Button = ({ handlePress, loading }) => {
                         fontSize: 16,
                         fontWeight: '500',
                         fontFamily: 'OpenSans-Bold',
+                        lineHeight: 43.58
                     }}>
                     Continue
                 </Text>

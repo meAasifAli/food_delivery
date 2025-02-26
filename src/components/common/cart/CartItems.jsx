@@ -1,31 +1,28 @@
-import { ActivityIndicator, Alert, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Typography from '../../Typography'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useEffect, useState, } from 'react';
+import { useContext, useEffect, useState, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCartItems, } from '../../../store/cartSlice'
+import { fetchBill, fetchCartItems, } from '../../../store/cartSlice'
 import axios from 'axios';
 import { BASE_URI } from '../../../config/uri';
 import Entypo from 'react-native-vector-icons/Entypo'
 import ItemCustomizationModal from '../../../modals/ItemCustomizationModal';
 import SetUserCustomization from '../../../modals/SetUserCustomization';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
+import { LocationContext } from '../../../context/LocationContext';
+
 
 
 
 const CartItems = () => {
+    const { tipAmt, offerCode } = useContext(LocationContext)
     const [isOpenCustomization, setIsOpenCustomization] = useState(false)
     const [isOpen, setIsOpen] = useState(null)
     const dispatch = useDispatch()
-    const [refreshing, setRefreshing] = useState(false)
-    const { cart, loading } = useSelector((state) => state?.cart)
+    const { cart } = useSelector((state) => state?.cart)
     const { token } = useSelector((state) => state?.auth)
-    const [incrementLoader, setIncrementLoader] = useState(false)
-    const [decrementLoader, setDecrementLoader] = useState({});
-
-
-
-
 
 
     const toggleModal = (id) => {
@@ -51,24 +48,27 @@ const CartItems = () => {
         }
         else {
             const newQty = qty + 1;
-            setIncrementLoader((prev) => ({ ...prev, [cartItemId]: true }));
+
             try {
-                await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${cartItemId}`, {
+                const res = await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${cartItemId}`, {
                     quantity: newQty
                 }, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                dispatch(fetchCartItems({ token }))
+
+                if (res?.data) {
+                    dispatch(fetchCartItems({ token }))
+                    dispatch(fetchBill({ token, tip: tipAmt, code: offerCode }))
+                }
+
             } catch (error) {
-                setIncrementLoader((prev) => ({ ...prev, [cartItemId]: false }));
+
                 Alert.alert("error", error)
                 console.log(error?.response);
             }
-            finally {
-                setIncrementLoader((prev) => ({ ...prev, [cartItemId]: false }));
-            }
+
         }
     }
 
@@ -78,36 +78,28 @@ const CartItems = () => {
 
     const handleDecrement = async (cartItemId, qty) => {
         const newQty = qty - 1;
-        setDecrementLoader((prev) => ({ ...prev, [cartItemId]: true }));
         try {
-            await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${cartItemId}`, {
+            const res = await axios.patch(`${BASE_URI}/api/cart/itemQuantity/${cartItemId}`, {
                 quantity: newQty
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            })
-            dispatch(fetchCartItems({ token }))
+            });
+            if (res?.data) {
+                dispatch(fetchCartItems({ token }))
+                dispatch(fetchBill({ token, tip: tipAmt, code: offerCode }))
+            }
+
         } catch (error) {
-            setDecrementLoader((prev) => ({ ...prev, [cartItemId]: false }));
             console.log(error?.response);
         }
-        finally {
-            setDecrementLoader((prev) => ({ ...prev, [cartItemId]: false }));
-            setDecrementLoader(false)
-        }
-    }
+    };
 
-
-    const handleRefresh = () => {
-        setRefreshing(true)
-        dispatch(fetchCartItems({ token }))
-        setRefreshing(false)
-    }
 
     return (
         <View style={styles.ItemContainer}>
-            <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />} showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 {
                     cart && cart?.map((item, id) => (
                         <View key={id} style={styles.ItemWrapper}>
@@ -115,8 +107,8 @@ const CartItems = () => {
                                 <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
                                     <AntDesign name='caretup' size={hp(1)} color={"#FA4A0C"} />
                                 </View>
-                                <View>
-                                    <Typography title={item?.item_name} ff={"OpenSans-Regular"} size={12} lh={16} fw={300} color={"#000000"} />
+                                <View style={{ maxWidth: 100 }}>
+                                    <Typography title={item?.item_name} ff={"OpenSans-Regular"} size={14} lh={16} fw={300} color={"#000000"} />
                                     {
                                         Object.keys(item?.customizations)?.length > 0 && <TouchableOpacity onPress={() => toggleModal(item?.cart_item_id)} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                                             <Text style={{ fontSize: 13, fontFamily: "OpenSans-Regular", color: "#ccc" }}>customize</Text>
@@ -126,29 +118,22 @@ const CartItems = () => {
                                     <ItemCustomizationModal isOpen={isOpen === item?.cart_item_id} setIsOpen={() => toggleModal(item?.item_id)} item={item} />
                                 </View>
                             </View>
+                            <View>
+                                <Typography title={`₹${parseInt(item?.item_total)}`} ff={"OpenSans-Medium"} size={14} lh={16} fw={400} color={"#202020"} />
+                            </View>
                             <View style={styles.ItemRightWrapper}>
                                 <View style={styles.ItemRightLeftWrapper}>
                                     <TouchableOpacity onPress={() => handleIncrement(item?.cart_item_id, item?.quantity, item?.customizations)}>
-                                        <Text style={styles.actionTextPlus}>{
-                                            incrementLoader[item?.cart_item_id] ? <ActivityIndicator size={15} color={"#FA4A0C"} /> : '+'
-                                        }</Text>
+                                        <AntDesignIcon name='plus' size={18} color={"#FA4A0C"} />
                                     </TouchableOpacity>
-                                    <SetUserCustomization setIsCustomization={() => toggleModal(item?.cart_item_id)} cartItemId={item?.cart_item_id} quantity={item?.quantity} title={item?.item_name} price={item?.item_price} isOpen={isOpenCustomization === item?.cart_item_id} setIsOpen={setIsOpenCustomization} />
+                                    <SetUserCustomization item={item} setIsCustomization={() => toggleModal(item?.cart_item_id)} cartItemId={item?.cart_item_id} quantity={item?.quantity} title={item?.item_name} price={item?.item_price} isOpen={isOpenCustomization === item?.cart_item_id} setIsOpen={setIsOpenCustomization} />
                                     <View>
-                                        <Typography title={item?.quantity} ff={"OpenSans-Regular"} size={15} lh={16} fw={400} color={"#FA4A0C"} />
+                                        <Text style={{ fontSize: 18, fontFamily: "OpenSans-Bold", lineHeight: 23, color: "#FA4A0C" }}>{item?.quantity}</Text>
                                     </View>
                                     <TouchableOpacity onPress={() => handleDecrement(item?.cart_item_id, item?.quantity)}>
-
-                                        <Text style={styles.actionTextMinus}>{
-                                            decrementLoader[item?.cart_item_id] ? <ActivityIndicator size={15} color={"#FA4A0C"} /> : '-'
-                                        }</Text>
-
+                                        <AntDesignIcon name='minus' size={18} color={"#FA4A0C"} />
                                     </TouchableOpacity>
                                 </View>
-                                <View>
-                                    <Typography title={`Rs: ${item?.item_total}`} ff={"OpenSans-Regular"} size={12} lh={16} fw={400} color={"#202020"} />
-                                </View>
-
                             </View>
                         </View>
                     ))
@@ -203,9 +188,10 @@ const styles = StyleSheet.create({
         gap: wp(1),
         borderColor: "#D6D6D6",
         borderWidth: 1,
-        height: hp(4),
-        width: wp(20),
+        height: hp(5),
+        width: wp(23),
         borderRadius: wp(1),
+        paddingHorizontal: 5
     },
     actionTextPlus: { fontSize: 15, lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginLeft: wp(3) },
     actionTextMinus: { fontSize: 15, lineHeight: hp(2), fontWeight: "400", color: "#FA4A0C", marginRight: wp(3) },

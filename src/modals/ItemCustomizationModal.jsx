@@ -1,5 +1,5 @@
 
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
@@ -148,16 +148,14 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
                 option_ids: []
             }])
             if (res?.data) {
-                Alert.alert("Success", "Customization updated successfully")
+                ToastAndroid.showWithGravity(`Customization updated successfully`, ToastAndroid.LONG, ToastAndroid.TOP)
                 setIsOpen(false)
             }
         } catch (error) {
             console.log(error?.response);
-            Alert.alert("Error in updating customization: ", error?.response?.data?.message)
+            ToastAndroid.showWithGravity(error?.response?.data?.message, ToastAndroid.LONG, ToastAndroid.TOP)
         }
     }
-
-
 
     return (
         <Modal
@@ -166,12 +164,9 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
             // swipeDirection="down"
             // onSwipeComplete={toggleFirstDrawer}
             style={styles.modal}
-            backdropColor='transparent'
-            backdropOpacity={0.50}
-            animationIn={"slideInUp"}
-            animationInTiming={1000}
-            animationOut={"slideOutDown"}
-            animationOutTiming={1000}
+            backdropColor='black'
+            backdropOpacity={0.80}
+
 
         >
             <View style={styles.drawer}>
@@ -179,8 +174,6 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                         <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
                             <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16 }}>{item?.item_name}</Text>
-                            <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16 }}>&middot;</Text>
-                            <Text style={{ color: "#fff", fontFamily: "OpenSans-Regular", fontSize: 16 }}>{item?.item_price}</Text>
                         </View>
                         <TouchableOpacity onPress={setIsOpen}>
                             <AntDesign name='closecircle' color={"#fff"} size={20} />
@@ -193,8 +186,6 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
                     <View>
                         {
                             customizations && Object.entries(customizations || {})?.map(([key, customization]) => {
-                                // console.log("customization : ", customization.title_id);
-
                                 return (
                                     <View key={key}>
                                         <View style={{ marginTop: 15 }}>
@@ -204,8 +195,6 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
                                         <View style={styles.extraContainer}>
                                             {
                                                 customization?.options?.map((data, id) => {
-                                                    // console.log("data: ", data);
-
                                                     return (
                                                         <View key={id} style={styles.sizeItem}>
                                                             {
@@ -224,7 +213,14 @@ const ItemCustomizationModal = ({ isOpen, setIsOpen, item }) => {
 
                                                                             }}>{data?.option_name}</Text>
                                                                         </View>
-                                                                        <View>
+                                                                        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                                                                            <Text style={{
+                                                                                color: "#fff",
+                                                                                fontFamily: "OpenSans-Regular",
+                                                                                fontSize: 16,
+                                                                                lineHeight: 23,
+
+                                                                            }}>{`RS: ${parseInt(data?.additional_price)}`}</Text>
                                                                             <RadioButton
                                                                                 size={10}
                                                                                 animation={"bounceIn"}

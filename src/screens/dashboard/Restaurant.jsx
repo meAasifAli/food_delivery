@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import Typography from '../../components/Typography';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -15,6 +15,8 @@ import MenuItem from '../../components/common/restaurant/MenuItem';
 import { Keyboard } from 'react-native';
 import { Text } from 'react-native';
 import { LocationContext } from '../../context/LocationContext';
+import { List } from 'react-content-loader/native';
+
 
 
 
@@ -27,23 +29,30 @@ const Restaurant = ({ route, navigation }) => {
     const [selectedMenu, setSelectedMenu] = useState("veg")
     const { restaurantId } = route.params;
     const [size, setSize] = useState("small")
-    const [expandedCategory, setExpandedCategory] = useState(null);
+    const [filter, setFilter] = useState("")
+    const [expandedCategories, setExpandedCategories] = useState([]);
     const [refreshing, setRefreshing] = useState(false)
     const { location } = useContext(LocationContext)
 
     const { savedUserAddresses } = useSelector(state => state?.address)
-
     const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
+
+
+
 
     useEffect(() => {
         if (restaurant?.menu) {
             const firstCategory = Object.keys(restaurant.menu)[0];
-            setExpandedCategory(firstCategory);
+            setExpandedCategories([firstCategory]);
         }
     }, [restaurant?.menu]);
 
     const toggleCategory = (category) => {
-        setExpandedCategory((prev) => (prev === category ? null : category));
+        setExpandedCategories((prev) =>
+            prev.includes(category)
+                ? prev.filter((cat) => cat !== category)
+                : [...prev, category]
+        );
     };
 
 
@@ -54,7 +63,7 @@ const Restaurant = ({ route, navigation }) => {
         const fetchRestaurant = async () => {
             try {
                 setLoading(true)
-                const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/${selectedAddress ? selectedAddress?.lat : location?.latitude}/${selectedAddress ? selectedAddress?.lon : location?.longitude}?type=${selectedMenu}`, {
+                const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/${selectedAddress ? selectedAddress?.lat : location?.latitude}/${selectedAddress ? selectedAddress?.lon : location?.longitude}?type=${selectedMenu}&filter=${filter}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -64,7 +73,9 @@ const Restaurant = ({ route, navigation }) => {
                     dispatch(setRestaurant(res?.data?.data))
                 }
             } catch (error) {
-                Alert.alert("Error in fetching restaurant", error?.response?.data?.message);
+                console.log(error);
+
+                // Alert.alert("Error in fetching restaurant", error?.response?.data?.message);
                 setLoading(false)
             }
             finally {
@@ -72,7 +83,7 @@ const Restaurant = ({ route, navigation }) => {
             }
         }
         fetchRestaurant()
-    }, [restaurantId, selectedMenu])
+    }, [restaurantId, selectedMenu, filter])
 
 
 
@@ -86,7 +97,7 @@ const Restaurant = ({ route, navigation }) => {
     const handleRefresh = async () => {
         try {
             setRefreshing(true)
-            const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/${selectedAddress ? selectedAddress?.lat : location?.latitude}/${selectedAddress ? selectedAddress?.lon : location?.longitude}?type=${selectedMenu}`, {
+            const res = await axios.get(`${BASE_URI}/api/menu/${restaurantId}/${selectedAddress ? selectedAddress?.lat : location?.latitude}/${selectedAddress ? selectedAddress?.lon : location?.longitude}?type=${selectedMenu}&filter=${filter}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
@@ -96,22 +107,21 @@ const Restaurant = ({ route, navigation }) => {
                 dispatch(setRestaurant(res?.data?.data))
             }
         } catch (error) {
-            Alert.alert("Error in fetching restaurant", error?.response?.data?.message);
+            console.log("Error in fetching restaurant: ", error);
+
+            // Alert.alert("Error in fetching restaurant", error?.message);
             setRefreshing(false)
         }
         finally {
             setRefreshing(false)
         }
     }
-    return loading ?
-        (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <ActivityIndicator size="large" color="black" />
-            </View>
-        ) : (
+    return (
+        <View style={{ flex: 1 }}>
+            {/* header */}
+            <Header item={restaurant} />
             <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />} showsVerticalScrollIndicator={false} style={styles.container}>
-                {/* header */}
-                <Header />
+
                 {/* Restaurant Details */}
                 <RestaurantDetails item={restaurant} />
                 {/* Menu Divider */}
@@ -120,11 +130,11 @@ const Restaurant = ({ route, navigation }) => {
                 <View>
                     <SearchMenu handleFocus={handleFocusSearch} />
                 </View>
-                <Menus selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
+                <Menus filter={filter} setFilter={setFilter} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
                 <View>
                     {restaurant?.menu &&
                         Object.entries(restaurant.menu).map(([category, items], categoryIndex) => (
-                            <View key={categoryIndex} style={{ marginBottom: 20 }}>
+                            <View key={categoryIndex} style={{ marginBottom: 30 }}>
                                 {/* Display category name */}
                                 <TouchableOpacity
                                     onPress={() => toggleCategory(category)}
@@ -138,18 +148,22 @@ const Restaurant = ({ route, navigation }) => {
                                             lh={21}
                                             ls={0.05}
                                             fw={600}
-                                            ff={"OpenSans-Regular"}
+                                            ff={"OpenSans-Bold"}
                                         />
                                         <SimpleLineIcons
-                                            name={expandedCategory === category ? 'arrow-down' : 'arrow-up'}
+                                            name={expandedCategories.includes(category) ? 'arrow-down' : 'arrow-up'}
                                             size={20}
-                                            color={"#202020"}
+                                            color={"#c6c6c6"}
                                         />
                                     </View>
                                 </TouchableOpacity>
-                                {expandedCategory === category && (
-                                    <View style={styles.categoryItems}>
-                                        {Array.isArray(items) ? (
+
+                                {expandedCategories.includes(category) && (
+                                    <>
+                                        {
+                                            refreshing && loading && <List />
+                                        }
+                                        {Array.isArray(items) && items.length > 0 ? (
                                             items.map((item, itemIndex) => (
                                                 <MenuItem
                                                     selectedMenu={selectedMenu}
@@ -165,19 +179,23 @@ const Restaurant = ({ route, navigation }) => {
                                                     color: 'gray',
                                                     fontFamily: "OpenSans-Regular",
                                                     textAlign: "center",
+                                                    paddingVertical: 10
                                                 }}
                                             >
-                                                {items?.message || 'No items found'}
+                                                No items found
                                             </Text>
                                         )}
-                                    </View>
+                                    </>
                                 )}
                             </View>
                         ))}
                 </View>
 
+
             </ScrollView>
-        )
+        </View>
+
+    )
 }
 
 export default Restaurant

@@ -11,29 +11,29 @@ const { height, width } = Dimensions.get("window")
 
 const RestaurantCard = ({ navigation, item, isPopular }) => {
 
-    // console.log("Item", item);
+
 
 
     return (
         <TouchableOpacity onPress={() => navigation.navigate("Restaurant", { restaurantId: item?.restaurant_id })} style={[styles.restaurantsContainer, {
-            elevation: 4,
+            elevation: 1,
             backgroundColor: isPopular ? "#000" : "#fff",
         }]}>
             <Image source={{ uri: item?.profile }} style={styles.restaurantImg} />
             <View style={styles.restaurantContentWrapper}>
-                <Typography title={item?.restaurant_name} color={isPopular ? "#fff" : "#000000"} ff={"OpenSans_regular"} size={hp(2.7)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
+                <Typography title={item?.restaurant_name} color={isPopular ? "#fff" : "#000000"} ff={"OpenSans-Medium"} size={16} ls={wp(0.05)} fw={400} ta={"center"} />
                 <View style={styles.divider}></View>
                 <View style={styles.ratingWrapper}>
                     <View style={styles.ratingLeftWrapper}>
-                        <Typography title={item?.avg_rating} color={"#fff"} ff={"OpenSans_regular"} size={hp(1.7)} lh={hp(2.2)} ls={0.05} fw={400} ta={"center"} />
+                        <Typography title={item?.avg_rating} color={"#fff"} ff={"OpenSans-Regular"} size={hp(1.7)} lh={hp(2.2)} ls={0.05} fw={400} ta={"center"} />
                         <Entypo name='star-outlined' size={12} color={"#fff"} />
                     </View>
                     <View>
-                        <Typography title={`${item?.delivery_time} ${item?.delivery_time >= 60 ? "hours" : "minutes"}`} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
+                        <Typography title={`${item?.delivery_time} ${item?.delivery_time >= 60 ? "hours" : "minutes"}`} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans-Medium"} size={14} lh={21} ls={0.05} fw={300} />
                     </View>
                 </View>
                 <View style={styles.desWrapper}>
-                    <Typography lines={1} title={item?.categories?.join(", ")} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} ta={"center"} />
+                    <Typography lines={1} title={item?.categories?.join(", ")} color={isPopular ? "#fff" : "#202020"} ff={"OpenSans-Regular"} size={12} lh={21} ls={0.05} fw={300} ta={"center"} />
                 </View>
             </View>
         </TouchableOpacity>
@@ -44,8 +44,8 @@ export default RestaurantCard
 
 const styles = StyleSheet.create({
     restaurantsContainer: {
-        height: hp("30%"),
-        width: width * 0.65,
+        height: height * (215 / height),
+        width: width * (200 / width),
         borderColor: "#D6D6D6",
         borderWidth: 1,
         borderRadius: 10,
@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
         marginTop: 40,
     },
     restaurantImg: {
-        height: height * 0.13,
-        width: width * 0.40,
+        height: 100,
+        width: width * (150 / width),
         position: "absolute",
-        top: -30,
-        left: "20%",
-        borderRadius: 10,
+        top: -35,
+        left: "13%",
+        borderRadius: 8,
         resizeMode: "cover"
     },
     restaurantContentWrapper: {

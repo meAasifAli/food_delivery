@@ -22,7 +22,7 @@ export default OtpInputs;
 const styles = StyleSheet.create({
     otpWrapper: {
         paddingHorizontal: 12,
-        paddingVertical: 16,
+        paddingVertical: 24,
     },
     otpPinCodeContainer: {
         backgroundColor: '#fff',

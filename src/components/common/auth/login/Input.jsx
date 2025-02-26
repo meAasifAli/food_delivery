@@ -1,5 +1,7 @@
-import { KeyboardAvoidingView, Platform, Text, TextInput, } from 'react-native'
+import { Dimensions, KeyboardAvoidingView, Platform, Text, TextInput, } from 'react-native'
 
+
+const { width, height } = Dimensions.get('window')
 
 const Input = ({ mobile, setMobile }) => {
     return (
@@ -8,7 +10,7 @@ const Input = ({ mobile, setMobile }) => {
             <TextInput
                 value={mobile}
                 onChangeText={(text) => setMobile(text)}
-                keyboardType='phone-pad' placeholderTextColor={"white"} placeholder='Enter Mobile Number' style={{ padding: 15, borderColor: "#fff", borderWidth: 1, width: "90%", borderRadius: 15, marginVertical: 10, color: "#fff", marginHorizontal: "auto", fontFamily: "OpenSans-Regular", fontSize: 16 }} />
+                keyboardType='phone-pad' placeholderTextColor={"white"} placeholder='Enter Mobile Number' style={{ height: height * (54 / height), borderColor: "#fff", borderWidth: 1, width: "90%", borderRadius: 10, marginVertical: 10, color: "#fff", marginHorizontal: "auto", fontFamily: "OpenSans-Regular", fontSize: 16, paddingHorizontal: 10 }} />
         </KeyboardAvoidingView>
     )
 }
