@@ -37,30 +37,29 @@ const TopRated = ({ navigation }) => {
       <View style={styles.headingContainer}>
         {/* right */}
         <View>
-          <Text style={{ color: "#000", fontSize: 20, lineHeight: 27, fontWeight: "600", fontFamily: "OpenSans-SemiBold", letterSpacing: 0.05 }}>Top Rated</Text>
-
+          <Text style={{ color: "#000", fontFamily: "OpenSans-Bold", fontSize: 16, fontWeight: "600" }}>TopRated</Text>
         </View>
         {/* left */}
         <TouchableOpacity
           onPress={() => navigation.navigate('TopRated')}
           style={styles.headingLeftWrapper}>
-          <Text style={{ color: "#000", fontSize: 16, lineHeight: 21, fontWeight: "300", fontFamily: "OpenSans-Regular", letterSpacing: 0.05 }}>View All</Text>
-          <Entypo name="chevron-small-down" size={16} color={'#000'} />
+          <Text style={{ color: "#000", fontFamily: "OpenSans-Regular", fontSize: 14, fontWeight: "300" }}>View All</Text>
+          <Entypo name="chevron-small-down" size={14} color={'#000'} />
         </TouchableOpacity>
       </View>
-      <>
-        <FlatList
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          data={topRated}
-          keyExtractor={item => item?.restaurant_id}
-          renderItem={({ item }) => (
-            loading ? <List height={300} /> :
-              <RestaurantCard item={item} navigation={navigation} />
-          )}
-        />
 
-      </>
+      <FlatList
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        data={topRated}
+        keyExtractor={item => item?.restaurant_id}
+        renderItem={({ item }) => (
+          loading ? <List height={300} /> :
+            <RestaurantCard item={item} navigation={navigation} />
+        )}
+      />
+
+
     </>
   );
 };

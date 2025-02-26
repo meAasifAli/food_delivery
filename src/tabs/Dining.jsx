@@ -1,7 +1,6 @@
 
 
-import { Alert, Image, Pressable, RefreshControl, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
-import TopBar from '../components/common/dashboard/TopBar';
+import { Alert, Dimensions, Image, Keyboard, TouchableOpacity, RefreshControl, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import Categories from '../components/common/dashboard/Categories';
 import Nearest from '../components/common/dashboard/Nearest';
 import TopRated from '../components/common/dashboard/TopRated';
@@ -15,12 +14,15 @@ import { getUser } from '../store/authSlice';
 import { fetchSavedAddresses, setAddress } from '../store/addressSlice';
 import { API_KEY, BASE_URI } from '../config/uri';
 import axios from 'axios';
-import { heightPercentageToDP } from 'react-native-responsive-screen';
 import { useSocket } from '../context/SocketContext';
 import { fetchRestaurants } from '../store/restaurantSlice';
+import SearchInput from '../components/SearchInput';
+import Entypo from 'react-native-vector-icons/Entypo'
+
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
-
+const { width } = Dimensions.get('window')
 
 
 const Dining = () => {
@@ -38,7 +40,16 @@ const Dining = () => {
 
     const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
 
+    useEffect(() => {
+        dispatch(fetchSavedAddresses({ token }))
+    }, [dispatch])
 
+    const { user } = useSelector(state => state?.auth)
+
+
+    useEffect(() => {
+        dispatch(getUser({ token }))
+    }, [])
 
     const onRefresh = async () => {
         setRefreshing(true);
@@ -129,6 +140,9 @@ const Dining = () => {
 
         const handleDisconnect = (reason) => {
             console.log("⚠️ User disconnected:", reason);
+            setTimeout(() => {
+                socket.connect();
+            }, 2000);
         };
 
 
@@ -165,7 +179,6 @@ const Dining = () => {
                 }
             } catch (error) {
                 setCategoryLoading(false)
-                // Alert.alert("Error in Getting the categories: ", error?.response?.data?.message)
             }
             finally {
                 setCategoryLoading(false)
@@ -178,16 +191,83 @@ const Dining = () => {
         dispatch(fetchSavedAddresses({ token }))
     }, [token])
 
+    const handleFocus = () => {
+        navigation.navigate("SearchedRestaurants", { query: "" })
+        // setIsOpen(prev => !prev)
+        Keyboard.dismiss()
+    }
+
 
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={"#202020"} barStyle={"light-content"} />
-            {/* TopBar */}
-            <TopBar />
+            <View
+                style={styles.topBar}
+            >
+                {/* heading */}
+                <View style={styles.topBarHeading}>
+                    <View style={styles.topBarHeadingLeft}>
+                        {
+                            savedUserAddresses?.length > 0 ?
+                                <TouchableOpacity style={{ width: "90%" }} onPress={() => navigation.navigate("AddAddress")}>
+
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                                        <View >
+                                            <Image style={{ height: 25, width: 25 }} source={{ uri: "https://cdn-icons-png.flaticon.com/512/11202/11202939.png" }} />
+                                        </View>
+                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <Text style={{ fontSize: 14, fontFamily: "OpenSans-Medium", color: "#fff" }}>{`${selectedAddress?.type}`}</Text>
+                                            <Entypo name='chevron-small-down' size={16} color={"#fff"} />
+                                        </View>
+                                    </View>
+                                    <View>
+                                        <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#fff", marginTop: 5, maxWidth: "100%" }}>{`${selectedAddress?.house_no}, ${selectedAddress?.area}, ${selectedAddress?.city}, ${selectedAddress?.state}`}</Text>
+                                    </View>
+
+                                </TouchableOpacity>
+
+                                :
+
+                                <TouchableOpacity onPress={() => navigation.navigate("AddAddress")}>
+
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+                                        <View>
+                                            <Image style={{ height: 25, width: 25 }} source={{ uri: "https://cdn-icons-png.flaticon.com/512/11202/11202939.png" }} />
+                                        </View>
+                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <Text style={{ fontSize: 14, fontFamily: "OpenSans-Medium", color: "#fff" }}>{address?.split(",")[0]}</Text>
+                                            <Entypo name='chevron-small-down' size={16} color={"#fff"} />
+                                        </View>
+                                    </View>
+                                    <View>
+                                        <Text style={{ fontSize: 12, fontFamily: "OpenSans-Regular", color: "#fff", marginTop: 5, maxWidth: "100%" }}>{address?.split(",")?.slice(0, 3).join(",")}</Text>
+                                    </View>
+
+                                </TouchableOpacity>
+                        }
+                    </View>
+                    <TouchableOpacity onPress={() => { navigation.navigate("Profile") }}>
+                        <Image
+                            source={{ uri: user?.profile ? user?.profile : "https://cdn-icons-png.flaticon.com/512/149/149071.png" }}
+                            style={styles.profileAvatar} />
+                    </TouchableOpacity>
+                </View>
+
+            </View>
             <ScrollView contentContainerStyle={{ paddingBottom: 90 }}
                 showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
+                <View style={{ backgroundColor: "#202020", borderBottomStartRadius: 25, borderBottomEndRadius: 25, paddingBottom: 10 }}>
+                    <View style={{ maxWidth: width * (278 / width), marginHorizontal: "auto", marginVertical: 15 }}>
+                        <Text style={{ fontFamily: "OpenSans-Italic", textAlign: "center", fontSize: 16, lineHeight: 21, letterSpacing: 0.07, fontWeight: "300", color: "#fff" }}>Embark on a culinary adventure
+                            Let's find your next Flavor Sensation!</Text>
+                    </View>
+                    {/* search input */}
+                    <View style={{ marginBottom: 10 }}>
+                        <SearchInput handleFocus={handleFocus} placeholder={"Search for Biryani"} />
+                    </View>
+                </View>
                 {/* category slider */}
                 <Categories loading={categoryLoading} categories={categories} navigation={navigation} />
                 <View style={{ marginTop: 20, marginHorizontal: 10 }}>
@@ -199,7 +279,6 @@ const Dining = () => {
                     <PopularBrands navigation={navigation} />
                 </View>
             </ScrollView>
-
         </View >
 
     )
@@ -213,5 +292,49 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         position: "relative"
     },
+    topBar: {
+        backgroundColor: "#202020",
+        paddingVertical: hp(2),
+        paddingHorizontal: wp(5),
+        elevation: 1
+    },
+    topBarHeading: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 20
+        // paddingRight: 10
+
+    },
+    topBarHeadingLeft: {
+        display: "flex",
+        flexDirection: "row",
+    },
+    profileAvatar: {
+        height: hp(7),
+        width: hp(7),
+        borderRadius: wp(10),
+        borderColor: "#fff",
+        borderWidth: 1,
+        resizeMode: "cover",
+
+    },
+    contentWrapper: {
+        marginTop: hp(3),
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+
+    },
 })
 
+// : <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//     <View>
+//         <Image style={{ height: 200, width: 300, resizeMode: "contain" }} source={{ uri: "https://images.pond5.com/orange-delivery-truck-side-view-illustration-084843535_iconl.jpeg" }} />
+//     </View>
+//     <View style={{ paddingHorizontal: 20 }}>
+//         <Text style={{ fontSize: 20, fontFamily: "OpenSans-Bold", color: "#202020", textAlign: "center" }}>We&apos;re not there yet</Text>
+//         <Text style={{ fontSize: 16, fontFamily: "OpenSans-Regular", color: "#202020", textAlign: "center", marginTop: 10 }}>Sorry, our services are currently unavailabale at this location. we hope to serve you in future.</Text>
+//     </View>
+// </View>

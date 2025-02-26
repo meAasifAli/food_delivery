@@ -1,26 +1,31 @@
-import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import useGetPastOrders from '../hooks/useGetPastOrders'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { BASE_URI } from '../config/uri'
 import { useSelector } from 'react-redux'
 import PaymentSuccess from '../modals/PaymentSuccess'
 import RazorpayCheckout from 'react-native-razorpay'
+import { List } from 'react-content-loader/native'
+import { LocationContext } from '../context/LocationContext'
+import { getFormattedDate } from '../utils/date'
 
 
 const Reorder = () => {
     const { token, user } = useSelector((state) => state?.auth)
     const [isPaymentSuccess, setIsPaymentSuccess] = useState(false)
-    const { loading, handleFetchPastOrders, orders } = useGetPastOrders()
+    const { handleFetchPastOrders, orders } = useGetPastOrders()
+    const { offerCode, tipAmt } = useContext(LocationContext)
     useEffect(() => {
         handleFetchPastOrders()
     }, [])
-    const handleInitiateOrder = async () => {
+    const handleReorder = async (orderId) => {
 
         try {
-            const res = await axios.post(`${BASE_URI}/api/user/orderPayment`, {
-                // "offer_code": "WELCOME20",
-                "delivery_tip": 0
+            const res = await axios.post(`${BASE_URI}/api/user/reOrderPayment`, {
+                offer_code: offerCode,
+                delivery_tip: tipAmt,
+                order_id: orderId
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -49,7 +54,7 @@ const Reorder = () => {
                 RazorpayCheckout.open(options).then(async (data) => {
                     console.log(data?.razorpay_signature);
 
-                    const response = await axios.post(`${BASE_URI}/api/user/verifyPayment`, {
+                    const response = await axios.post(`${BASE_URI}/api/user/verifyReorder`, {
                         razorpay_order_id: res?.data?.order.id, razorpay_payment_id: data?.razorpay_payment_id, razorpay_signature: data?.razorpay_signature
                     })
                     if (response?.data) {
@@ -59,15 +64,17 @@ const Reorder = () => {
 
                     // handle failure
                     console.log("error: ", error?.response?.data?.message);
-                    Alert.alert(`Error: ${error?.response?.data?.message}`);
+                    ToastAndroid.show(`Error: ${error?.response?.data?.message}`, ToastAndroid.LONG);
                 })
             }
         } catch (error) {
             console.log(error?.message);
-
-            Alert.alert("Error in initiating the order: ", error?.response.data?.message)
+            ToastAndroid.show(`Error: ${error?.response?.data?.message}`, ToastAndroid.LONG);
         }
     }
+
+
+
 
     return (
         <View style={{ padding: 15, flex: 1, backgroundColor: "#fff" }}>
@@ -75,11 +82,13 @@ const Reorder = () => {
                 <Text style={{ fontSize: 16, color: "#202020", fontFamily: "OpenSans-Bold" }}>Reorder</Text>
             </View>
             <FlatList
+                contentContainerStyle={{ paddingBottom: 50, marginTop: 20 }}
+                showsVerticalScrollIndicator={false}
                 data={orders}
                 keyExtractor={order => order.order_id.toString()}
                 ListEmptyComponent={() => (
-                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                        <Text style={{ fontSize: 16, color: "#202020", fontFamily: "OpenSans-Bold" }}>No orders found</Text>
+                    <View style={{ marginTop: 20, flex: 1 }}>
+                        <List />
                     </View>
                 )}
                 renderItem={({ item }) => (
@@ -97,27 +106,30 @@ const Reorder = () => {
                         shadowOpacity: 0.1,
                         shadowOffset: { width: 0, height: 0 },
                         shadowRadius: 10,
-                        marginVertical: 10
+                        marginVertical: 10,
+                        paddingVertical: 10
                     }}>
                         <View style={{ marginLeft: 10 }}>
                             <Text style={{ fontSize: 14, color: "#202020", fontFamily: "OpenSans-Bold", lineHeight: 25, letterSpacing: 0.1 }}>{item?.restaurant_name}</Text>
-                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }}>
-                                <Text style={{ fontSize: 12, color: "#202020", fontFamily: "OpenSans-Regular", lineHeight: 20, letterSpacing: 0.1 }}>Ratings</Text>
-                                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 5 }}>
-                                    <Image style={{ width: 10, height: 10, resizeMode: "contain" }} source={require("../assets/images/star.png")} />
-                                    <Image style={{ width: 10, height: 10, resizeMode: "contain" }} source={require("../assets/images/star.png")} />
-                                    <Image style={{ width: 10, height: 10, resizeMode: "contain" }} source={require("../assets/images/star.png")} />
+                            <View>
+                                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }}>
+                                    <Text style={{ fontSize: 12, color: "#202020", fontFamily: "OpenSans-Medium", lineHeight: 20, letterSpacing: 0.1 }}>Ratings: </Text>
+                                    <Text style={{ fontSize: 12, color: "#202020", fontFamily: "OpenSans-Medium", lineHeight: 20, letterSpacing: 0.1 }}>{item?.items[0]?.user_rating}</Text>
+                                </View>
+                                <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10, marginTop: -5 }}>
+                                    <Text style={{ fontSize: 12, color: "#202020", fontFamily: "OpenSans-Medium", lineHeight: 20, letterSpacing: 0.1 }}>ordered on: </Text>
+                                    <Text style={{ fontSize: 12, color: "#202020", fontFamily: "OpenSans-Medium", lineHeight: 20, letterSpacing: 0.1 }}>{getFormattedDate(item?.order_date)}</Text>
                                 </View>
                             </View>
-                            <View>
-                                <TouchableOpacity onPress={handleInitiateOrder} style={{ backgroundColor: "#FA4A0C", height: 25, display: "flex", justifyContent: "center", alignItems: "center", borderRadius: 15, marginTop: 5 }}>
-                                    <Text style={{ color: "#fff", fontFamily: "OpenSans-Medium", fontSize: 12 }}>Order again</Text>
-                                </TouchableOpacity>
-                                <PaymentSuccess isOpen={isPaymentSuccess} setIsOpen={setIsPaymentSuccess} />
-                            </View>
+
+                            <TouchableOpacity onPress={() => handleReorder(item?.order_id)} style={{ backgroundColor: "#FA4A0C", height: 30, display: "flex", justifyContent: "center", alignItems: "center", borderRadius: 15, marginTop: 5 }}>
+                                <Text style={{ color: "#fff", fontFamily: "OpenSans-Medium", fontSize: 12 }}>Order again</Text>
+                            </TouchableOpacity>
+                            <PaymentSuccess isOpen={isPaymentSuccess} setIsOpen={setIsPaymentSuccess} />
+
                         </View>
                         <View style={{ marginRight: 10 }}>
-                            <Image style={{ width: 100, height: 100, resizeMode: "contain" }} source={require("../assets/images/burgers.png")} />
+                            <Image style={{ width: 100, height: 100, resizeMode: "cover", borderRadius: 15 }} source={{ uri: item?.profile }} />
                         </View>
                     </View>
                 )}
@@ -128,4 +140,3 @@ const Reorder = () => {
 
 export default Reorder
 
-const styles = StyleSheet.create({})

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URI } from '../config/uri'
 import axios from "axios";
-import { setAuthenticated, setToken, setUser } from "../store/authSlice";
+import { setAuthenticated, setOtp, setToken, setUser } from "../store/authSlice";
 import { Alert } from "react-native";
 
 
@@ -25,6 +25,7 @@ const useOtp = () => {
                 if (res?.data) {
                     dispatch(setAuthenticated());
                     dispatch(setToken(res?.data?.token));
+                    dispatch(setOtp(null))
                 }
             }
             if (verificationWindow === 'signin') {

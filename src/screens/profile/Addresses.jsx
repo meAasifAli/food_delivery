@@ -1,22 +1,17 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Typography from '../../components/Typography'
 import { useDispatch, useSelector } from 'react-redux';
-import { useContext, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchSavedAddresses } from '../../store/addressSlice';
 import AddressCard from '../../components/common/profile/addresses/AddressCard';
 import Header from '../../components/common/profile/addresses/Header';
-import { LocationContext } from '../../context/LocationContext';
+
 
 
 
 const Addresses = () => {
-
-
-
-
-
-
+    const [isRefreshing, setIsRefreshing] = useState(false)
     const dispatch = useDispatch()
     const { savedUserAddresses } = useSelector((state) => state?.address)
     const { token } = useSelector((state) => state?.auth)
@@ -27,11 +22,15 @@ const Addresses = () => {
     }, [])
 
 
-    // console.log(savedUserAddresses, "savedUserAddresses");
+    const onRefresh = () => {
+        setIsRefreshing(true)
+        dispatch(fetchSavedAddresses({ token }))
+        setIsRefreshing(false)
+    }
 
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />} style={styles.container}>
             <Header />
             <View style={{ padding: wp(5) }}>
                 <Typography title={"Saved Addresses"} ff={"OpenSans-Regular"} color={"#000000"} fw={300} size={hp(2.3)} />
@@ -44,7 +43,7 @@ const Addresses = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 {
                     savedUserAddresses && savedUserAddresses?.map((item, id) => (
-                        <AddressCard item={item} key={id} title={item?.type} Phone={item?.R_phone_no} address={`${item?.area} ${item?.city} ${item?.state}`} img={item?.type === "home" ? require("../../assets/images/home.png") : require("../../assets/images/building.png")} />
+                        <AddressCard item={item} key={id} title={item?.type} Phone={item?.R_phone_no} address={`${item?.house_no}, ${item?.area}, ${item?.city}, ${item?.state}`} img={item?.type === "home" ? require("../../assets/images/home.png") : require("../../assets/images/building.png")} />
                     ))
                 }
             </ScrollView>

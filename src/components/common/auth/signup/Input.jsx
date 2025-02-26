@@ -1,4 +1,6 @@
-import { KeyboardAvoidingView, Text, TextInput } from "react-native"
+import { Dimensions, KeyboardAvoidingView, Text, TextInput } from "react-native"
+
+const { width, height } = Dimensions.get("window")
 
 const Input = ({ label, placeholder, type, value, onChange }) => {
     return (
@@ -7,7 +9,7 @@ const Input = ({ label, placeholder, type, value, onChange }) => {
             <TextInput
                 value={value}
                 onChangeText={onChange}
-                keyboardType={type} placeholderTextColor={"white"} placeholder={placeholder} style={{ fontFamily: "OpenSans-Regular", fontSize: 16, padding: 15, borderColor: "#fff", borderWidth: 1, width: "90%", borderRadius: 15, marginVertical: 5, color: "#fff", marginHorizontal: "auto" }} />
+                keyboardType={type} placeholderTextColor={"white"} placeholder={placeholder} style={{ fontFamily: "OpenSans-Regular", fontSize: 16, height: height * (54 / height), borderColor: "#fff", borderWidth: 1, width: "90%", borderRadius: 10, marginVertical: 5, color: "#fff", marginHorizontal: "auto", paddingLeft: 10 }} />
         </KeyboardAvoidingView>
     )
 }

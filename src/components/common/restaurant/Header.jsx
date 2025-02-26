@@ -1,20 +1,28 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Share } from 'react-native'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Evil from 'react-native-vector-icons/EvilIcons'
 import { useNavigation } from '@react-navigation/native'
 import { widthPercentageToDP as wp, } from 'react-native-responsive-screen';
 
-const Header = () => {
+const Header = ({ item }) => {
+
     const navigation = useNavigation()
+    const handleShareAddress = async () => {
+        await Share.share({
+            message: `${item?.restaurantName}, ${item?.street}`
+        })
+
+    }
     return (
         <View style={styles.HeadingWrapper}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
                 <IonIcons name='arrow-back' size={20} color={"#202020"} />
             </TouchableOpacity>
             <View style={styles.headingRightContainer}>
-                <Entypo name='heart-outlined' size={20} color={"#202020"} />
-                <Evil name='share-google' size={20} color={"#202020"} />
+                <TouchableOpacity onPress={handleShareAddress}>
+                    <Evil name='share-google' size={20} color={"#202020"} />
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -28,8 +36,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         padding: wp(3),
-        elevation: 3,
-        backgroundColor: "#fff"
     },
     headingRightContainer: {
         display: "flex",

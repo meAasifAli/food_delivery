@@ -1,7 +1,10 @@
+import { useContext } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
+import { LocationContext } from '../context/LocationContext'
 
-const AddTip = ({ isOpen, setIsOpen, tipAmt, setTipAmt }) => {
+const AddTip = ({ isOpen, setIsOpen }) => {
+    const { setTipAmt, tipAmt } = useContext(LocationContext)
     const handleAddTip = (val) => {
         setTipAmt(val)
         setIsOpen(pre => !pre)
@@ -11,10 +14,8 @@ const AddTip = ({ isOpen, setIsOpen, tipAmt, setTipAmt }) => {
             isVisible={isOpen}
             onBackdropPress={() => setIsOpen(false)}
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-            animationIn="fadeInUp"
-            animationInTiming={1000}
-            animationOut={"fadeOutDown"}
-            animationOutTiming={1000}
+            backdropOpacity={0.8}
+            backdropColor='#000'
         >
             <View style={{
                 backgroundColor: "#fff",

@@ -37,14 +37,21 @@ const SigninScreen = () => {
         style={styles.formContainer}
       >
 
-        <ScrollView contentContainerStyle={{ marginHorizontal: 10 }} showsVerticalScrollIndicator={false}>
-          <Heading />
-          <SecondaryHeading />
-          <Input value={mobile} setMobile={setMobile} />
-          <Button loading={loading} handleLogin={handleLogin} />
-          <GoogleNav />
-          <BottomNav />
-        </ScrollView>
+        <View style={{ flex: 1 }}>
+          <ScrollView contentContainerStyle={{ marginHorizontal: 10, flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+            <Heading />
+            <SecondaryHeading />
+            <Input value={mobile} setMobile={setMobile} />
+            <Button loading={loading} handleLogin={handleLogin} />
+            <GoogleNav />
+          </ScrollView>
+
+          {/* BottomNav outside ScrollView */}
+          <View style={{ justifyContent: "flex-end", paddingBottom: 20 }}>
+            <BottomNav />
+          </View>
+        </View>
+
       </View>
     </KeyboardAvoidingView>
   );
@@ -71,7 +78,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    marginTop: height * 0.40,
+    marginTop: height * 0.25,
     backgroundColor: '#202020',
     width: "100%",
     borderTopRightRadius: 50,

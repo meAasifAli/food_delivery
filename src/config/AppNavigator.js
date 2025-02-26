@@ -7,13 +7,17 @@ import { StatusBar } from "react-native"
 import SocketProvider from '../context/SocketContext'
 
 
+
 const AppNavigator = () => {
     const { isAuthenticated, token } = useSelector(state => state.auth);
+
+
 
     return (
         <SocketProvider token={token}>
             <LocationContextProvider>
                 <NavigationContainer>
+
                     {
                         isAuthenticated ? <>
                             <StatusBar backgroundColor={"#fff"} barStyle={"dark-content"} />

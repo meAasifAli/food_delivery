@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import Fa5 from 'react-native-vector-icons/FontAwesome5'
 import Input from './Input'
@@ -9,7 +9,7 @@ import { useContext, useState } from 'react'
 import useAddAddress from '../../../hooks/useAddAddress'
 import { LocationContext } from '../../../context/LocationContext'
 import { fetchSavedAddresses } from '../../../store/addressSlice'
-
+const { height, width } = Dimensions.get('window')
 
 const ModalComponent = ({ openModal, setOpenModal }) => {
     const dispatch = useDispatch()
@@ -19,6 +19,8 @@ const ModalComponent = ({ openModal, setOpenModal }) => {
     const { token } = useSelector((state) => state.auth)
     const [inputs, setInputs] = useState({
         houseNo: "",
+        city: "",
+        state: "",
         area: "",
         name: "",
         number: "",
@@ -27,14 +29,16 @@ const ModalComponent = ({ openModal, setOpenModal }) => {
 
 
 
+
+
     const handlePress = async () => {
         await handleAddAddress({
-            state: state,
-            city: city,
+            state: inputs?.state,
+            city: inputs.city,
             area: inputs.area,
             house_no: inputs.houseNo,
             R_name: inputs.name,
-            R_number: inputs.number,
+            R_phone_no: inputs.number,
             type: inputs.type,
             lat: location?.latitude,
             lon: location?.longitude
@@ -56,8 +60,8 @@ const ModalComponent = ({ openModal, setOpenModal }) => {
             style={{ justifyContent: 'flex-end', margin: 0 }} // Adjust the position to bottom
         >
             <View
-                style={{ width: "100%", backgroundColor: "#202020", borderTopLeftRadius: wp(3), borderTopRightRadius: wp(3) }}>
-                <ScrollView showsVerticalScrollIndicator={false} style={{ padding: wp(5) }}>
+                style={{ width: "100%", backgroundColor: "#202020", borderTopLeftRadius: wp(3), borderTopRightRadius: wp(3), height: height * (550 / height) }}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 30 }}>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: wp(10) }}>
                         <View>
                             <Fa5 name='location-arrow' color={"#FA4A0C"} size={hp(3)} />
@@ -71,8 +75,10 @@ const ModalComponent = ({ openModal, setOpenModal }) => {
                         <Text style={{ fontFamily: "OpenSans-Italic", textAlign: "center", color: "#fff", lineHeight: hp(2.5), fontSize: hp(2), letterSpacing: wp(0.2) }}>Please Provide Your Full Address for Fast and Accurate Delivery!</Text>
                     </View>
                     <View style={{ marginTop: hp(2) }}>
-                        <Input value={inputs.houseNo} onValueChange={(text) => setInputs({ ...inputs, houseNo: text })} placeholder={"House / Flat / Floor no"} />
                         <Input value={inputs.area} onValueChange={(text) => setInputs({ ...inputs, area: text })} placeholder={"Area / Sector / Locality"} />
+                        <Input value={inputs.city} onValueChange={(text) => setInputs({ ...inputs, city: text })} placeholder={"City / District"} />
+                        <Input value={inputs.state} onValueChange={(text) => setInputs({ ...inputs, state: text })} placeholder={"State"} />
+                        <Input value={inputs.houseNo} onValueChange={(text) => setInputs({ ...inputs, houseNo: text })} placeholder={"House / Flat / Floor no"} />
                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginVertical: hp(2), gap: wp(4) }}>
                             <View style={{ flex: 1, borderBlockColor: "#fff", borderStyle: "dashed", borderBottomWidth: wp(0.2) }}></View>
                             <Text style={{ color: "white", fontFamily: "OpenSans-Regular", fontSize: hp(1.7) }}>May be Used to assist Delivery</Text>
@@ -82,13 +88,13 @@ const ModalComponent = ({ openModal, setOpenModal }) => {
                         <Input value={inputs.number} onValueChange={(text) => setInputs({ ...inputs, number: text })} placeholder={"Receiver’s Number (OPTIONAL)"} />
                     </View>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginVertical: hp(1.5) }}>
-                        <TouchableOpacity onPress={() => setInputs({ ...inputs, type: "home" })} style={{ backgroundColor: "#fff", paddingVertical: hp(1.5), paddingHorizontal: wp(5), borderRadius: wp(2), display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
-                            <Entypo name="home" color={"#FA4A0C"} size={hp(2)} />
-                            <Text style={{ color: "#000", fontFamily: "OpenSans-Medium", fontSize: hp(1.8) }}>Home</Text>
+                        <TouchableOpacity onPress={() => setInputs({ ...inputs, type: "home" })} style={{ backgroundColor: inputs.type === "home" ? "#FA4A0C" : "#fff", paddingVertical: hp(1.5), paddingHorizontal: wp(5), borderRadius: wp(2), display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
+                            <Fa5 name="home" color={inputs?.type === "home" ? "#fff" : "#FA4A0C"} size={hp(2)} />
+                            <Text style={{ color: inputs?.type === "home" ? "#fff" : "#000", fontFamily: "OpenSans-Medium", fontSize: hp(1.8) }}>home</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setInputs({ ...inputs, type: "office" })} style={{ backgroundColor: "#fff", paddingVertical: hp(1.5), paddingHorizontal: wp(5), borderRadius: wp(2), display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
-                            <Fa5 name="building" color={"#FA4A0C"} size={hp(2)} />
-                            <Text style={{ color: "#000", fontFamily: "OpenSans-Medium", fontSize: hp(1.8) }}>office</Text>
+                        <TouchableOpacity onPress={() => setInputs({ ...inputs, type: "office" })} style={{ backgroundColor: inputs?.type === "office" ? "#FA4A0C" : "#fff", paddingVertical: hp(1.5), paddingHorizontal: wp(5), borderRadius: wp(2), display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2) }}>
+                            <Fa5 name="building" color={inputs?.type === "office" ? "#fff" : "#FA4A0C"} size={hp(2)} />
+                            <Text style={{ color: inputs?.type === "office" ? "#fff" : "#000", fontFamily: "OpenSans-Medium", fontSize: hp(1.8) }}>office</Text>
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={handlePress} style={{ backgroundColor: "#FA4A0C", paddingVertical: hp(2), paddingHorizontal: wp(5), borderRadius: wp(2), marginTop: hp(1) }}>

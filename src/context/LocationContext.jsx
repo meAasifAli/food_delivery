@@ -6,6 +6,8 @@ export const LocationContext = createContext();
 
 const LocationContextProvider = ({ children }) => {
     const mapRef = useRef(null)
+    const [offerCode, setOfferCode] = useState('')
+    const [tipAmt, setTipAmt] = useState(0)
     const [location, setLocation] = useState({
         longitude: 0,
         latitude: 0
@@ -70,7 +72,7 @@ const LocationContextProvider = ({ children }) => {
 
 
     return (
-        <LocationContext.Provider value={{ isMyLocation, setIsMyLocation, location, setLocation, mapRef, orderStatus, setOrderStatus, deliveryBoyLocation, setDeliveryBoyLocation, restaurantLocation, setRestaurantLocation }}>{children}</LocationContext.Provider>
+        <LocationContext.Provider value={{ isMyLocation, setIsMyLocation, location, setLocation, mapRef, orderStatus, setOrderStatus, deliveryBoyLocation, setDeliveryBoyLocation, restaurantLocation, setRestaurantLocation, offerCode, setOfferCode, tipAmt, setTipAmt }}>{children}</LocationContext.Provider>
     )
 }
 

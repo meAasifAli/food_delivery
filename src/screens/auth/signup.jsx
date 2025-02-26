@@ -80,9 +80,10 @@ const SignUpScreen = () => {
           <Button loading={loading} handlePress={handeCreate} />
           {/* Google Signup Option */}
           <GoogleNav />
-          {/* Navigation Links */}
-          <BottomNav />
         </ScrollView>
+
+        {/* Navigation Links */}
+        <BottomNav />
       </View>
     </KeyboardAvoidingView>
   );
@@ -103,13 +104,14 @@ const styles = StyleSheet.create({
     zIndex: -10,
   },
   img: {
-    height: 150,
+    height: 180,
     width: 150,
     resizeMode: 'contain',
   },
   formWrapper: {
     flex: 1,
-    marginTop: height * 0.25,
+    justifyContent: "flex-end",
+    marginTop: height * 0.20,
     bottom: 0,
     backgroundColor: '#202020',
     width: '100%',

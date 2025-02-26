@@ -33,4 +33,3 @@ const BottomNav = () => {
 
 export default BottomNav
 
-const styles = StyleSheet.create({})

@@ -35,9 +35,9 @@ const TopRated = ({ navigation }) => {
                     {
                         topRated.map((item, id) => (
                             <TouchableOpacity onPress={() => navigation.navigate("Restaurant", { restaurantId: item?.restaurant_id })} key={id} style={styles.restaurantsContainer}>
-                                <Image source={require("../../assets/images/menu_img.png")} style={styles.restaurantImg} />
+                                <Image source={{ uri: item?.profile }} style={styles.restaurantImg} />
                                 <View style={styles.restaurantContentWrapper}>
-                                    <Typography title={item?.restaurant_name} color={"#000000"} ff={"OpenSan-Regular"} size={11} lh={15} ls={0.05} fw={400} ta={"center"} />
+                                    <Typography title={item?.restaurant_name} color={"#000000"} ff={"OpenSan-Medium"} size={11} lh={15} ls={0.05} fw={400} ta={"center"} />
                                     <View style={styles.divider}></View>
                                     <View style={styles.ratingWrapper}>
                                         <View style={styles.ratingLeftWrapper}>
@@ -45,7 +45,7 @@ const TopRated = ({ navigation }) => {
                                             <Entypo name='star-outlined' size={12} color={"#fff"} />
                                         </View>
                                         <View>
-                                            <Typography title={item?.delivery_time} color={"#202020"} ff={"OpenSans_regular"} size={11} lh={12} ls={0.05} fw={300} />
+                                            <Typography title={`${item?.delivery_time} minutes`} color={"#202020"} ff={"OpenSans_regular"} size={11} lh={12} ls={0.05} fw={300} />
                                         </View>
                                     </View>
                                     <View style={styles.desWrapper}>
@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     restaurantsContainer: {
-        height: height * 0.24,
-        width: width * 0.44,
+        height: height * (170 / height),
+        width: width * (157 / width),
         borderColor: "#D6D6D6",
         borderWidth: 1,
         borderRadius: 10,
@@ -87,13 +87,13 @@ const styles = StyleSheet.create({
         marginTop: 40,
     },
     restaurantImg: {
-        height: height * 0.15,
-        width: width * 0.25,
+        height: height * (90 / height),
+        width: width * (114 / width),
         position: "absolute",
         top: -40,
-        left: "22%",
+        left: "14%",
         borderRadius: 10,
-        resizeMode: "contain"
+        resizeMode: "cover"
     },
     restaurantContentWrapper: {
         display: "flex",

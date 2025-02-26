@@ -8,7 +8,7 @@ const Option = () => {
             flexDirection: 'row',
             alignItems: 'center',
             gap: 5,
-            paddingLeft: 10,
+            paddingLeft: 20,
             paddingVertical: 10,
             marginBottom: 5,
         }}>

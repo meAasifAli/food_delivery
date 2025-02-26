@@ -1,11 +1,11 @@
 import { Image, ScrollView, StyleSheet, TouchableOpacity, } from 'react-native'
 import Typography from '../../Typography'
 import { Dimensions } from 'react-native'
-import { Circle } from 'react-content-loader/native'
+
 
 
 const { height, width } = Dimensions.get("window")
-const Categories = ({ navigation, categories, loading }) => {
+const Categories = ({ navigation, categories }) => {
     return (
         <ScrollView
             style={styles.scrollContainer}
@@ -30,8 +30,8 @@ const Categories = ({ navigation, categories, loading }) => {
                             title={item?.name}
                             color={"#000000"}
                             ff={"OpenSans-Medium"}
-                            size={16}
-                            lh={25.62}
+                            size={14}
+                            lh={20.62}
                             ls={0.05}
                         />
                     </TouchableOpacity>
@@ -45,7 +45,7 @@ export default Categories
 
 const styles = StyleSheet.create({
     scrollContainer: {
-        marginTop: 20,
+        marginTop: 30,
         marginHorizontal: 10
     },
     categoryWrapper: {
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     categoryImg: {
-        height: height * (92 / height),
-        width: (117 / width) * width,
+        height: height * (62 / height),
+        width: (67 / width) * width,
         objectFit: "contain",
 
     }

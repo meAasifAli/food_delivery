@@ -3,12 +3,16 @@ import { Image, Text, TouchableOpacity, View, Share, Alert } from "react-native"
 import Typography from "../../../Typography"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen"
 import useDeleteAddress from "../../../../hooks/useDeleteAddress"
+import { useState } from "react"
+import EditAddress from "../../../../modals/EditAddress"
+import DeleteAddress from "../../../../alerts/DeleteAddress"
+
 
 const AddressCard = ({ img, title, address, Phone, item }) => {
 
+    const [isOpen, setIsOpen] = useState(false)
+    const [deleteAddress, setDeleteAddress] = useState(false)
 
-    const navigation = useNavigation()
-    const { loading, handleDeleteAddress } = useDeleteAddress()
     const handleShareAddress = async () => {
         const response = await Share.share({
             message: address
@@ -20,7 +24,11 @@ const AddressCard = ({ img, title, address, Phone, item }) => {
 
 
     const handleDeletion = async (id) => {
-        await handleDeleteAddress(id)
+        setDeleteAddress(true)
+    }
+
+    const handleEditAddress = () => {
+        setIsOpen(true)
     }
     return (
         <View style={{ display: "flex", flexDirection: "column", gap: hp(2), elevation: 3, backgroundColor: "#fff", width: "90%", marginHorizontal: "auto", marginBottom: 20, borderRadius: 15 }}>
@@ -41,12 +49,14 @@ const AddressCard = ({ img, title, address, Phone, item }) => {
                 <Typography title={`ph. no : ${Phone}`} color={"#000000"} ff={"OpenSans-Regular"} fw={400} lh={hp(2.5)} size={hp(2)} />
             </View>
             <View style={{ marginHorizontal: wp(5), display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: hp(2), paddingBottom: hp(2), borderBottomWidth: hp(0.1), borderBottomColor: "#D6D6D6" }}>
-                <TouchableOpacity onPress={() => navigation.navigate("AddressScreen")}>
+                <TouchableOpacity onPress={handleEditAddress}>
                     <Typography title={"EDIT"} color={"#FA4A0C"} ff={"OpenSans-Regular"} fw={400} lh={hp(2.5)} size={hp(2)} />
                 </TouchableOpacity>
+                <EditAddress item={item} openModal={isOpen} setOpenModal={setIsOpen} />
                 <TouchableOpacity onPress={() => handleDeletion(item?.id)}>
                     <Typography title={"DELETE"} color={"#FA4A0C"} ff={"OpenSans-Regular"} fw={400} lh={hp(2.5)} size={hp(2)} />
                 </TouchableOpacity>
+                <DeleteAddress isOpen={deleteAddress} setIsOpen={setDeleteAddress} item={item} />
                 <TouchableOpacity onPress={handleShareAddress}>
                     <Typography title={"SHARE"} color={"#FA4A0C"} ff={"OpenSans-Regular"} fw={400} lh={hp(2.5)} size={hp(2)} />
                 </TouchableOpacity>

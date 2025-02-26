@@ -24,7 +24,7 @@ const AddAddress = () => {
     return (
         <View style={styles.container}>
             <Header searchVal={searchVal} setSearchVal={setSearchVal} />
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
                 <CenterBox />
                 <View style={{ paddingVertical: hp(4), display: "flex", flexDirection: "row", alignItems: "center", gap: wp(2), width: wp(80), marginHorizontal: "auto" }}>
                     <View style={{ borderTopColor: "#D6D6D6", borderTopWidth: hp(0.15), flex: 1 }}></View>
@@ -34,7 +34,7 @@ const AddAddress = () => {
                 {
                     savedUserAddresses?.length === 0 ? <View>
                         <Text style={{ fontFamily: "OpenSans-Regular", color: "#000000", lineHeight: hp(3), fontSize: hp(2), letterSpacing: wp(0.2), textAlign: "center" }}>You don't have any saved addresses</Text>
-                    </View> : <View style={{ width: wp(80), marginHorizontal: "auto", elevation: 1, backgroundColor: "#fff", borderRadius: wp(3), marginTop: hp(2), padding: wp(5) }}>
+                    </View> : <View style={{ width: wp(80), marginHorizontal: "auto", elevation: 1, backgroundColor: "#fff", borderRadius: wp(3), marginTop: hp(2), padding: wp(3) }}>
                         {
                             savedUserAddresses?.length > 0 && savedUserAddresses?.map((item, id) => (
                                 <SavedAddress item={item} key={id} />

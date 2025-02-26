@@ -10,6 +10,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import 'react-native-get-random-values';
 import { API_KEY } from '../../config/uri'
 
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 
 const SearchAddresses = () => {
     const { setIsMyLocation } = useContext(LocationContext)
@@ -42,6 +44,14 @@ const SearchAddresses = () => {
 
     return (
         <View style={{ flex: 1, backgroundColor: "#202020" }}>
+            <View style={{ flexDirection: "row", alignItems: "center", padding: 10 }}>
+                <TouchableOpacity onPress={() => navigation.navigate("AddAddress")}>
+                    <AntDesign size={25} name='arrowleft' color={"#fff"} />
+                </TouchableOpacity>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <Text style={{ color: "#fff", fontSize: 16, fontFamily: "OpenSans-Medium", }}>Search for a location</Text>
+                </View>
+            </View>
             <TouchableOpacity onPress={handleCurrentLocation} style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 20, padding: 15, borderBottomColor: "#6D6D6D", borderBottomWidth: 1, borderStyle: "dashed" }}>
                 <FontAwesome5Icon name='location-arrow' color={"#FA4A0C"} size={25} />
                 <Text style={{ color: "#FA4A0C", fontSize: 20, fontFamily: "OpenSans-Regular" }}>Use  current Location</Text>
@@ -82,20 +92,20 @@ const SearchAddresses = () => {
                         borderStyle: 'dashed',
                     },
                     listView: {
-                        backgroundColor: '#fff', // ✅ Make list background white
+                        backgroundColor: 'transparent',
                     },
                     row: {
-                        backgroundColor: '#fff', // ✅ Ensure row background is white
+                        backgroundColor: 'transparent',
                         padding: 10,
                         borderBottomColor: '#6D6D6D',
                         borderBottomWidth: 0.5,
                     },
                     description: {
-                        color: '#000',  // ✅ Ensure text is visible (changed from `#fff` to `#000`)
+                        color: '#fff',
                         fontFamily: 'OpenSans-Regular',
                     },
                     predefinedPlacesDescription: {
-                        color: '#000',  // ✅ Make predefined place text visible
+                        color: '#000',
                     },
                 }}
             />

@@ -13,19 +13,17 @@ const SearchedRestaurants = ({ route }) => {
     const { savedUserAddresses } = useSelector(state => state?.address)
     const { location } = useContext(LocationContext)
     const selectedAddress = savedUserAddresses?.find((address) => address?.selected === 1)
-    const { loading, handleFetchSearchRestaurants, searchRestaurants } = usefetchRestaurantBySearch()
+    const { handleFetchSearchRestaurants, searchRestaurants } = usefetchRestaurantBySearch()
     // console.log(query);
     useEffect(() => {
         setSearchVal(query)
     }, [])
     useEffect(() => {
         handleFetchSearchRestaurants({ query: searchVal, longitude: selectedAddress ? selectedAddress?.lon : location?.longitude, latitude: selectedAddress ? selectedAddress?.lat : location?.latitude })
-    }, [])
+    }, [selectedAddress, location, searchVal])
     // console.log(searchVal);
 
 
-
-    // console.log(searchRestaurants);
 
 
     return (
@@ -50,7 +48,7 @@ const SearchedRestaurants = ({ route }) => {
                             style={{
                                 fontSize: 16,
                                 fontFamily: 'OpenSans-Regular',
-                                color: '#000',
+                                color: '#202020',
                             }}>
                             Search for Dishes and Restaurants
                         </Text>
@@ -75,11 +73,18 @@ const SearchedRestaurants = ({ route }) => {
                 />
 
             </View>
+            <View>
+                {
+                    searchRestaurants?.length > 0 && searchVal !== "" && <Text style={{ fontFamily: "OpenSans-Regular", color: "#000", padding: 10, fontSize: 16, textTransform: "uppercase" }}>Restaurants Relevant for {`${searchVal}`}</Text>
+                }
+
+
+            </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
                 paddingBottom: 40
             }}>
                 {
-                    searchRestaurants.length === 0 && <Text style={{ color: "#000", fontFamily: "OpenSans-Regular", marginLeft: 10, textAlign: "center" }}>No item found</Text>
+                    searchRestaurants.length === 0 && searchVal !== "" && <Text style={{ color: "#000", fontFamily: "OpenSans-Regular", marginLeft: 10, textAlign: "center" }}>No item found</Text>
                 }
                 {
                     searchVal.trim() !== "" && (
@@ -119,7 +124,7 @@ const SearchedRestaurants = ({ route }) => {
                                             </Text>
                                             <Text>&middot;</Text>
                                             <Text style={styles.deliveryTimeText}>
-                                                {item.delivery_time}
+                                                {`${item.delivery_time} minutes`}
                                             </Text>
                                         </View>
                                     </View>
@@ -146,7 +151,8 @@ const styles = StyleSheet.create({
     restaurantImage: {
         width: 50,
         height: 50,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
+        borderRadius: 10,
     },
     restaurantName: {
         fontSize: 14,

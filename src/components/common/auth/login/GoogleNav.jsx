@@ -9,7 +9,7 @@ const GoogleNav = () => {
             flexDirection: "row",
             alignItems: "center",
             maxWidth: "100%",
-            marginTop: 15,
+            marginTop: 30,
         }}>
             <View>
                 <Text style={{

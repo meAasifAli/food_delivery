@@ -1,4 +1,4 @@
-import { Alert, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, ScrollView, StyleSheet, TouchableOpacity, View, ToastAndroid } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,8 +58,7 @@ const EditProfile = () => {
                 })
 
                 if (res?.ok) {
-                    Alert.alert("Profile Updated Successfully")
-                    navigation.goBack()
+                    ToastAndroid.show("Profile Updated Successfully", ToastAndroid.LONG)
                 }
                 if (!res?.ok) {
                     Alert.alert("Error in Updating Profile")

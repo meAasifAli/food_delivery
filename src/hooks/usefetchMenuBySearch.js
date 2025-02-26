@@ -1,4 +1,4 @@
-import { Alert, StyleSheet } from 'react-native'
+import { Alert } from 'react-native'
 import { useState } from 'react'
 import axios from 'axios'
 import { BASE_URI } from '../config/uri'
@@ -33,4 +33,3 @@ const usefetchMenuBySearch = () => {
 
 export default usefetchMenuBySearch
 
-const styles = StyleSheet.create({})

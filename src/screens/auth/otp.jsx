@@ -87,9 +87,8 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     backgroundColor: "#202020",
-    // height: height * (628 / height),
     width: "100%",
-    marginTop: "70%",
+    marginTop: "50%",
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
     padding: 10,

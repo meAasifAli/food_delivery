@@ -6,6 +6,7 @@ import RestaurantMenu from '../../../modals/RestaurantMenu'
 import FoodSizeMenu from '../../../modals/FoodSizeMenu'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useState } from 'react'
+import Feather from 'react-native-vector-icons/Feather';
 
 const MenuItem = ({ item, size, setSize, }) => {
     const [isCustomizable, setIsCustomizable] = useState(false)
@@ -17,8 +18,8 @@ const MenuItem = ({ item, size, setSize, }) => {
 
     return (
         <View style={{
-            orderBottomColor: "#D6D6D6",
-            borderBottomWidth: 1,
+            borderBottomColor: "#D6D6D6",
+            borderBottomWidth: 0.4,
             width: "90%",
             marginHorizontal: "auto",
         }}>
@@ -27,36 +28,42 @@ const MenuItem = ({ item, size, setSize, }) => {
                 <View style={styles.leftWrapper}>
                     <View style={styles.leftHeadingWrapper}>
                         <View>
-                            <Text style={{ fontFamily: "OpenSans-Bold", color: "black", fontWeight: "600", fontSize: hp(2) }}>{item?.name}</Text>
+                            <Text style={{ fontFamily: "OpenSans-SemiBold", color: "black", fontWeight: "600", fontSize: hp(2) }}>{item?.name}</Text>
                         </View>
                         <View style={{ padding: wp(0.5), borderColor: "#FA4A0C", borderWidth: wp(0.35) }}>
                             <AntDesign name='caretup' size={hp(0.8)} color={"#FA4A0C"} />
                         </View>
                     </View>
-                    <View>
-                        <Typography title={item?.description?.slice(0, 130)} color={"#000"} ff={"OpenSans_regular"} size={12} lh={16} ls={0.07} fw={300} maxW={wp(40)} />
-                    </View>
+
                     <View style={styles.ratingWrapper}>
                         <View style={styles.ratingLeftWrapper}>
-                            <Typography title={item?.avg_rating} color={"#fff"} ff={"OpenSans_regular"} size={wp(3.5)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
+                            <Typography title={item?.avg_rating} color={"#fff"} ff={"OpenSans-Regular"} size={wp(3.5)} lh={hp(3)} ls={wp(0.05)} fw={400} ta={"center"} />
                             <Entypo name='star-outlined' size={12} color={"#fff"} />
                         </View>
                         <View>
-                            <Typography title={`(${item?.order_count})`} color={"#20202080"} ff={"OpenSans_regular"} size={16} lh={21} ls={0.05} fw={300} />
+                            <Typography title={`(${item?.order_count})`} color={"#20202080"} ff={"OpenSans-Regular"} size={16} lh={21} ls={0.05} fw={300} />
                         </View>
+                    </View>
+                    <View style={{ marginTop: 5 }}>
+                        <Typography title={item?.description} color={"#000"} ff={"OpenSans-Regular"} size={14} lh={16} ls={0.07} fw={300} maxW={wp(40)} />
                     </View>
 
                 </View>
                 {/* right */}
                 <View style={styles.rightWrapper}>
 
-                    <Image style={{ width: 150, height: 150, borderRadius: 25, resizeMode: "cover" }} source={{ uri: item?.image }} />
+                    <View style={{ width: 100, height: 100, borderRadius: 10, backgroundColor: "#fff" }}>
+                        <Image style={{ resizeMode: "cover", width: "100%", height: "100%", borderRadius: 10 }} source={{ uri: item?.image }} />
+                    </View>
 
-                    <View style={{ position: "absolute", bottom: 8, right: 15 }}>
+                    <View style={{ position: "absolute", bottom: 15, right: 10 }}>
                         <TouchableOpacity onPress={() => {
-                            item?.customisation === 0 ? setIsNonCustomizable(prev => !prev) : setIsCustomizable(prev => !prev)
-                        }} style={{ backgroundColor: "#fff", padding: wp(2), borderRadius: wp(3), width: 120, alignItems: "center" }}>
-                            <Text style={{ color: "#FA4A0C", fontSize: wp(5), fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Add </Text>
+                            item?.customisation === 0 ? setIsNonCustomizable(true) : setIsCustomizable(true)
+                        }} style={{ backgroundColor: "#fff", padding: 5, borderRadius: 8, borderColor: "#c6c6c6", borderWidth: 0.40, width: 80, alignItems: "center", flexDirection: "row", justifyContent: "center" }}>
+                            <Text style={{ color: "#FA4A0C", fontSize: 16, fontWeight: "500", fontFamily: "OpenSans-Medium" }}>Add </Text>
+                            {
+                                item?.customisation === 1 && <Feather name="edit" color={"#FA4A0C"} />
+                            }
                         </TouchableOpacity>
                     </View>
                     {
@@ -69,12 +76,7 @@ const MenuItem = ({ item, size, setSize, }) => {
 
                 </View>
             </View>
-            <View>
-                {
-                    item.customisation === 1 && <Text style={{ textAlign: "right", fontFamily: "OpenSans-Regular", color: "#000", marginRight: 25, marginBottom: 10 }}>customizable</Text>
-                }
-            </View>
-        </View>
+        </View >
     )
 }
 
@@ -99,7 +101,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 5,
-        width: wp(30)
 
     },
     ratingWrapper: {
@@ -107,8 +108,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         paddingLeft: wp(0.5),
-        gap: wp(6),
-        marginTop: hp(2)
+        gap: 10,
     },
     ratingLeftWrapper: {
         backgroundColor: "#60B246",
@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: wp(1),
-        padding: wp(1),
-        borderRadius: wp(1)
+        paddingHorizontal: 5,
+        borderRadius: 5
     },
     rightWrapper: {
         position: "relative",
